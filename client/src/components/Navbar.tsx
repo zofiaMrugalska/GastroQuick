@@ -12,11 +12,11 @@ const Navbar = () => {
             MENU
           </Link>
 
-          <Link to={""}>
+          <Link to={"/cart"}>
             <LiaShoppingCartSolid size={37} />
           </Link>
 
-          <Link to={""} className=" text-xl font-semibold">
+          <Link to={"/authentication"} className=" text-xl font-semibold">
             LOG IN
           </Link>
         </ul>
