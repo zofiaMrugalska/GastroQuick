@@ -1,9 +1,9 @@
-import Routes from "./Routes";
+import ProjectRoutes from "./ProjectRoutes";
 
 function App() {
   return (
-    <div>
-      <Routes />
+    <div className=" font-JosefinSans">
+      <ProjectRoutes />
     </div>
   );
 }
