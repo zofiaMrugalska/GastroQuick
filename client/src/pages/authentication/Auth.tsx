@@ -7,6 +7,8 @@ const Auth = () => {
     name: string;
     password: string;
   }
+  // fzjsiusjfioueouo
+  const commitTest = a;
 
   const {
     register,
