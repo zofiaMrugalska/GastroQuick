@@ -30,8 +30,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className=" min-h-[60vh]  flex flex-col justify-center items-center gap-3">
-      <h1>Sign Up</h1>
+    <div className=" min-h-[72vh]  flex flex-col justify-center items-center gap-3">
+      <h1 className=" text-xl font-semibold">Sign Up</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <div>
           <input
@@ -74,9 +74,9 @@ const SignUp = () => {
 
           <div
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute top-[15px] left-[275px]"
+            className="absolute top-[10px] left-[270px]"
           >
-            {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
           </div>
         </div>
@@ -99,21 +99,26 @@ const SignUp = () => {
 
           <div
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute top-[15px] left-[275px]"
+            className="absolute top-[10px] left-[270px]"
           >
-            {showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            {showConfirmPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
           </div>
         </div>
 
-        <button type="submit" className=" bg-[#ff8f34] py-2 rounded-lg min-w-[300px] ">
-          Sign In
+        <button
+          type="submit"
+          className=" bg-[#ff8f34] py-2 rounded-lg min-w-[300px] font-semibold hover:bg-[#fc9e52] hover:scale-95"
+        >
+          Sign Up
         </button>
       </form>
 
-      <div>
+      <div className=" mt-6 flex flex-col items-center text-sm ">
         <p>Already have an account??</p>
-        <Link to={"/signIn"}>Sign In!</Link>
+        <Link to={"/signIn"} className=" text-[#ff6e2a] font-bold">
+          Sign In!
+        </Link>
       </div>
     </div>
   );

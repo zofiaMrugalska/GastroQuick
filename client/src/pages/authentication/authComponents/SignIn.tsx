@@ -26,7 +26,7 @@ const SignIn = () => {
 
   return (
     <div className=" min-h-[60vh]  flex flex-col justify-center items-center gap-3">
-      <h1>Sign In</h1>
+      <h1 className=" text-xl font-semibold">Sign In</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <div>
           <input
@@ -50,21 +50,26 @@ const SignIn = () => {
 
           <div
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute top-[15px] left-[275px]"
+            className="absolute top-[10px] left-[270px]"
           >
-            {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
           </div>
         </div>
 
-        <button type="submit" className=" bg-[#ff8f34] py-2 rounded-lg min-w-[300px] ">
+        <button
+          type="submit"
+          className=" bg-[#ff8f34] py-2 rounded-lg min-w-[300px] font-semibold hover:bg-[#fc9e52] hover:scale-95"
+        >
           Sign In
         </button>
       </form>
 
-      <div>
+      <div className=" mt-6 flex flex-col items-center text-sm ">
         <p>You don't have an account yet?</p>
-        <Link to={"/signUp"}>Sign Up!</Link>
+        <Link to={"/signUp"} className=" text-[#ff6e2a] font-bold">
+          Sign Up!
+        </Link>
       </div>
     </div>
   );
