@@ -22,7 +22,7 @@ const Navbar = () => {
             <FiUser size={25} />
           </Link>
 
-          <Link to={"/authentication"}>
+          <Link to={"/signIn"}>
             <BiLogInCircle size={25} />
           </Link>
         </ul>
