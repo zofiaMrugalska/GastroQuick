@@ -38,10 +38,10 @@ const Menu = () => {
   ]);
 
   return (
-    <div>
+    <div className="grid grid-cols-3">
       {mainMenu.map((meal) => {
         return (
-          <div key={meal.id}>
+          <div key={meal.id} className="p-7 ">
             <Link to={`/meal/${meal.meal}/${meal.id}`}>
               <li className=" p-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset md:ml-5 md:mt-8 md:mr-27 md:mb-19 hover:bg-[#bbbbbb23]">
                 <p>{meal.meal}</p>
