@@ -3,14 +3,14 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const SignUp = () => {
-  interface SignUpInterface {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  }
+interface SignUpInterface {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
+const SignUp = () => {
   const {
     register,
     handleSubmit,
