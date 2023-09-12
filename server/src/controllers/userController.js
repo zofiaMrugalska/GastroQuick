@@ -30,9 +30,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "all fields are mandatory" });
     }
 
-    //zosie 3 nie mgoa byc
-
-    const userAvailable = await userModel.findOne({ email });
+    const userAvailable = await userModel.findOne({ $or: [{ email }, { name }] });
 
     if (userAvailable) {
       return res.status(400).json({ message: "user already registered" });
@@ -59,4 +57,21 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getData };
+//@desc login a user
+//@route POST /users/login
+//@access public
+
+const loginUser = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+
+    if (!name || !password) {
+      return res.status(400).json({ message: "all fileds are mandatory" });
+    }
+  } catch (error) {
+    console.log("error", error);
+    return res.sendStatus(400);
+  }
+};
+
+module.exports = { registerUser, getData, loginUser };
