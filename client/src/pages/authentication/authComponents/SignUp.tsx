@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
@@ -23,10 +24,20 @@ const SignUp = () => {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<SignUpInterface> = (data) => {
+  const onSubmit: SubmitHandler<SignUpInterface> = async (data) => {
     console.log(data);
-
-    reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
+    try {
+      const response = await axios.post("http://localhost:5000/users/register", data);
+      console.log(response, "register z backendu ");
+      console.log(response.data.success);
+      if (response.data.success === true) {
+        alert("registration was successful");
+      }
+    } catch (error) {
+      alert("registration failed");
+      console.log("error", error);
+    }
+    reset();
   };
 
   return (
@@ -74,7 +85,7 @@ const SignUp = () => {
 
           <div
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute top-[10px] left-[270px]"
+            className="absolute top-[10px] left-[270px] cursor-pointer"
           >
             {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
@@ -99,7 +110,7 @@ const SignUp = () => {
 
           <div
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute top-[10px] left-[270px]"
+            className="absolute top-[10px] left-[270px] cursor-pointer"
           >
             {showConfirmPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
