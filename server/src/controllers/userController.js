@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userModel = require("../models/userModel");
 
@@ -68,9 +69,30 @@ const loginUser = async (req, res) => {
     if (!name || !password) {
       return res.status(400).json({ message: "all fileds are mandatory" });
     }
+
+    const user = await userModel.findOne({ name });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(404).json({ message: "wrong password or name" });
+    }
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const accessToken = jwt.sign(
+        {
+          user: {
+            name: user.name,
+            email: user.email,
+            id: user.id,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: "1h" }
+      );
+      return res.status(200).json({ accessToken });
+    }
   } catch (error) {
     console.log("error", error);
-    return res.sendStatus(400);
+    return res.sendStatus(404);
   }
 };
 
