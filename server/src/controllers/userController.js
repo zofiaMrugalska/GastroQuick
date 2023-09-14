@@ -90,7 +90,16 @@ const loginUser = async (req, res) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "1h" }
       );
-      res.status(200).json(createResponse(true, accessToken, "the token is generated"));
+
+      const responseUser = {
+        name: user.name,
+        email: user.email,
+        id: user.id,
+      };
+
+      res
+        .status(200)
+        .json(createResponse(true, { accessToken, user: responseUser }, "the token is generated"));
     }
   } catch (error) {
     console.log("error", error);

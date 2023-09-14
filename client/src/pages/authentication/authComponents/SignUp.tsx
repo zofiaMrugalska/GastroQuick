@@ -3,13 +3,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-interface SignUpInterface {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
+import { signUpServices } from "../../../services/authServices/Auth";
 
 const SignUp = () => {
   const {
@@ -26,17 +21,7 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<SignUpInterface> = async (data) => {
     console.log(data);
-    try {
-      const response = await axios.post("http://localhost:5000/users/register", data);
-      console.log(response, "register z backendu ");
-      console.log(response.data.success);
-      if (response.data.success === true) {
-        alert("registration was successful");
-      }
-    } catch (error) {
-      alert("registration failed");
-      console.log("error", error);
-    }
+    signUpServices(data);
     reset();
   };
 

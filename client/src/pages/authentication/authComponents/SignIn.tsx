@@ -1,12 +1,10 @@
+import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-interface SignInInterface {
-  name: string;
-  password: string;
-}
+import { SignInInterface } from "../../../interfaces/AuthInterfaces";
+import { signInServices } from "../../../services/authServices/Auth";
 
 const SignIn = () => {
   const {
@@ -18,8 +16,10 @@ const SignIn = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
 
-  const onSubmit: SubmitHandler<SignInInterface> = (data) => {
+  const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
     console.log(data);
+
+    signInServices(data);
 
     reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
   };
