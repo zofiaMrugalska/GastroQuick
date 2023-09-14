@@ -13,7 +13,7 @@ export const signInServices = async (data: SignInInterface) => {
     localStorage.setItem("accessToken", JSON.stringify(token));
 
     const userInfo = response.data.data.user;
-    localStorage.setItem("user information", JSON.stringify(userInfo));
+    localStorage.setItem("userInformation", JSON.stringify(userInfo));
   } catch (error) {
     alert("login failed");
     console.log("error", error);

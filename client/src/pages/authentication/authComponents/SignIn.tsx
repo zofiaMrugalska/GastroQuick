@@ -1,10 +1,11 @@
-import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { SignInInterface } from "../../../interfaces/AuthInterfaces";
 import { signInServices } from "../../../services/authServices/Auth";
+import { useGetUserToken } from "../../../hooks/useGetUserToken";
+import { useGetUserInfo } from "../../../hooks/useGetUserInfo";
 
 const SignIn = () => {
   const {
@@ -16,10 +17,21 @@ const SignIn = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
 
-  const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
-    console.log(data);
+  const getToken = useGetUserToken();
+  const getUserInfo = useGetUserInfo();
 
-    signInServices(data);
+  const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
+    console.log(getToken, " przed przycsikiem token");
+    console.log(getUserInfo, "przed przyciskiem INFO USEr");
+
+    if (getToken || getUserInfo) {
+      alert("you need to log out to log in to another account");
+    } else {
+      await signInServices(data);
+    }
+    console.log("++++++++++++++++++");
+    console.log(getToken, " POOO przycsikiem token");
+    console.log(getUserInfo, "POOO przyciskiem INFO USEr");
 
     reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
   };
