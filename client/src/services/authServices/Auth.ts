@@ -1,6 +1,10 @@
 import axios from "axios";
 import { SignInInterface, SignUpInterface } from "../../interfaces/AuthInterfaces";
 
+function refreshPage() {
+  window.location.reload();
+}
+
 export const signInServices = async (data: SignInInterface) => {
   try {
     const response = await axios.post("http://localhost:5000/users/login", data);
@@ -32,4 +36,10 @@ export const signUpServices = async (data: SignUpInterface) => {
     alert("registration failed");
     console.log("error", error);
   }
+};
+
+export const logoutServices = () => {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("userInformation");
+  refreshPage();
 };
