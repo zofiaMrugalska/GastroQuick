@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { SignInInterface } from "../../../interfaces/AuthInterfaces";
 import { signInServices } from "../../../services/authServices/Auth";
 import { useGetUserToken } from "../../../hooks/useGetUserToken";
@@ -20,6 +20,12 @@ const SignIn = () => {
   const getToken = useGetUserToken();
   const getUserInfo = useGetUserInfo();
 
+  const navigate = useNavigate();
+
+  const navigateToMainPage = () => {
+    navigate("/");
+  };
+
   const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
     console.log(getToken, " przed przycsikiem token");
     console.log(getUserInfo, "przed przyciskiem INFO USEr");
@@ -27,7 +33,7 @@ const SignIn = () => {
     if (getToken || getUserInfo) {
       alert("you need to log out to log in to another account");
     } else {
-      await signInServices(data);
+      await signInServices(data, navigateToMainPage);
     }
     console.log("++++++++++++++++++");
     console.log(getToken, " POOO przycsikiem token");
@@ -65,7 +71,7 @@ const SignIn = () => {
             className="absolute top-[10px] left-[270px]"
           >
             {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
-            {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
+            {/* tutaj ustawiamy setera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
           </div>
         </div>
 

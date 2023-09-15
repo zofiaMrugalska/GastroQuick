@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
 import { signUpServices } from "../../../services/authServices/Auth";
 
@@ -19,9 +18,15 @@ const SignUp = () => {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
+  const navigateToSignIn = () => {
+    navigate("/signIn");
+  };
+
   const onSubmit: SubmitHandler<SignUpInterface> = async (data) => {
     console.log(data);
-    signUpServices(data);
+    signUpServices(data, navigateToSignIn);
     reset();
   };
 

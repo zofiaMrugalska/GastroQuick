@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { logoutServices } from "../services/authServices/Auth";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FiUser } from "react-icons/fi";
 import { BiLogInCircle, BiFoodMenu } from "react-icons/bi";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const navigateToSignIn = () => {
+    navigate("/signIn");
+  };
+
   return (
     <div>
       <nav className="flex justify-between">
@@ -35,7 +42,7 @@ const Navbar = () => {
           </li>
 
           <li>
-            <button onClick={logoutServices}>log out</button>
+            <button onClick={() => logoutServices(navigateToSignIn)}>log out</button>
           </li>
         </ul>
       </nav>
