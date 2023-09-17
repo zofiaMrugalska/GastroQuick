@@ -107,4 +107,10 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getData, loginUser };
+//@desc logout a user
+//@route POST /users/logout
+//@access public
+
+const logoutUser = async (req, res) => {};
+
+module.exports = { registerUser, getData, loginUser, logoutUser };
