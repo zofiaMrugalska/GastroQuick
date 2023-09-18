@@ -1,12 +1,11 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-interface SignInInterface {
-  name: string;
-  password: string;
-}
+import { Link, useNavigate } from "react-router-dom";
+import { SignInInterface } from "../../../interfaces/AuthInterfaces";
+import { AuthServices } from "../../../services/authServices/Auth";
+import { useGetUserToken } from "../../../hooks/useGetUserToken";
+import { useGetUserInfo } from "../../../hooks/useGetUserInfo";
 
 const SignIn = () => {
   const {
@@ -18,8 +17,41 @@ const SignIn = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
 
-  const onSubmit: SubmitHandler<SignInInterface> = (data) => {
-    console.log(data);
+  const getToken = useGetUserToken();
+  const getUserInfo = useGetUserInfo();
+
+  const navigate = useNavigate();
+
+  const navigateToMainPage = () => {
+    navigate("/");
+  };
+
+  const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
+    if (getToken || getUserInfo) {
+      alert("you need to log out to log in to another account");
+    } else {
+      try {
+        const response = await AuthServices.login(data);
+        console.log(response, "response z back");
+
+        if (response.success === true) {
+          alert(response.message);
+          navigateToMainPage();
+        }
+
+        const token = response.data.accessToken;
+
+        const userInfo = response.data.user;
+
+        console.log(token, "token tylko");
+        console.log(userInfo, "info user");
+
+        AuthServices.saveTokenToLocalStorage(token);
+        AuthServices.saveUserInfoToLocalStorage(userInfo);
+      } catch (error) {
+        alert(error);
+      }
+    }
 
     reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
   };
@@ -53,7 +85,7 @@ const SignIn = () => {
             className="absolute top-[10px] left-[270px]"
           >
             {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
-            {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
+            {/* tutaj ustawiamy setera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
           </div>
         </div>
 

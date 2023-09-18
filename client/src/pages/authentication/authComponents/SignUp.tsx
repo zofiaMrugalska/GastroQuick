@@ -1,14 +1,9 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-interface SignUpInterface {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { Link, useNavigate } from "react-router-dom";
+import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
+import { AuthServices } from "../../../services/authServices/Auth";
 
 const SignUp = () => {
   const {
@@ -23,10 +18,24 @@ const SignUp = () => {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<SignUpInterface> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
 
-    reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
+  const navigateToSignIn = () => {
+    navigate("/signIn");
+  };
+
+  const onSubmit: SubmitHandler<SignUpInterface> = async (data) => {
+    try {
+      const response = await AuthServices.register(data);
+
+      if (response.success === true) {
+        alert(response.message);
+        navigateToSignIn();
+      }
+    } catch (error) {
+      alert(error);
+    }
+    reset();
   };
 
   return (
@@ -74,7 +83,7 @@ const SignUp = () => {
 
           <div
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute top-[10px] left-[270px]"
+            className="absolute top-[10px] left-[270px] cursor-pointer"
           >
             {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
@@ -99,7 +108,7 @@ const SignUp = () => {
 
           <div
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute top-[10px] left-[270px]"
+            className="absolute top-[10px] left-[270px] cursor-pointer"
           >
             {showConfirmPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
             {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
