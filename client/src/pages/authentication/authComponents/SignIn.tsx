@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInInterface } from "../../../interfaces/AuthInterfaces";
-import { signInServices } from "../../../services/authServices/Auth";
+import { AuthServices } from "../../../services/authServices/Auth";
 import { useGetUserToken } from "../../../hooks/useGetUserToken";
 import { useGetUserInfo } from "../../../hooks/useGetUserInfo";
 
@@ -27,17 +27,31 @@ const SignIn = () => {
   };
 
   const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
-    console.log(getToken, " przed przycsikiem token");
-    console.log(getUserInfo, "przed przyciskiem INFO USEr");
-
     if (getToken || getUserInfo) {
       alert("you need to log out to log in to another account");
     } else {
-      await signInServices(data, navigateToMainPage);
+      try {
+        const response = await AuthServices.login(data);
+        console.log(response, "response z back");
+
+        if (response.success === true) {
+          alert(response.message);
+          navigateToMainPage();
+        }
+
+        const token = response.data.accessToken;
+
+        const userInfo = response.data.user;
+
+        console.log(token, "token tylko");
+        console.log(userInfo, "info user");
+
+        AuthServices.saveTokenToLocalStorage(token);
+        AuthServices.saveUserInfoToLocalStorage(userInfo);
+      } catch (error) {
+        alert(error);
+      }
     }
-    console.log("++++++++++++++++++");
-    console.log(getToken, " POOO przycsikiem token");
-    console.log(getUserInfo, "POOO przyciskiem INFO USEr");
 
     reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
   };

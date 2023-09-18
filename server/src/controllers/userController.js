@@ -3,8 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const userModel = require("../models/userModel");
 const createResponse = require("../services/responseDTO");
+const blacklist = require("../services/blacklist");
 
-//@desc test is it work??
+//@desc test is it work?
 //@route GET /users/get
 //@access public
 
@@ -12,6 +13,20 @@ const getData = async (req, res) => {
   try {
     const getResult = await userModel.find({});
     res.status(200).json(createResponse(true, getResult, "success"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc test is it work??
+//@route GET /users/blacklist
+//@access public
+
+const getBlacklist = async (req, res) => {
+  try {
+    const blacklistStatus = blacklist.getBlacklistStatus();
+    res.status(200).json(createResponse(true, blacklistStatus, "success"));
   } catch (error) {
     console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
@@ -27,7 +42,6 @@ const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      // return res.status(400).json({ message: "all fields are mandatory" });
       return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
     }
 
@@ -44,8 +58,6 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
     });
-
-    console.log(`user created ${user}`);
 
     if (user) {
       return res
@@ -88,7 +100,7 @@ const loginUser = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "30m" }
       );
 
       const responseUser = {
@@ -99,7 +111,7 @@ const loginUser = async (req, res) => {
 
       res
         .status(200)
-        .json(createResponse(true, { accessToken, user: responseUser }, "the token is generated"));
+        .json(createResponse(true, { accessToken, user: responseUser }, "login successful"));
     }
   } catch (error) {
     console.log("error", error);
@@ -111,6 +123,33 @@ const loginUser = async (req, res) => {
 //@route POST /users/logout
 //@access public
 
-const logoutUser = async (req, res) => {};
+const logoutUser = async (req, res) => {
+  try {
+    const token = req.token;
+    console.log(token, " czy jest");
 
-module.exports = { registerUser, getData, loginUser, logoutUser };
+    if (!token) {
+      return res.status(400).json(createResponse(false, null, "token is missing"));
+    }
+    blacklist.addToBlacklist(token);
+
+    res.status(200).json(createResponse(true, null, "Logged out successfully"));
+  } catch (error) {
+    res.status(400).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc test for authorization
+//@route GET /users/test
+//@access private
+
+const test = async (req, res) => {
+  try {
+    res.status(200).json(createResponse(true, null, "authorization was successfully"));
+  } catch (er) {
+    console.log(err);
+    res.sendStatus(400);
+  }
+};
+
+module.exports = { registerUser, getData, loginUser, logoutUser, getBlacklist, test };

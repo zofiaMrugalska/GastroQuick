@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
-import { signUpServices } from "../../../services/authServices/Auth";
+import { AuthServices } from "../../../services/authServices/Auth";
 
 const SignUp = () => {
   const {
@@ -25,8 +25,16 @@ const SignUp = () => {
   };
 
   const onSubmit: SubmitHandler<SignUpInterface> = async (data) => {
-    console.log(data);
-    signUpServices(data, navigateToSignIn);
+    try {
+      const response = await AuthServices.register(data);
+
+      if (response.success === true) {
+        alert(response.message);
+        navigateToSignIn();
+      }
+    } catch (error) {
+      alert(error);
+    }
     reset();
   };
 

@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { logoutServices } from "../services/authServices/Auth";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FiUser } from "react-icons/fi";
 import { BiLogInCircle, BiFoodMenu } from "react-icons/bi";
+import { AuthServices } from "../services/authServices/Auth";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const navigateToSignIn = () => {
+  const logout = () => {
+    AuthServices.removeTokenFromLocalStorage();
+    AuthServices.removeUserInfoFromLocalStorage();
     navigate("/signIn");
+    window.location.reload();
   };
 
   return (
@@ -42,7 +45,7 @@ const Navbar = () => {
           </li>
 
           <li>
-            <button onClick={() => logoutServices(navigateToSignIn)}>log out</button>
+            <button onClick={logout}>log out</button>
           </li>
         </ul>
       </nav>
