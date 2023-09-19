@@ -20,6 +20,28 @@ export const AuthServices = {
     }
   },
 
+  getTokenFromLocalStorage: () => {
+    const accessTokenJSON = localStorage.getItem("accessToken");
+    if (accessTokenJSON) {
+      const accessTokenObj = JSON.parse(accessTokenJSON);
+      console.log(accessTokenObj, "token z auth services");
+
+      return accessTokenObj;
+    }
+    return null;
+  },
+
+  getUserInfoFromLocalStorage: () => {
+    const accessUserInfo = localStorage.getItem("userInformation");
+
+    if (accessUserInfo) {
+      const accessInfoObj = JSON.parse(accessUserInfo);
+      console.log(accessInfoObj, "access user info z auth services");
+      return accessInfoObj;
+    }
+    return null;
+  },
+
   saveTokenToLocalStorage: (token: string) => {
     localStorage.setItem("accessToken", JSON.stringify(token));
   },

@@ -1,4 +1,4 @@
-import ProjectRoutes from "./ProjectRoutes";
+import ProjectRoutes from "./config/ProjectRoutes";
 
 function App() {
   return (
