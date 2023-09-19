@@ -3,6 +3,7 @@ export const useGetUserInfo = () => {
 
   if (accessUserInfo) {
     const accessInfoObj = JSON.parse(accessUserInfo);
+
     return accessInfoObj;
   }
   return null;

@@ -4,10 +4,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInInterface } from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/authServices/Auth";
-import { useGetUserToken } from "../../../hooks/useGetUserToken";
-import { useGetUserInfo } from "../../../hooks/useGetUserInfo";
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -17,8 +15,8 @@ const SignIn = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
 
-  const getToken = useGetUserToken();
-  const getUserInfo = useGetUserInfo();
+  // console.log(getToken, "get token z sign in");
+  // console.log(getUserInfo, "get user z sign in");
 
   const navigate = useNavigate();
 
@@ -27,12 +25,14 @@ const SignIn = () => {
   };
 
   const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
-    if (getToken || getUserInfo) {
+    const getToken = AuthServices.getTokenFromLocalStorage();
+    const getUserInfo = AuthServices.getUserInfoFromLocalStorage();
+
+    if (getToken !== null || getUserInfo !== null) {
       alert("you need to log out to log in to another account");
     } else {
       try {
         const response = await AuthServices.login(data);
-        console.log(response, "response z back");
 
         if (response.success === true) {
           alert(response.message);
@@ -42,9 +42,6 @@ const SignIn = () => {
         const token = response.data.accessToken;
 
         const userInfo = response.data.user;
-
-        console.log(token, "token tylko");
-        console.log(userInfo, "info user");
 
         AuthServices.saveTokenToLocalStorage(token);
         AuthServices.saveUserInfoToLocalStorage(userInfo);

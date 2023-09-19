@@ -12,7 +12,7 @@ const Navbar = () => {
     AuthServices.removeTokenFromLocalStorage();
     AuthServices.removeUserInfoFromLocalStorage();
     navigate("/signIn");
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
