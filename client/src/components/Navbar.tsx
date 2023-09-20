@@ -8,11 +8,17 @@ import { AuthServices } from "../services/authServices/Auth";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const logout = () => {
-    AuthServices.removeTokenFromLocalStorage();
-    AuthServices.removeUserInfoFromLocalStorage();
-    navigate("/signIn");
-    // window.location.reload();
+  const logout = async () => {
+    try {
+      const response = await AuthServices.logout();
+
+      if (response.success === true) {
+        alert(response.message);
+        navigate("/signIn");
+      }
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (

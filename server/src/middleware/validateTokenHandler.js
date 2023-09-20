@@ -5,11 +5,16 @@ const validateToken = async (req, res, next) => {
   //dekonstrukcja tokenu do autoryzacji
   let token;
 
+  // console.log(req.headers, "header");
+
   try {
     let authHeader = req.headers.Authorization || req.headers.authorization;
+    // console.log(authHeader, "authheader");
 
     if (authHeader && authHeader.startsWith("Bearer")) {
       token = authHeader.split(" ")[1];
+
+      console.log(token, "token middelware");
 
       //sparwdzenie czy token jest na czarnej liscie
       if (blacklist.isBlacklisted(token)) {
