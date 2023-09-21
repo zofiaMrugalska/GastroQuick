@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FiUser } from "react-icons/fi";
-import { BiLogInCircle, BiFoodMenu } from "react-icons/bi";
+import { BiLogInCircle, BiFoodMenu, BiLogOutCircle, BiCart } from "react-icons/bi";
 import { AuthServices } from "../services/authServices/Auth";
+import { useState } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -21,38 +21,54 @@ const Navbar = () => {
     }
   };
 
+  const accessToken = AuthServices.getTokenFromLocalStorage();
+  const userInfo = AuthServices.getUserInfoFromLocalStorage();
+
+  console.log(accessToken, userInfo, "navbARARRR");
+
+  const btnStyle = `flex flex-col items-center`;
+
   return (
     <div>
       <nav className="flex justify-between">
         <h1 className=" text-3xl font-medium">GastroQuick</h1>
-        <ul className="flex items-center gap-5">
+        <ul className="flex items-center gap-7">
           <li>
-            <Link to={"/"}>
+            <Link to={"/"} className={`${btnStyle}`}>
               <BiFoodMenu size={25} />
+              <p>menu</p>
             </Link>
           </li>
 
           <li>
-            <Link to={"/cart"}>
-              <LiaShoppingCartSolid size={35} />
+            <Link to={"/cart"} className={`${btnStyle}`}>
+              <BiCart size={25} />
+              <p>cart</p>
             </Link>
           </li>
 
           <li>
-            <Link to={"/account"}>
+            <Link to={"/account"} className={`${btnStyle}`}>
               <FiUser size={25} />
+              <p>user</p>
             </Link>
           </li>
 
-          <li>
-            <Link to={"/signIn"}>
-              <BiLogInCircle size={25} />
-            </Link>
-          </li>
+          {accessToken && userInfo ? null : (
+            <li>
+              <Link to={"/signIn"} className={`${btnStyle}`}>
+                <BiLogInCircle size={25} />
+                <p>log in</p>
+              </Link>
+            </li>
+          )}
 
-          <li>
-            <button onClick={logout}>log out</button>
-          </li>
+          {accessToken && userInfo ? (
+            <button onClick={logout} className={`${btnStyle}`}>
+              <BiLogOutCircle size={25} />
+              <p>log out</p>
+            </button>
+          ) : null}
         </ul>
       </nav>
     </div>
