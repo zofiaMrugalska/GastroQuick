@@ -20,34 +20,6 @@ export const AuthServices = {
     }
   },
 
-  logout: async () => {
-    try {
-      const accessTokenObj = AuthServices.getTokenFromLocalStorage();
-
-      console.log(accessTokenObj, "token z front z services");
-
-      if (!accessTokenObj) {
-        throw new Error("No access to the authorization token");
-      }
-      const response = await axios.post(
-        "http://localhost:5000/users/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessTokenObj}`,
-          },
-        }
-      );
-
-      AuthServices.removeTokenFromLocalStorage();
-      AuthServices.removeUserInfoFromLocalStorage();
-
-      return response.data;
-    } catch (error: any) {
-      throw new Error(error.response.data.message);
-    }
-  },
-
   saveTokenToLocalStorage: (token: string) => {
     localStorage.setItem("accessToken", JSON.stringify(token));
   },
@@ -84,5 +56,39 @@ export const AuthServices = {
 
   removeUserInfoFromLocalStorage: () => {
     localStorage.removeItem("userInformation");
+  },
+
+  logout: async () => {
+    try {
+      const accessTokenObj = AuthServices.getTokenFromLocalStorage();
+
+      console.log(accessTokenObj, "token z front z services");
+
+      if (!accessTokenObj) {
+        throw new Error("No access to the authorization token");
+      }
+      const response = await axios.post(
+        "http://localhost:5000/users/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessTokenObj}`,
+          },
+        }
+      );
+
+      AuthServices.removeTokenFromLocalStorage();
+      AuthServices.removeUserInfoFromLocalStorage();
+
+      return response.data;
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        AuthServices.removeTokenFromLocalStorage();
+        AuthServices.removeUserInfoFromLocalStorage();
+        throw new Error("Logged out successfully");
+      }
+
+      throw new Error(error.response.data.message);
+    }
   },
 };
