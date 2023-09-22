@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
 import { BiLogInCircle, BiFoodMenu, BiLogOutCircle, BiCart } from "react-icons/bi";
 import { AuthServices } from "../services/authServices/Auth";
-import { useState } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -23,8 +22,6 @@ const Navbar = () => {
 
   const accessToken = AuthServices.getTokenFromLocalStorage();
   const userInfo = AuthServices.getUserInfoFromLocalStorage();
-
-  console.log(accessToken, userInfo, "navbARARRR");
 
   const btnStyle = `flex flex-col items-center`;
 
@@ -50,7 +47,7 @@ const Navbar = () => {
           <li>
             <Link to={"/account"} className={`${btnStyle}`}>
               <FiUser size={25} />
-              <p>user</p>
+              {!accessToken && !userInfo ? <p>user</p> : <p>{userInfo.name}</p>}
             </Link>
           </li>
 
