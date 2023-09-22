@@ -100,7 +100,7 @@ const loginUser = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "30m" }
+        { expiresIn: "30s" }
       );
 
       const responseUser = {
@@ -135,6 +135,7 @@ const logoutUser = async (req, res) => {
 
     res.status(200).json(createResponse(true, null, "Logged out successfully"));
   } catch (error) {
+    console.log(error);
     res.status(400).json(createResponse(false, null, "something went wrong"));
   }
 };
