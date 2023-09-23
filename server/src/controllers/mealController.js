@@ -3,7 +3,7 @@ const createResponse = require("../services/responseDTO");
 
 //@desc adding meal to database
 //@route POST /meals/newMeal
-//@access private
+//@access private for Admin
 
 const addNewMeal = async (req, res) => {
   try {
@@ -28,11 +28,7 @@ const addNewMeal = async (req, res) => {
       jpg,
     });
 
-    if (meal) {
-      return res.status(201).json(createResponse(true, meal, "the meal has been created"));
-    } else {
-      return res.status(400).json(createResponse(false, null, "meal data is not valid"));
-    }
+    res.status(201).json(createResponse(true, meal, "the meal has been created"));
   } catch (error) {
     console.log("error", error);
     res.status(400).json(createResponse(false, null, "something went wrong"));
@@ -41,7 +37,7 @@ const addNewMeal = async (req, res) => {
 
 //@desc get meals info from database
 //@route GET /meals/getMealsData
-//@access private
+//@access public
 
 const getMealsData = async (req, res) => {
   try {

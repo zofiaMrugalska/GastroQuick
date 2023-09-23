@@ -17,11 +17,13 @@ const Navbar = () => {
       }
     } catch (error) {
       alert(error);
+
     }
   };
 
   const accessToken = AuthServices.getTokenFromLocalStorage();
   const userInfo = AuthServices.getUserInfoFromLocalStorage();
+  
 
   const btnStyle = `flex flex-col items-center`;
 
@@ -59,7 +61,7 @@ const Navbar = () => {
               </Link>
             </li>
           )}
-
+          {/* sproboj zmienic */}
           {accessToken && userInfo ? (
             <button onClick={logout} className={`${btnStyle}`}>
               <BiLogOutCircle size={25} />
