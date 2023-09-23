@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignInInterface, SignUpInterface } from "../../interfaces/AuthInterfaces";
+import { SignInInterface, SignUpInterface } from "../interfaces/AuthInterfaces";
 
 export const AuthServices = {
   register: async (userData: SignUpInterface) => {

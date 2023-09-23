@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthServices } from "../services/authServices/Auth";
+import { AuthServices } from "../services/AuthServices";
 
 interface ProtectedRoutesInterface {
   children: ReactNode;

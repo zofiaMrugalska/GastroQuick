@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { MealServices } from "../../services/mealServices/Meal";
+import { MealServices } from "../../services/MealServices";
+import { menuInterface } from "../../interfaces/MenuInterfaces";
+import { BsCartPlus } from "react-icons/bs";
 
-interface menuInterface {
-  _id: number;
-  name: string;
-  price: number;
-  description: string;
-  jpg: string;
-}
-//do interfejsow
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
 
@@ -22,7 +16,7 @@ const Menu = () => {
         console.log(error);
       }
     };
-    getData(); //popraw to
+    getData();
   }, []);
 
   return (
@@ -30,12 +24,18 @@ const Menu = () => {
       {mainMenu.map((meal) => {
         return (
           <div key={meal._id} className="p-7 ">
-            <Link to={`/meal/${meal.name}/${meal._id}`}>
-              <li className=" p-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset md:ml-5 md:mt-8 md:mr-27 md:mb-19 hover:bg-[#bbbbbb23]">
-                <p>{meal.name}</p>
+            <Link to={`/meal/${meal.name}/${meal._id}`} className="">
+              <li className=" max-w-[350px] max-h-[350px]  p-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset md:ml-5 md:mt-8 md:mr-27 md:mb-19 hover:bg-[#bbbbbb23]">
+                <div className="flex flex-row-reverse items-center gap-2">
+                  <button className=" bg-[#bbbbbb6e] p-1 rounded-full border-[1px] border-black">
+                    <BsCartPlus size={20} />
+                  </button>
+                  <p>{meal.name}</p>
+                </div>
+
                 <p>{meal.price}$</p>
                 <p>{meal.description}</p>
-                <img src={meal.jpg} alt="photo of the meal" />
+                <img src={meal.jpg} alt="photo of the meal" className=" min-w-[80%] min-h-[80%]" />
               </li>
             </Link>
           </div>
