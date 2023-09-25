@@ -85,6 +85,7 @@ export const AuthServices = {
       if (error.response.status === 401) {
         AuthServices.removeTokenFromLocalStorage();
         AuthServices.removeUserInfoFromLocalStorage();
+        window.location.reload();
         throw new Error("Logged out successfully");
       }
 
