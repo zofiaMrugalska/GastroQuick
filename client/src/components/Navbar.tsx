@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
 import { BiLogInCircle, BiFoodMenu, BiLogOutCircle, BiCart } from "react-icons/bi";
-import { AuthServices } from "../services/authServices/Auth";
+import { AuthServices } from "../services/AuthServices";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -51,7 +51,12 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {accessToken && userInfo ? null : (
+          {accessToken && userInfo ? (
+            <button onClick={logout} className={`${btnStyle}`}>
+              <BiLogOutCircle size={25} />
+              <p>log out</p>
+            </button>
+          ) : (
             <li>
               <Link to={"/signIn"} className={`${btnStyle}`}>
                 <BiLogInCircle size={25} />
@@ -59,13 +64,6 @@ const Navbar = () => {
               </Link>
             </li>
           )}
-
-          {accessToken && userInfo ? (
-            <button onClick={logout} className={`${btnStyle}`}>
-              <BiLogOutCircle size={25} />
-              <p>log out</p>
-            </button>
-          ) : null}
         </ul>
       </nav>
     </div>

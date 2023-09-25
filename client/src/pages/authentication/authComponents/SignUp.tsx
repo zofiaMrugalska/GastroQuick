@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
-import { AuthServices } from "../../../services/authServices/Auth";
+import { AuthServices } from "../../../services/AuthServices";
 
 const SignUp = () => {
   const {

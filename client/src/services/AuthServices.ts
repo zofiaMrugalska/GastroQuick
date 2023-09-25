@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignInInterface, SignUpInterface } from "../../interfaces/AuthInterfaces";
+import { SignInInterface, SignUpInterface } from "../interfaces/AuthInterfaces";
 
 export const AuthServices = {
   register: async (userData: SignUpInterface) => {
@@ -85,6 +85,7 @@ export const AuthServices = {
       if (error.response.status === 401) {
         AuthServices.removeTokenFromLocalStorage();
         AuthServices.removeUserInfoFromLocalStorage();
+        window.location.reload();
         throw new Error("Logged out successfully");
       }
 
