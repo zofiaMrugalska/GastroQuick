@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const userRouter = require("./routes/userRoutes");
+const mealRouter = require("./routes/mealRoutes");
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(cors()); //laczenie z recatem
 
 //routy
 app.use("/users", userRouter);
+app.use("/meals", mealRouter);
 
 mongoose
   .connect(process.env.MONGO_CONNECT)
