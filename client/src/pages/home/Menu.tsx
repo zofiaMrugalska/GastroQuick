@@ -7,6 +7,8 @@ import { BsCartPlus } from "react-icons/bs";
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
 
+  console.log(mainMenu);
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -35,7 +37,11 @@ const Menu = () => {
 
                 <p>{meal.price}$</p>
                 <p>{meal.description}</p>
-                <img src={meal.jpg} alt="photo of the meal" className=" min-w-[80%] min-h-[80%]" />
+                <img
+                  src={meal.jpg}
+                  alt="photo of the meal"
+                  className="min-h-[150px] min-w-[150px] max-h-[150px] max-w-[150px] object-cover"
+                />
               </li>
             </Link>
           </div>

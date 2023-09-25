@@ -49,4 +49,23 @@ const getMealsData = async (req, res) => {
   }
 };
 
-module.exports = { addNewMeal, getMealsData };
+//@desc get info about one meal  from database
+//@route GET /meals/getOneMeal
+//@access public
+
+const getOneMeal = async (req, res) => {
+  try {
+    const mealId = req.params.id;
+    console.log(mealId, "id");
+    //doac objetId
+    const getResult = await mealModel.findOne({ _id: mealId });
+
+    console.log(getResult, "result");
+    res.status(200).json(createResponse(true, getResult, "success"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(400).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+module.exports = { addNewMeal, getMealsData, getOneMeal };
