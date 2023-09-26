@@ -28,8 +28,8 @@ const Navbar = () => {
   return (
     <div>
       <nav className="flex justify-between">
-        <h1 className=" text-3xl font-medium">GastroQuick</h1>
-        <ul className="flex items-center gap-7">
+        <h1 className="text-2xl sm:text-3xl font-medium">GastroQuick</h1>
+        <ul className="flex items-center gap-7 scale-75 sm:scale-100">
           <li>
             <Link to={"/"} className={`${btnStyle}`}>
               <BiFoodMenu size={25} />
@@ -54,13 +54,13 @@ const Navbar = () => {
           {accessToken && userInfo ? (
             <button onClick={logout} className={`${btnStyle}`}>
               <BiLogOutCircle size={25} />
-              <p>log out</p>
+              <p>logout</p>
             </button>
           ) : (
             <li>
               <Link to={"/signIn"} className={`${btnStyle}`}>
                 <BiLogInCircle size={25} />
-                <p>log in</p>
+                <p>login</p>
               </Link>
             </li>
           )}
