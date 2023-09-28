@@ -7,6 +7,8 @@ import { BsCartPlus } from "react-icons/bs";
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
 
+  console.log(mainMenu);
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -20,12 +22,15 @@ const Menu = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-3">
+    <div
+      className="grid grid-cols-1
+    sm:grid-cols-2 xl:grid-cols-3 "
+    >
       {mainMenu.map((meal) => {
         return (
-          <div key={meal._id} className="p-7 ">
+          <div key={meal._id} className="p-7 flex justify-center ">
             <Link to={`/meal/${meal.name}/${meal._id}`} className="">
-              <li className=" max-w-[350px] max-h-[350px]  p-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset md:ml-5 md:mt-8 md:mr-27 md:mb-19 hover:bg-[#bbbbbb23]">
+              <li className=" max-w-[350px] max-h-[350px] p-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset md:ml-5 md:mt-8 md:mr-27 md:mb-19 hover:bg-[#bbbbbb23]">
                 <div className="flex flex-row-reverse items-center gap-2">
                   <button className=" bg-[#bbbbbb6e] p-1 rounded-full border-[1px] border-black">
                     <BsCartPlus size={20} />
@@ -35,7 +40,11 @@ const Menu = () => {
 
                 <p>{meal.price}$</p>
                 <p>{meal.description}</p>
-                <img src={meal.jpg} alt="photo of the meal" className=" min-w-[80%] min-h-[80%]" />
+                <img
+                  src={meal.jpg}
+                  alt="photo of the meal"
+                  className=" mt-2  min-h-[100px] min-w-[100px] max-h-[100px] max-w-[100px] md:min-h-[150px] md:min-w-[150px] md:max-h-[150px] md:max-w-[150px] object-cover"
+                />
               </li>
             </Link>
           </div>

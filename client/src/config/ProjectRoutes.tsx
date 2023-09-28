@@ -15,9 +15,7 @@ const ProjectRoutes = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Menu />} />
-          <Route path="/meal" element={<DynamicRouteForMeal />}>
-            <Route path=":meal/:id" element={<DynamicRouteForMeal />} />
-          </Route>
+          <Route path="/meal/:meal/:id" element={<DynamicRouteForMeal />} />
 
           <Route
             path="/cart"
