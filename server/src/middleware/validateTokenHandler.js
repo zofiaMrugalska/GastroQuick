@@ -14,14 +14,10 @@ const validateToken = async (req, res, next) => {
     if (authHeader && authHeader.startsWith("Bearer")) {
       token = authHeader.split(" ")[1];
 
-      console.log(token, "token middelware");
-
       //sparwdzenie czy token jest na czarnej liscie
       if (blacklist.isBlacklisted(token)) {
         return res.status(401).json({ message: "Token has been revoked" });
       }
-
-      console.log(token, "token z validate token");
 
       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {

@@ -1,6 +1,6 @@
 const commentModel = require("../models/commentModel");
 const createResponse = require("../services/responseDTO");
-
+const { ObjectId } = require("mongodb");
 //@desc adding comment  under the meal
 //@route POST /comments/addComment
 //@access for logged in users
@@ -8,8 +8,6 @@ const createResponse = require("../services/responseDTO");
 const addComment = async (req, res) => {
   try {
     const { author, comment, meal } = req.body;
-
-    console.log(req.body, "body");
 
     if (!comment) {
       return res.status(400).json(createResponse(false, null, "add your comment"));
@@ -20,8 +18,6 @@ const addComment = async (req, res) => {
       comment,
       meal,
     });
-
-    console.log(newComment, "nowy komentarzzrz");
 
     res.status(201).json(createResponse(true, newComment, "the comment has been added"));
   } catch (error) {
@@ -37,13 +33,9 @@ const addComment = async (req, res) => {
 const getCommentsForMeal = async (req, res) => {
   try {
     const mealId = req.params.mealId;
-    console.log(req.params.mealId);
-
-    console.log(mealId, "id");
 
     const comments = await commentModel.find({ meal: mealId }).populate("author", "name");
 
-    console.log(comments, "komenatrze");
     if (!comments) {
       return res
         .status(400)
@@ -57,4 +49,40 @@ const getCommentsForMeal = async (req, res) => {
   }
 };
 
-module.exports = { addComment, getCommentsForMeal };
+//@desc delete
+//@route DELETE /comments/:commentId
+//@access only for author of this comment
+
+const deleteComment = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+
+    const commentExist = await commentModel.findById(commentId);
+
+    if (!commentExist) {
+      return res.status(400).json(createResponse(false, null, "no such comment exists"));
+    }
+
+    const loginUserId = req.user.id;
+
+    if (commentExist.author.toString() !== loginUserId) {
+      return res
+        .status(400)
+        .json(
+          createResponse(false, null, "you cannot delete a comment that doesn't belong to you")
+        );
+    }
+
+    const deletedComment = await commentModel.findByIdAndDelete(commentId);
+    if (!deletedComment) {
+      return res.status(400).json(createResponse(false, null, "Failed to delete the comment"));
+    }
+
+    res.status(201).json(createResponse(true, null, "the comment has been deleted"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(400).json(createResponse(false, null, "something went wong"));
+  }
+};
+
+module.exports = { addComment, getCommentsForMeal, deleteComment };
