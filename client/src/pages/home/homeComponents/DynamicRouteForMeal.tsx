@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/Loading";
-import { menuInterface } from "../../../interfaces/MenuInterfaces";
+import { menuInterface, responseOneMealInterface } from "../../../interfaces/MenuInterfaces";
 import { MealServices } from "../../../services/MealServices";
 
 const DynamicRouteForMeal = () => {
-  const [oneMeal, setOneMeal] = useState<menuInterface | undefined>();
+  const [oneMeal, setOneMeal] = useState<menuInterface>();
   const params = useParams();
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await MealServices.getOneMealData(params.id);
-        setOneMeal(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
+    if (params.id !== undefined) {
+      const getData = async (MealId: string) => {
+        try {
+          const response: responseOneMealInterface = await MealServices.getOneMealData(MealId);
+          setOneMeal(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getData(params.id);
+    }
   }, [params.id]);
 
   return (

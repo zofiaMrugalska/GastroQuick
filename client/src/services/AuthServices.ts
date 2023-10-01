@@ -32,7 +32,6 @@ export const AuthServices = {
     const accessTokenJSON = localStorage.getItem("accessToken");
     if (accessTokenJSON) {
       const accessTokenObj = JSON.parse(accessTokenJSON);
-      console.log(accessTokenObj, "token z auth services");
 
       return accessTokenObj;
     }
@@ -44,7 +43,6 @@ export const AuthServices = {
 
     if (accessUserInfo) {
       const accessInfoObj = JSON.parse(accessUserInfo);
-      console.log(accessInfoObj, "access user info z auth services");
       return accessInfoObj;
     }
     return null;
@@ -61,8 +59,6 @@ export const AuthServices = {
   logout: async () => {
     try {
       const accessTokenObj = AuthServices.getTokenFromLocalStorage();
-
-      console.log(accessTokenObj, "token z front z services");
 
       if (!accessTokenObj) {
         throw new Error("No access to the authorization token");

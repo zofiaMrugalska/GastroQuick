@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MealServices } from "../../services/MealServices";
-import { menuInterface } from "../../interfaces/MenuInterfaces";
+import { menuInterface, responseMealInterface } from "../../interfaces/MenuInterfaces";
 import { BsCartPlus } from "react-icons/bs";
 
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
 
-  console.log(mainMenu);
-
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await MealServices.getMealsData();
+        const response: responseMealInterface = await MealServices.getMealsData();
         setMainMenu(response.data);
       } catch (error) {
         console.log(error);
@@ -26,7 +24,7 @@ const Menu = () => {
       className="grid grid-cols-1
     sm:grid-cols-2 xl:grid-cols-3 "
     >
-      {mainMenu.map((meal) => {
+      {mainMenu.map((meal: menuInterface) => {
         return (
           <div key={meal._id} className="p-7 flex justify-center ">
             <Link to={`/meal/${meal.name}/${meal._id}`} className="">

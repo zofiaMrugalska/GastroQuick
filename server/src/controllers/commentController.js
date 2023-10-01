@@ -22,7 +22,7 @@ const addComment = async (req, res) => {
     res.status(201).json(createResponse(true, newComment, "the comment has been added"));
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -36,16 +36,16 @@ const getCommentsForMeal = async (req, res) => {
 
     const comments = await commentModel.find({ meal: mealId }).populate("author", "name");
 
-    if (!comments) {
+    if (comments.length < 1) {
       return res
-        .status(400)
+        .status(204)
         .json(createResponse(false, null, "there are no comments for this meal"));
     }
 
     res.status(201).json(createResponse(true, comments, " comments for this meal"));
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -60,14 +60,14 @@ const deleteComment = async (req, res) => {
     const commentExist = await commentModel.findById(commentId);
 
     if (!commentExist) {
-      return res.status(400).json(createResponse(false, null, "no such comment exists"));
+      return res.status(204).json(createResponse(false, null, "no such comment exists"));
     }
 
     const loginUserId = req.user.id;
 
     if (commentExist.author.toString() !== loginUserId) {
       return res
-        .status(400)
+        .status(401)
         .json(
           createResponse(false, null, "you cannot delete a comment that doesn't belong to you")
         );
@@ -75,13 +75,13 @@ const deleteComment = async (req, res) => {
 
     const deletedComment = await commentModel.findByIdAndDelete(commentId);
     if (!deletedComment) {
-      return res.status(400).json(createResponse(false, null, "Failed to delete the comment"));
+      return res.status(404).json(createResponse(false, null, "Failed to delete the comment"));
     }
 
-    res.status(201).json(createResponse(true, null, "the comment has been deleted"));
+    res.status(200).json(createResponse(true, null, "the comment has been deleted"));
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wong"));
+    res.status(500).json(createResponse(false, null, "something went wong"));
   }
 };
 

@@ -10,7 +10,7 @@ export const MealServices = {
     }
   },
 
-  getOneMealData: async (id: string | undefined) => {
+  getOneMealData: async (id: string) => {
     try {
       const response = await axios.get(`http://localhost:5000/meals/getOneMeal/${id}`);
       return response.data;

@@ -31,7 +31,7 @@ const addNewMeal = async (req, res) => {
     res.status(201).json(createResponse(true, meal, "the meal has been created"));
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -45,7 +45,7 @@ const getMealsData = async (req, res) => {
     res.status(200).json(createResponse(true, getResult, "success"));
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -57,14 +57,13 @@ const getOneMeal = async (req, res) => {
   try {
     const mealId = req.params.id;
     console.log(mealId, "id");
-    //doac objetId
+
     const getResult = await mealModel.findOne({ _id: mealId });
 
-    console.log(getResult, "result");
     res.status(200).json(createResponse(true, getResult, "success"));
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
