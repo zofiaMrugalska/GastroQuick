@@ -9,7 +9,7 @@ const validateToken = require("../middleware/validateTokenHandler");
 
 const commentRouter = express.Router();
 
-commentRouter.post("/addComment", addComment);
+commentRouter.post("/addComment", validateToken, addComment);
 
 commentRouter.get("/:mealId", getCommentsForMeal);
 

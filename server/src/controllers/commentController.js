@@ -1,18 +1,19 @@
 const commentModel = require("../models/commentModel");
 const createResponse = require("../services/responseDTO");
-const { ObjectId } = require("mongodb");
+const { default: mongoose } = require("mongoose");
 //@desc adding comment  under the meal
 //@route POST /comments/addComment
 //@access for logged in users
 
 const addComment = async (req, res) => {
   try {
-    const { author, comment, meal } = req.body;
+    const author = req.user.id;
+
+    const { comment, meal } = req.body;
 
     if (!comment) {
       return res.status(400).json(createResponse(false, null, "add your comment"));
     }
-
     const newComment = await commentModel.create({
       author,
       comment,
@@ -34,11 +35,17 @@ const getCommentsForMeal = async (req, res) => {
   try {
     const mealId = req.params.mealId;
 
+    const validMealId = mongoose.Types.ObjectId.isValid(mealId);
+
+    if (!validMealId) {
+      return res.status(400).json(createResponse(false, null, "meal Id is not valid"));
+    }
+
     const comments = await commentModel.find({ meal: mealId }).populate("author", "name");
 
     if (comments.length < 1) {
       return res
-        .status(204)
+        .status(404)
         .json(createResponse(false, null, "there are no comments for this meal"));
     }
 
@@ -57,10 +64,16 @@ const deleteComment = async (req, res) => {
   try {
     const commentId = req.params.commentId;
 
+    const validCommentId = mongoose.Types.ObjectId.isValid(commentId);
+
+    if (!validCommentId) {
+      return res.status(400).json(createResponse(false, null, "comment Id is not valid"));
+    }
+
     const commentExist = await commentModel.findById(commentId);
 
     if (!commentExist) {
-      return res.status(204).json(createResponse(false, null, "no such comment exists"));
+      return res.status(404).json(createResponse(false, null, "no such comment exists"));
     }
 
     const loginUserId = req.user.id;

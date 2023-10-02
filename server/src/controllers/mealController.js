@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const mealModel = require("../models/mealModel");
 const createResponse = require("../services/responseDTO");
 
@@ -56,7 +57,12 @@ const getMealsData = async (req, res) => {
 const getOneMeal = async (req, res) => {
   try {
     const mealId = req.params.id;
-    console.log(mealId, "id");
+
+    const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
+
+    if (!validateMealId) {
+      return res.status(400).json(createResponse(false, null, "meal Id is not valid"));
+    }
 
     const getResult = await mealModel.findOne({ _id: mealId });
 
