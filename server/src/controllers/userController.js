@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
     const userAvailable = await userModel.findOne({ $or: [{ email }, { name }] });
 
     if (userAvailable) {
-      return res.status(400).json(createResponse(false, null, "user already registered"));
+      return res.status(409).json(createResponse(false, null, "user already registered"));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -68,7 +68,7 @@ const registerUser = async (req, res) => {
     }
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -115,7 +115,7 @@ const loginUser = async (req, res) => {
     }
   } catch (error) {
     console.log("error", error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -136,7 +136,7 @@ const logoutUser = async (req, res) => {
     res.status(200).json(createResponse(true, null, "Logged out successfully"));
   } catch (error) {
     console.log(error);
-    res.status(400).json(createResponse(false, null, "something went wrong"));
+    res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
 
@@ -147,9 +147,9 @@ const logoutUser = async (req, res) => {
 const test = async (req, res) => {
   try {
     res.status(200).json(createResponse(true, null, "authorization was successfully"));
-  } catch (er) {
-    console.log(err);
-    res.sendStatus(400);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
   }
 };
 
