@@ -7,7 +7,7 @@ const {
   getBlacklist,
   test,
 } = require("../controllers/userController");
-const validateUserData = require("../middleware/registerValidation");
+const { validateUserData } = require("../middleware/validateData");
 const validateToken = require("../middleware/validateTokenHandler");
 
 const userRouter = express.Router();
