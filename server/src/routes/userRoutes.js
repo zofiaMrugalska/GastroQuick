@@ -7,6 +7,7 @@ const {
   getBlacklist,
   test,
 } = require("../controllers/userController");
+const { validateUserData } = require("../middleware/validateData");
 const validateToken = require("../middleware/validateTokenHandler");
 
 const userRouter = express.Router();
@@ -15,7 +16,7 @@ userRouter.get("/get", getData); // testowe
 
 userRouter.get("/blacklist", getBlacklist); //testowe
 
-userRouter.post("/register", registerUser);
+userRouter.post("/register", validateUserData, registerUser);
 
 userRouter.post("/login", loginUser);
 
