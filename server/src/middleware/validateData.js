@@ -25,7 +25,6 @@ const registerUserSchema = Joi.object({
 });
 
 const commentSchema = Joi.object({
-  author: Joi.string().required(),
   comment: Joi.string().required().min(1).max(100).messages({
     "string.base": 'Field "comment" should be a text type',
     "string.empty": 'Field "comment" cannot be empty',
