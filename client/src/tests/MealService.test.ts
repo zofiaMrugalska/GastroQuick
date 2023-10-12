@@ -2,7 +2,7 @@ import axios from "axios";
 import { MealServices } from "../services/MealServices";
 jest.mock("axios");
 
-it("getMealData response test", async () => {
+it("should fetch meal data and return success status", async () => {
   const mockResponse = {
     data: {
       success: true,

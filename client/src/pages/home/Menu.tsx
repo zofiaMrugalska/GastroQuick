@@ -24,6 +24,8 @@ const Menu = () => {
       className="grid grid-cols-1
     sm:grid-cols-2 xl:grid-cols-3 "
     >
+      <p data-testid="test">testowe </p>
+
       {mainMenu.map((meal: menuInterface) => {
         return (
           <div key={meal._id} className="p-7 flex justify-center ">
@@ -33,7 +35,8 @@ const Menu = () => {
                   <button className=" bg-[#bbbbbb6e] p-1 rounded-full border-[1px] border-black">
                     <BsCartPlus size={20} />
                   </button>
-                  <p>{meal.name}</p>
+                  <p data-testid="name">{meal.name}</p>
+                  <p data-testid="testOne">test1</p>
                 </div>
 
                 <p>{meal.price}$</p>
