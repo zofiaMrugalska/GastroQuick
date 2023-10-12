@@ -4,7 +4,7 @@ import { AuthServices } from "../../../services/AuthServices";
 import { CommentServices } from "../../../services/CommentServices";
 import { useParams } from "react-router-dom";
 
-const Comments = () => {
+const AddComments = () => {
   const {
     register,
     handleSubmit,
@@ -31,6 +31,7 @@ const Comments = () => {
         const response = await CommentServices.addComment(data, getToken, id);
         if (response.success === true) {
           console.log(response, "odp");
+          console.log(response.data.comment, "KOMENTARZ");
           alert(response.message);
         }
       } catch (error) {
@@ -38,6 +39,8 @@ const Comments = () => {
         alert(error);
       }
     }
+
+    reset();
   };
 
   return (
@@ -64,4 +67,4 @@ const Comments = () => {
     </div>
   );
 };
-export default Comments;
+export default AddComments;

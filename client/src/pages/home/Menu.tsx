@@ -24,7 +24,7 @@ const Menu = () => {
       className="grid grid-cols-1
     sm:grid-cols-2 xl:grid-cols-3 "
     >
-      <p data-testid="test">testowe </p>
+      {/* <p data-testid="test">testowe </p> */}
 
       {mainMenu.map((meal: menuInterface) => {
         return (
@@ -36,7 +36,7 @@ const Menu = () => {
                     <BsCartPlus size={20} />
                   </button>
                   <p data-testid="name">{meal.name}</p>
-                  <p data-testid="testOne">test1</p>
+                  {/* <p data-testid="testOne">test1</p> */}
                 </div>
 
                 <p>{meal.price}$</p>

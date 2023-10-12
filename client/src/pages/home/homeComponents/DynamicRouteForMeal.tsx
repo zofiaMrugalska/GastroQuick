@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { menuInterface, responseOneMealInterface } from "../../../interfaces/MenuInterfaces";
 import { MealServices } from "../../../services/MealServices";
 import Loading from "../../../components/Loading";
-import Comments from "./Comments";
+import AddComments from "./AddComments";
+import GetComments from "./GetComments";
 
 const DynamicRouteForMeal = () => {
   const [oneMeal, setOneMeal] = useState<menuInterface>();
@@ -30,7 +31,8 @@ const DynamicRouteForMeal = () => {
           <h1>{oneMeal.name}</h1>
           <img src={oneMeal.jpg} alt="photo of the meal" />
           <p>{oneMeal.description}</p>
-          <Comments />
+          <AddComments />
+          <GetComments />
         </div>
       ) : (
         <Loading />

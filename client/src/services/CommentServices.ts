@@ -27,6 +27,14 @@ export const CommentServices = {
       throw new Error(error.response.data.message);
     }
   },
+
+  getComments: async (id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/comments/${id}`);
+      console.log(response.data, "komentarz dla meal");
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
 };
-//token
-//z formluratza
