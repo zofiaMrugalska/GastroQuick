@@ -15,8 +15,24 @@ const GetComments = () => {
       const getCommentsData = async (MealId: string) => {
         try {
           const response: ResponseCommentInterafce = await CommentServices.getComments(MealId);
-          console.log(response.data, "response dla get comments");
-          setComments(response.data);
+
+          const formattedComments = response.data.map((comment) => {
+            const createdAt = new Date(comment.createdAt);
+            console.log(createdAt);
+
+            const formattedDate = `${createdAt.getFullYear()}-${(createdAt.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}-${createdAt.getDate().toString().padStart(2, "0")}`;
+
+            return {
+              ...comment,
+              createdAt: formattedDate,
+            };
+          });
+
+          setComments(formattedComments);
+
+          ///// zrobic to formattedComments /////
         } catch (error) {
           console.log(error);
         }
@@ -34,8 +50,9 @@ const GetComments = () => {
       {comments.map((comment: CommentRequestInterface) => {
         return (
           <div key={comment._id}>
+            <p>{comment.author.name}</p>
             <p>{comment.comment}</p>
-            <p>{comment.name}</p>
+            <p>{comment.createdAt.toLocaleString()}</p>
           </div>
         );
       })}
