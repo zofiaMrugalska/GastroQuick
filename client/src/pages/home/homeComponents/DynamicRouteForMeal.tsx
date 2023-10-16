@@ -28,12 +28,18 @@ const DynamicRouteForMeal = () => {
     <div>
       {oneMeal ? (
         <div>
-          <div className="">
-            <h1 className=" text-xl">{oneMeal.name}</h1>
-            <img src={oneMeal.jpg} alt="photo of the meal" className="" />
-            <p>{oneMeal.description}</p>
+          <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center">
+              <h1 className=" text-xl">{oneMeal.name}</h1>
+              <img
+                src={oneMeal.jpg}
+                alt="photo of the meal"
+                className=" min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px] object-cover"
+              />
+              <p className=" mt-8 text-lg">{oneMeal.description}</p>
+            </div>
+            <AddComments />
           </div>
-          <AddComments />
           <GetComments />
         </div>
       ) : (

@@ -10,6 +10,12 @@ const GetComments = () => {
   const [comments, setComments] = useState<CommentRequestInterface[]>([]);
   const params = useParams();
 
+  const [openSort, setOpenSort] = useState<boolean>(false);
+
+  const openCloseSort = (): void => {
+    setOpenSort(!openSort);
+  };
+
   useEffect(() => {
     if (params.id !== undefined) {
       const getCommentsData = async (MealId: string) => {
@@ -41,6 +47,18 @@ const GetComments = () => {
 
   return (
     <div className=" mx-auto mt-7 max-w-[1400px] max-h-[500px] overflow-y-auto ">
+      <div>
+        <button onClick={openCloseSort}>sort</button>
+        {openSort && (
+          <div>
+            <button>oldest</button>
+            <br />
+            <button>newest</button>
+          </div>
+        )}
+      </div>
+
+      {/* zrobic filtowanie komenatrzy po dacxie */}
       {comments.map((comment: CommentRequestInterface) => {
         return (
           <div key={comment._id} className=" border-b-2">
