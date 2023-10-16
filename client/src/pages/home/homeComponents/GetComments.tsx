@@ -16,7 +16,7 @@ const GetComments = () => {
         try {
           const response: ResponseCommentInterafce = await CommentServices.getComments(MealId);
 
-          const formattedComments = response.data.map((comment) => {
+          const formattedComments: CommentRequestInterface[] = response.data.map((comment) => {
             const createdAt = new Date(comment.createdAt);
             console.log(createdAt);
 
@@ -31,25 +31,19 @@ const GetComments = () => {
           });
 
           setComments(formattedComments);
-
-          ///// zrobic to formattedComments /////
         } catch (error) {
           console.log(error);
         }
       };
       getCommentsData(params.id);
     }
-  }, []);
-
-  ///skoknczone tu:
-  //zrobic zbey sie wyswietlaly wszytskie info o authorze i dacie przy komie
-  // zeby sie renderowalo po dodaniu koma
+  }, [comments]);
 
   return (
-    <div>
+    <div className=" mx-auto mt-7 max-w-[1400px] max-h-[500px] overflow-y-auto ">
       {comments.map((comment: CommentRequestInterface) => {
         return (
-          <div key={comment._id}>
+          <div key={comment._id} className=" border-b-2">
             <p>{comment.author.name}</p>
             <p>{comment.comment}</p>
             <p>{comment.createdAt.toLocaleString()}</p>

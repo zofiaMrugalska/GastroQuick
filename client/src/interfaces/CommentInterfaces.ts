@@ -7,7 +7,7 @@ export interface CommentRequestInterface {
   _id: string;
   author: Author;
   comment: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export interface ResponseCommentInterafce {
