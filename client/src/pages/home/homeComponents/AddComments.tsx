@@ -1,10 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { CommentRequestInterface } from "../../../interfaces/CommentInterfaces";
+import { AddCommentsProps, CommentRequestInterface } from "../../../interfaces/CommentInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
 import { CommentServices } from "../../../services/CommentServices";
 import { useParams } from "react-router-dom";
 
-const Comments = () => {
+const AddComments = ({ getCommentsData }: AddCommentsProps) => {
   const {
     register,
     handleSubmit,
@@ -15,7 +15,7 @@ const Comments = () => {
   //dokonczyc dodac  typy do hook forma pobrac id z params i dodac do req.body stowrzyc funckje onSubmit oblsuzyc posta
 
   //na przycisk dodaje sie komenatrza, komentarz moze dac tylko osoba zalogowana wiec musi miec ona token i info o userze, jesli nie ma to alert ze musi sie zalogowac zeby dodac komm
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
 
   const onSubmit: SubmitHandler<CommentRequestInterface> = async (data) => {
     const getToken = AuthServices.getTokenFromLocalStorage();
@@ -28,16 +28,22 @@ const Comments = () => {
       alert("you must be logged in to add a comment");
     } else {
       try {
-        const response = await CommentServices.addComment(data, getToken, id);
+        const response = await CommentServices.addComment(data, getToken, params.id);
         if (response.success === true) {
           console.log(response, "odp");
+          console.log(response.data.comment, "KOMENTARZ");
           alert(response.message);
+          if (params.id) {
+            getCommentsData(params.id);
+          }
         }
       } catch (error) {
         console.log(error, "error");
         alert(error);
       }
     }
+
+    reset();
   };
 
   return (
@@ -64,4 +70,4 @@ const Comments = () => {
     </div>
   );
 };
-export default Comments;
+export default AddComments;

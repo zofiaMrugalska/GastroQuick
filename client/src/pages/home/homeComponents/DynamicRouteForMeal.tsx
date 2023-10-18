@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { menuInterface, responseOneMealInterface } from "../../../interfaces/MenuInterfaces";
 import { MealServices } from "../../../services/MealServices";
 import Loading from "../../../components/Loading";
-import Comments from "./Comments";
+import GetComments from "./GetComments";
 
 const DynamicRouteForMeal = () => {
   const [oneMeal, setOneMeal] = useState<menuInterface>();
@@ -27,10 +27,18 @@ const DynamicRouteForMeal = () => {
     <div>
       {oneMeal ? (
         <div>
-          <h1>{oneMeal.name}</h1>
-          <img src={oneMeal.jpg} alt="photo of the meal" />
-          <p>{oneMeal.description}</p>
-          <Comments />
+          <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center">
+              <h1 className=" text-xl">{oneMeal.name}</h1>
+              <img
+                src={oneMeal.jpg}
+                alt="photo of the meal"
+                className=" min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px] object-cover"
+              />
+              <p className=" mt-8 text-lg">{oneMeal.description}</p>
+            </div>
+          </div>
+          <GetComments />
         </div>
       ) : (
         <Loading />
