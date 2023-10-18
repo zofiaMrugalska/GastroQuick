@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { menuInterface, responseOneMealInterface } from "../../../interfaces/MenuInterfaces";
 import { MealServices } from "../../../services/MealServices";
 import Loading from "../../../components/Loading";
-import AddComments from "./AddComments";
 import GetComments from "./GetComments";
 
 const DynamicRouteForMeal = () => {
@@ -38,7 +37,6 @@ const DynamicRouteForMeal = () => {
               />
               <p className=" mt-8 text-lg">{oneMeal.description}</p>
             </div>
-            <AddComments />
           </div>
           <GetComments />
         </div>

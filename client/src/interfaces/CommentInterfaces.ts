@@ -15,3 +15,7 @@ export interface ResponseCommentInterafce {
   message: string;
   success: boolean;
 }
+
+export interface AddCommentsProps {
+  getCommentsData: (MealId: string) => void;
+}
