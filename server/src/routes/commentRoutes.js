@@ -5,7 +5,9 @@ const {
   getCommentsForMeal,
   deleteComment,
 } = require("../controllers/commentController");
+
 const { validateComment } = require("../middleware/validateData");
+
 const validateToken = require("../middleware/validateTokenHandler");
 
 const commentRouter = express.Router();
