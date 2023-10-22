@@ -6,15 +6,13 @@ const cartSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    item: {
-      meal: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Meal",
-      },
-      quantity: {
-        type: Number,
-        default: 1,
-      },
+    meal: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Meal",
+    },
+    quantity: {
+      type: Number,
+      default: 1,
     },
   },
   {

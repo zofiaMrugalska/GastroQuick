@@ -5,6 +5,6 @@ const validateToken = require("../middleware/validateTokenHandler");
 
 const cartRouter = express.Router();
 
-cartRouter.post("/addToCart", validateToken, addToCart);
+cartRouter.post("/addToCart/:id", validateToken, addToCart);
 
 module.exports = cartRouter;
