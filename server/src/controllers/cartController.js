@@ -9,8 +9,11 @@ const mealModel = require("../models/mealModel");
 
 const getMealsFromCart = async (req, res) => {
   try {
-    const getResult = await cartModel.find({});
-    res.status(200).json(createResponse(true, getResult, "success"));
+    const orders = await cartModel.find({});
+
+    const activeOrders = orders.filter((item) => item.isOrderActiv === true);
+
+    res.status(200).json(createResponse(true, activeOrders, "success"));
   } catch (error) {
     console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
@@ -25,7 +28,7 @@ const addToCart = async (req, res) => {
   try {
     const author = req.user.id;
     const mealId = req.params.id;
-    const { quantity } = req.body;
+    const { quantity, isOrderActiv } = req.body;
 
     const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
 
@@ -45,6 +48,7 @@ const addToCart = async (req, res) => {
       author,
       meal: mealId,
       quantity,
+      isOrderActiv,
     });
 
     res.status(201).json(createResponse(true, mealInCart, "the meal has been added"));

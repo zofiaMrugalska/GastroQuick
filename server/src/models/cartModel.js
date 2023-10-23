@@ -14,6 +14,10 @@ const cartSchema = mongoose.Schema(
       type: Number,
       default: 1,
     },
+    isOrderActiv: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,
