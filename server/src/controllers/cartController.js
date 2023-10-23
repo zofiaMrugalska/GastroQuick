@@ -3,6 +3,20 @@ const createResponse = require("../services/responseDTO");
 const { default: mongoose } = require("mongoose");
 const mealModel = require("../models/mealModel");
 
+//@desc get
+//@route GET /cart/getMealsFromCart
+//@access for logged in users
+
+const getMealsFromCart = async (req, res) => {
+  try {
+    const getResult = await cartModel.find({});
+    res.status(200).json(createResponse(true, getResult, "success"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
 //@desc adding meal to cart
 //@route POST /cart/addToCart/id
 //@access for logged in users
@@ -40,4 +54,4 @@ const addToCart = async (req, res) => {
   }
 };
 
-module.exports = { addToCart };
+module.exports = { addToCart, getMealsFromCart };
