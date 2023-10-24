@@ -32,9 +32,6 @@ const Menu = () => {
             <Link to={`/meal/${meal.name}/${meal._id}`} className="">
               <li className=" max-w-[350px] max-h-[350px] p-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset md:ml-5 md:mt-8 md:mr-27 md:mb-19 hover:bg-[#bbbbbb23]">
                 <div className="flex flex-row-reverse items-center gap-2">
-                  <button className=" bg-[#bbbbbb6e] p-1 rounded-full border-[1px] border-black">
-                    <BsCartPlus size={20} />
-                  </button>
                   <p data-testid="name">{meal.name}</p>
                   {/* <p data-testid="testOne">test1</p> */}
                 </div>
