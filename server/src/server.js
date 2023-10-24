@@ -5,6 +5,7 @@ const cors = require("cors");
 const userRouter = require("./routes/userRoutes");
 const mealRouter = require("./routes/mealRoutes");
 const commentRouter = require("./routes/commentRoutes");
+const cartRouter = require("./routes/cartRoutes");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors()); //laczenie z recatem
 app.use("/users", userRouter);
 app.use("/meals", mealRouter);
 app.use("/comments", commentRouter);
+app.use("/cart", cartRouter);
 
 mongoose
   .connect(process.env.MONGO_CONNECT)

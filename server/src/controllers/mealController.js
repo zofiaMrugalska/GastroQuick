@@ -51,7 +51,7 @@ const getMealsData = async (req, res) => {
 };
 
 //@desc get info about one meal  from database
-//@route GET /meals/getOneMeal
+//@route GET /meals/getOneMeal/:id
 //@access public
 
 const getOneMeal = async (req, res) => {
