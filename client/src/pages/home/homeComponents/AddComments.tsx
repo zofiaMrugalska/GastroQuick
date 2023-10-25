@@ -47,8 +47,8 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
   };
 
   return (
-    <div>
-      <h1 className=" text-xl font-semibold">Comments:</h1>
+    <div className="flex flex-col justify-center items-center mt-20 ">
+      {/* <h1 className=" text-xl font-semibold">Comments:</h1> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <input

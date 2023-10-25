@@ -28,8 +28,8 @@ const DynamicRouteForMeal = () => {
     <div>
       {oneMeal ? (
         <div>
-          <div className="flex flex-col justify-center items-center">
-            <div className="flex flex-col justify-center items-center">
+          <div className="grid grid-cols-3">
+            <div className="flex flex-col justify-center items-center col-span-2">
               <h1 className=" text-xl">{oneMeal.name}</h1>
               <img
                 src={oneMeal.jpg}
@@ -38,8 +38,8 @@ const DynamicRouteForMeal = () => {
               />
               <p className=" mt-8 text-lg">{oneMeal.description}</p>
             </div>
+            <AddToCart oneMeal={oneMeal} />{" "}
           </div>
-          <AddToCart oneMeal={oneMeal} />
           <GetComments />
         </div>
       ) : (
