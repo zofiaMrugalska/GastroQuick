@@ -30,8 +30,6 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
       try {
         const response = await CommentServices.addComment(data, getToken, params.id);
         if (response.success === true) {
-          console.log(response, "odp");
-          console.log(response.data.comment, "KOMENTARZ");
           alert(response.message);
           if (params.id) {
             getCommentsData(params.id);

@@ -27,9 +27,9 @@ const getMealsFromCart = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     const author = req.user.id;
-    const mealId = req.params.id;
+    const mealId = req.params.mealId;
     const { quantity, isOrderActiv } = req.body;
-
+    console.log(mealId);
     const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
 
     if (!validateMealId) {
@@ -37,8 +37,6 @@ const addToCart = async (req, res) => {
     }
 
     const isMealExist = await mealModel.findOne({ _id: mealId });
-    console.log(isMealExist, "czy istnije");
-    console.log(typeof isMealExist);
 
     if (!isMealExist) {
       return res.status(404).json(createResponse(false, null, "meal not found"));

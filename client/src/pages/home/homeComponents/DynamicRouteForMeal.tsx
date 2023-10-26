@@ -38,7 +38,7 @@ const DynamicRouteForMeal = () => {
               />
               <p className=" mt-8 text-lg">{oneMeal.description}</p>
             </div>
-            <AddToCart oneMeal={oneMeal} />{" "}
+            <AddToCart oneMeal={oneMeal} />
           </div>
           <GetComments />
         </div>
