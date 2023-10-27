@@ -21,7 +21,7 @@ const getMealsFromCart = async (req, res) => {
 };
 
 //@desc adding meal to cart
-//@route POST /cart/addToCart/id
+//@route POST /cart/addToCart/mealId
 //@access for logged in users
 
 const addToCart = async (req, res) => {
