@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const {
@@ -29,11 +30,12 @@ const SignUp = () => {
       const response = await AuthServices.register(data);
 
       if (response.success === true) {
-        alert(response.message);
+        toast.success(response.message);
         navigateToSignIn();
       }
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      const errorMessage: string = error.toString();
+      toast.error(errorMessage);
     }
     reset();
   };

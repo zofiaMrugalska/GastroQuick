@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInInterface } from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
+import toast from "react-hot-toast";
 
 const SignIn: React.FC = () => {
   const {
@@ -29,13 +30,13 @@ const SignIn: React.FC = () => {
     const getUserInfo = AuthServices.getUserInfoFromLocalStorage();
 
     if (getToken !== null || getUserInfo !== null) {
-      alert("you need to log out to log in to another account");
+      toast.error("you need to log out to log in to another account");
     } else {
       try {
         const response = await AuthServices.login(data);
 
         if (response.success === true) {
-          alert(response.message);
+          toast.success(response.message);
           navigateToMainPage();
         }
 
@@ -45,8 +46,9 @@ const SignIn: React.FC = () => {
 
         AuthServices.saveTokenToLocalStorage(token);
         AuthServices.saveUserInfoToLocalStorage(userInfo);
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        const errorMessage: string = error.toString();
+        toast.error(errorMessage);
       }
     }
 

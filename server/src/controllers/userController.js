@@ -126,7 +126,6 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
   try {
     const token = req.token;
-    console.log(token, " czy jest");
 
     if (!token) {
       return res.status(400).json(createResponse(false, null, "token is missing"));
