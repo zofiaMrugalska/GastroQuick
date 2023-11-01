@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
 import { BiLogInCircle, BiFoodMenu, BiLogOutCircle, BiCart } from "react-icons/bi";
 import { AuthServices } from "../services/AuthServices";
+import { toast } from "react-hot-toast";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -12,11 +13,12 @@ const Navbar = () => {
       const response = await AuthServices.logout();
 
       if (response.success === true) {
-        alert(response.message);
+        toast.success(response.message);
         navigate("/signIn");
       }
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      const errorMessage: string = error.toString();
+      toast.error(errorMessage);
     }
   };
 
