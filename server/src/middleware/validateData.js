@@ -22,6 +22,9 @@ const registerUserSchema = Joi.object({
     "string.max": 'Field "password" can contain a maximum of 20 characters',
     "any.required": 'Field "password" is required',
   }),
+  confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
+    "any.only": 'Field "confirmPassword" must match the "password"',
+  }),
 });
 
 const commentSchema = Joi.object({
@@ -37,6 +40,8 @@ const commentSchema = Joi.object({
 
 function validateUserData(req, res, next) {
   const result = registerUserSchema.validate(req.body);
+
+  console.log(result);
 
   if (result.error) {
     console.log(result.error.details);
