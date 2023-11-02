@@ -4,6 +4,7 @@ import { menuInterface } from "../../interfaces/MenuInterfaces";
 import { AuthServices } from "../../services/AuthServices";
 import { CartServices } from "../../services/CartServices";
 import { OrderInterface } from "../../interfaces/CartInterfaces";
+import { toast } from "react-hot-toast";
 
 const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   const [quantity, setQuantity] = useState<number>(1);
@@ -32,15 +33,16 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
     };
 
     if (!token || !author) {
-      alert("musisz byc zalgoowany a zosia musi zrobic ladneog boxa i dac go wszedzie :)");
+      toast.error("You must be logged in to add meals to your cart");
     }
     try {
       const response = await CartServices.addToCart(dataFromUser);
       if (response.success === true) {
-        alert(response.message);
+        toast.success(response.message);
       }
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      const errorMessage: string = error.toString();
+      toast.error(errorMessage);
     }
   };
 

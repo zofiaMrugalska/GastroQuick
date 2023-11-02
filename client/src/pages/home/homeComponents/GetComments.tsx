@@ -24,19 +24,7 @@ const GetComments = () => {
     try {
       const response: ResponseCommentInterafce = await CommentServices.getComments(MealId);
 
-      // const formattedComments: CommentRequestInterface[] = response.data.map((comment) => {
-      //   const createdAt = new Date(comment.createdAt);
-      //   console.log(createdAt);
-
-      //   const formattedDate = `${createdAt.getFullYear()}-${(createdAt.getMonth() + 1)
-      //     .toString()
-      //     .padStart(2, "0")}-${createdAt.getDate().toString().padStart(2, "0")}`;
-
-      //   return {
-      //     ...comment,
-      //     createdAt: formattedDate,
-      //   };
-      // });
+      console.log(response);
 
       setComments(response.data);
     } catch (error) {
@@ -95,9 +83,9 @@ const GetComments = () => {
 
         {comments.map((comment: CommentRequestInterface) => {
           return (
-            <div key={comment._id} className=" border-b-2">
-              <p>{comment.author.name}</p>
-              <p>{comment.comment}</p>
+            <div key={comment?._id} className=" border-b-2">
+              <p>{comment?.author?.name}</p>
+              <p>{comment?.comment}</p>
               <p>{formatDate(new Date(comment.createdAt))}</p>
             </div>
           );
