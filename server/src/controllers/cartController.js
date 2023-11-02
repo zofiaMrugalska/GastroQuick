@@ -37,6 +37,9 @@ const addToCart = async (req, res) => {
     }
 
     const isMealExist = await mealModel.findOne({ _id: mealId });
+    console.log(isMealExist.price);
+
+    let price = (isMealExist.price * quantity).toFixed(2);
 
     if (!isMealExist) {
       return res.status(404).json(createResponse(false, null, "meal not found"));
@@ -47,6 +50,7 @@ const addToCart = async (req, res) => {
       meal: mealId,
       quantity,
       isOrderActiv,
+      price,
     });
 
     res.status(201).json(createResponse(true, mealInCart, "the meal has been added"));
