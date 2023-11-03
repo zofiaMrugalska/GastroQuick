@@ -16,7 +16,6 @@ export const CartServices = {
           },
         }
       );
-      console.log(response.data, "response services");
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
@@ -27,7 +26,6 @@ export const CartServices = {
     try {
       const response = await axios.get("http://localhost:5000/cart/getMealsFromCart");
 
-      console.log(response.data, "response data get cartsss");
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

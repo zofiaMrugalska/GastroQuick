@@ -10,7 +10,6 @@ const Cart = () => {
     const getMealsInOrder = async () => {
       try {
         const response = await CartServices.getMealsFromCart();
-        console.log(response);
         setOrder(response.data);
       } catch (error) {
         console.log(error);

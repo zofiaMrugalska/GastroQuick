@@ -24,8 +24,6 @@ const GetComments = () => {
     try {
       const response: ResponseCommentInterafce = await CommentServices.getComments(MealId);
 
-      console.log(response);
-
       setComments(response.data);
     } catch (error) {
       console.log(error);
@@ -50,7 +48,7 @@ const GetComments = () => {
         const date2 = new Date(comment2.createdAt);
         return date2.getTime() - date1.getTime();
       });
-    console.log(sortingFromLatest, "posortowane");
+
     setComments(sortingFromLatest);
   };
 
@@ -62,7 +60,7 @@ const GetComments = () => {
         const date2 = new Date(comment2.createdAt);
         return date1.getTime() - date2.getTime();
       });
-    console.log(sortingFromOldest, "posortowane");
+
     setComments(sortingFromOldest);
   };
 

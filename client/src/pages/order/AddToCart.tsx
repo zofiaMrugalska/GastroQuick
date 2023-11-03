@@ -5,10 +5,11 @@ import { AuthServices } from "../../services/AuthServices";
 import { CartServices } from "../../services/CartServices";
 import { OrderInterface } from "../../interfaces/CartInterfaces";
 import { toast } from "react-hot-toast";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   const [quantity, setQuantity] = useState<number>(1);
-
+  const isAuthenticated = useAuthCheck();
   const { id } = useParams<{ id: string | undefined }>();
 
   const increaseQuantity = () => {
@@ -23,7 +24,6 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
 
   const postMealToCart = async (mealId: string | undefined, quantity: number) => {
     const token = AuthServices.getTokenFromLocalStorage();
-    const author = AuthServices.getUserInfoFromLocalStorage();
 
     let dataFromUser: OrderInterface = {
       id: mealId,
@@ -32,7 +32,7 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
       token: token,
     };
 
-    if (!token || !author) {
+    if (!isAuthenticated) {
       toast.error("You must be logged in to add meals to your cart");
     }
     try {

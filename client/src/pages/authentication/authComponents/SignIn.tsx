@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignInInterface } from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
 import toast from "react-hot-toast";
+import useAuthCheck from "../../../hooks/useAuthCheck";
 
 const SignIn: React.FC = () => {
   const {
@@ -16,8 +17,7 @@ const SignIn: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
 
-  // console.log(getToken, "get token z sign in");
-  // console.log(getUserInfo, "get user z sign in");
+  const isAuthenticated = useAuthCheck();
 
   const navigate = useNavigate();
 
@@ -26,10 +26,7 @@ const SignIn: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
-    const getToken = AuthServices.getTokenFromLocalStorage();
-    const getUserInfo = AuthServices.getUserInfoFromLocalStorage();
-
-    if (getToken !== null || getUserInfo !== null) {
+    if (!isAuthenticated) {
       toast.error("you need to log out to log in to another account");
     } else {
       try {
