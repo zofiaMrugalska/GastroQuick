@@ -49,7 +49,7 @@ const getCommentsForMeal = async (req, res) => {
         .json(createResponse(false, null, "there are no comments for this meal"));
     }
 
-    res.status(201).json(createResponse(true, comments, " comments for this meal"));
+    res.status(201).json(createResponse(true, comments, "comments for this meal"));
   } catch (error) {
     console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));

@@ -23,13 +23,10 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   };
 
   const postMealToCart = async (mealId: string | undefined, quantity: number) => {
-    const token = AuthServices.getTokenFromLocalStorage();
-
     let dataFromUser: OrderInterface = {
       id: mealId,
       quantity: quantity,
       isOrderActiv: true,
-      token: token,
     };
 
     if (!isAuthenticated) {

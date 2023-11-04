@@ -1,8 +1,10 @@
 import axios from "axios";
 import { OrderInterface } from "../interfaces/CartInterfaces";
+import { AuthServices } from "./AuthServices";
 
 export const CartServices = {
   addToCart: async (dataFromUser: OrderInterface) => {
+    const token = AuthServices.getTokenFromLocalStorage();
     try {
       const response = await axios.post(
         `http://localhost:5000/cart/addToCart/${dataFromUser.id}`,
@@ -12,7 +14,7 @@ export const CartServices = {
         },
         {
           headers: {
-            Authorization: `Bearer ${dataFromUser.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -23,9 +25,15 @@ export const CartServices = {
   },
 
   getMealsFromCart: async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/cart/getMealsFromCart");
+    const token = AuthServices.getTokenFromLocalStorage();
 
+    try {
+      const response = await axios.get("http://localhost:5000/cart/getMealsFromCart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

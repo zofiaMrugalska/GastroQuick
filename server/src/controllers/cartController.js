@@ -5,14 +5,14 @@ const mealModel = require("../models/mealModel");
 
 //@desc get
 //@route GET /cart/getMealsFromCart
-//@access for logged in users
+//@access for logged in users/order for a given user
 
 const getMealsFromCart = async (req, res) => {
   try {
-    const orders = await cartModel.find({});
+    const userId = req.user.id;
+    const orders = await cartModel.find({ author: userId });
 
     const activeOrders = orders.filter((item) => item.isOrderActiv === true);
-
     res.status(200).json(createResponse(true, activeOrders, "success"));
   } catch (error) {
     console.log("error", error);
