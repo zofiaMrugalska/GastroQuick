@@ -4,6 +4,7 @@ import { AuthServices } from "../../../services/AuthServices";
 import { CommentServices } from "../../../services/CommentServices";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import useAuthCheck from "../../../hooks/useAuthCheck";
 
 const AddComments = ({ getCommentsData }: AddCommentsProps) => {
   const {
@@ -14,16 +15,14 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
   } = useForm<CommentRequestInterface>();
 
   const params = useParams();
+  const isAuthenticated = useAuthCheck();
 
   const onSubmit: SubmitHandler<CommentRequestInterface> = async (data) => {
-    const getToken = AuthServices.getTokenFromLocalStorage();
-    const getUserInfo = AuthServices.getUserInfoFromLocalStorage();
-
-    if (!getToken || !getUserInfo) {
+    if (!isAuthenticated) {
       toast.error("you must be logged in to add a comment");
     } else {
       try {
-        const response = await CommentServices.addComment(data, getToken, params.id);
+        const response = await CommentServices.addComment(data, params.id);
         if (response.success === true) {
           toast.success(response.message);
           if (params.id) {
@@ -40,8 +39,8 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
   };
 
   return (
-    <div>
-      <h1 className=" text-xl font-semibold">Comments:</h1>
+    <div className="flex flex-col justify-center items-center mt-20 ">
+      {/* <h1 className=" text-xl font-semibold">Comments:</h1> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <input

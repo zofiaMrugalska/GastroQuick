@@ -1,12 +1,11 @@
 import axios from "axios";
 import { CommentRequestInterface } from "../interfaces/CommentInterfaces";
+import { AuthServices } from "./AuthServices";
 
 export const CommentServices = {
-  addComment: async (
-    commentContent: CommentRequestInterface,
-    token: string,
-    mealId: string | undefined
-  ) => {
+  addComment: async (commentContent: CommentRequestInterface, mealId: string | undefined) => {
+    const token = AuthServices.getTokenFromLocalStorage();
+
     try {
       const response = await axios.post(
         "http://localhost:5000/comments/addComment",
@@ -21,7 +20,6 @@ export const CommentServices = {
           },
         }
       );
-      console.log(response.data, "response services");
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
@@ -31,7 +29,7 @@ export const CommentServices = {
   getComments: async (id: string) => {
     try {
       const response = await axios.get(`http://localhost:5000/comments/${id}`);
-      console.log(response.data, "komentarz dla meal");
+
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
