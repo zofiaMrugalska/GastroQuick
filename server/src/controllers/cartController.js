@@ -60,4 +60,18 @@ const addToCart = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, getMealsFromCart };
+//@desc delete
+//@route DELETE /cart/deleteAllOrders
+//@access for all only for testing on postman
+
+const deleteAllOrders = async (req, res) => {
+  try {
+    const result = await cartModel.deleteMany();
+    res.status(201).json(createResponse(true, result, "usunioete wszytskie sa"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+module.exports = { addToCart, getMealsFromCart, deleteAllOrders };
