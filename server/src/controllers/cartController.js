@@ -7,7 +7,6 @@ const mealModel = require("../models/mealModel");
 //@route GET /cart/getMealsFromCart
 //@access for logged in users/order for a given user
 
-//pobraz meal nazwe i zdjecie wedlug mealid? (agregate)
 const getMealsFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -76,6 +75,48 @@ const addToCart = async (req, res) => {
 };
 
 //@desc delete
+//@route DELETE /cart/:mealOrderId
+//@access for logged in users
+
+const deleteOneMealFromOrder = async (req, res) => {
+  try {
+    const mealOrderId = req.params.mealOrderId;
+    const loginUserId = req.user.id;
+    const isValidOrderId = mongoose.Types.ObjectId.isValid(mealOrderId);
+
+    if (!isValidOrderId) {
+      return res.status(400).json(createResponse(false, null, "order meal Id is not valid"));
+    }
+
+    const isMealOrderExist = await cartModel.findById(mealOrderId);
+
+    if (!isMealOrderExist) {
+      return res
+        .status(404)
+        .json(createResponse(false, null, "there is no such meal in the order"));
+    }
+
+    if (isMealOrderExist.author.toString() !== loginUserId) {
+      return res
+        .status(401)
+        .json(createResponse(false, null, "you cannot delete a meal that doesn't belong to you"));
+    }
+
+    const deletedComment = await cartModel.findByIdAndDelete(mealOrderId);
+    if (!deletedComment) {
+      return res
+        .status(404)
+        .json(createResponse(false, null, "Failed to delete the meal from order"));
+    }
+
+    res.status(200).json(createResponse(true, null, "the meal was removed from the order"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wong"));
+  }
+};
+
+//@desc delete
 //@route DELETE /cart/deleteAllOrders
 //@access for all only for testing on postman
 
@@ -89,4 +130,4 @@ const deleteAllOrders = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, getMealsFromCart, deleteAllOrders };
+module.exports = { addToCart, getMealsFromCart, deleteOneMealFromOrder, deleteAllOrders };

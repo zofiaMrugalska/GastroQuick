@@ -3,6 +3,7 @@ import { OrderInterface } from "../../interfaces/CartInterfaces";
 import { CartServices } from "../../services/CartServices";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import Loading from "../../components/Loading";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const Cart = () => {
   /// jesli jesstes zalogowany a nie masz niczego w koszyku, ma sie pokazac ze twoj koszyk jest pusty
@@ -45,7 +46,7 @@ const Cart = () => {
                 // console.log(order.meal?.name);
                 // console.log(order.meal?.jpg);
                 return (
-                  <div key={order.id} className=" mt-9 grid grid-cols-4 place-items-center">
+                  <div key={order.id} className=" mt-9 grid grid-cols-5 place-items-center">
                     <img
                       src={order.meal?.jpg}
                       alt="photo of the meal"
@@ -55,6 +56,9 @@ const Cart = () => {
                     <p>{order.meal?.name}</p>
                     <p>{order.quantity}</p>
                     <p>{order.price}</p>
+                    <button>
+                      <AiOutlineDelete size={20} />
+                    </button>
                   </div>
                 );
               })}
