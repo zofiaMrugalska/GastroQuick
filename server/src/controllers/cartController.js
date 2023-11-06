@@ -7,10 +7,25 @@ const mealModel = require("../models/mealModel");
 //@route GET /cart/getMealsFromCart
 //@access for logged in users/order for a given user
 
+//pobraz meal nazwe i zdjecie wedlug mealid? (agregate)
 const getMealsFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const orders = await cartModel.find({ author: userId });
+    const orders = await cartModel.find({ author: userId }).populate("meal");
+
+    // const orders = await cartModel.aggregate([
+    //   // { $match: { author: userId } },
+    //   // {
+    //   //   $lookup: {
+    //   //     from: "meals", // Nazwa kolekcji z posiłkami
+    //   //     localField: "meal", // Pole w 'cartModel', które odnosi się do posiłku
+    //   //     foreignField: "_id", // Pole w 'mealModel', które jest identyfikatorem posiłku
+    //   //     as: "mealInfo", // Nazwa pola, w którym zostaną przechowane informacje o posiłkach
+    //   //   },
+    //   // },
+    // ]);
+
+    console.log(orders);
 
     const activeOrders = orders.filter((item) => item.isOrderActiv === true);
     res.status(200).json(createResponse(true, activeOrders, "success"));

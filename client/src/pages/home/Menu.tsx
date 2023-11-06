@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MealServices } from "../../services/MealServices";
 import { menuInterface, responseMealInterface } from "../../interfaces/MenuInterfaces";
-import { BsCartPlus } from "react-icons/bs";
 
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
