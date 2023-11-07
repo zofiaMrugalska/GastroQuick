@@ -24,7 +24,7 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
 
   const postMealToCart = async (mealId: string | undefined, quantity: number) => {
     let dataFromUser: OrderInterface = {
-      id: mealId,
+      _id: mealId,
       quantity: quantity,
       isOrderActiv: true,
     };

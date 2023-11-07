@@ -4,6 +4,7 @@ import { CartServices } from "../../services/CartServices";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import Loading from "../../components/Loading";
 import { AiOutlineDelete } from "react-icons/ai";
+import { toast } from "react-hot-toast";
 
 const Cart = () => {
   /// jesli jesstes zalogowany a nie masz niczego w koszyku, ma sie pokazac ze twoj koszyk jest pusty
@@ -27,6 +28,24 @@ const Cart = () => {
     }
   };
 
+  const deleteMealFromOrder = async (id: string | undefined) => {
+    if (!isAuthenticated) {
+      toast.error("You cannot remove a meal that does not belong to you");
+    } else {
+      try {
+        const response = await CartServices.deleteOneMealFromOrder(id);
+        if (response.success === true) {
+          toast.success(response.message);
+        }
+
+        getMealsInOrder();
+      } catch (error: any) {
+        const errorMessage: string = error.toString();
+        toast.error(errorMessage);
+      }
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       setLoading(true);
@@ -46,7 +65,7 @@ const Cart = () => {
                 // console.log(order.meal?.name);
                 // console.log(order.meal?.jpg);
                 return (
-                  <div key={order.id} className=" mt-9 grid grid-cols-5 place-items-center">
+                  <div key={order._id} className=" mt-9 grid grid-cols-5 place-items-center">
                     <img
                       src={order.meal?.jpg}
                       alt="photo of the meal"
@@ -56,7 +75,8 @@ const Cart = () => {
                     <p>{order.meal?.name}</p>
                     <p>{order.quantity}</p>
                     <p>{order.price}</p>
-                    <button>
+
+                    <button onClick={() => deleteMealFromOrder(order._id)}>
                       <AiOutlineDelete size={20} />
                     </button>
                   </div>

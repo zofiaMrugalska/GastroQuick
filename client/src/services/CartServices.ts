@@ -7,7 +7,7 @@ export const CartServices = {
     const token = AuthServices.getTokenFromLocalStorage();
     try {
       const response = await axios.post(
-        `http://localhost:5000/cart/addToCart/${dataFromUser.id}`,
+        `http://localhost:5000/cart/addToCart/${dataFromUser._id}`,
         {
           quantity: dataFromUser.quantity,
           isOrderActiv: dataFromUser.isOrderActiv,
@@ -34,6 +34,21 @@ export const CartServices = {
         },
       });
       console.log(response.data);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
+  deleteOneMealFromOrder: async (id: string | undefined) => {
+    const token = AuthServices.getTokenFromLocalStorage();
+
+    try {
+      const response = await axios.delete(`http://localhost:5000/cart/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
