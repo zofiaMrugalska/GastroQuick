@@ -12,18 +12,6 @@ const getMealsFromCart = async (req, res) => {
     const userId = req.user.id;
     const orders = await cartModel.find({ author: userId }).populate("meal");
 
-    // const orders = await cartModel.aggregate([
-    //   // { $match: { author: userId } },
-    //   // {
-    //   //   $lookup: {
-    //   //     from: "meals", // Nazwa kolekcji z posiłkami
-    //   //     localField: "meal", // Pole w 'cartModel', które odnosi się do posiłku
-    //   //     foreignField: "_id", // Pole w 'mealModel', które jest identyfikatorem posiłku
-    //   //     as: "mealInfo", // Nazwa pola, w którym zostaną przechowane informacje o posiłkach
-    //   //   },
-    //   // },
-    // ]);
-
     console.log(orders);
 
     const activeOrders = orders.filter((item) => item.isOrderActiv === true);
@@ -43,7 +31,6 @@ const addToCart = async (req, res) => {
     const author = req.user.id;
     const mealId = req.params.mealId;
     const { quantity, isOrderActiv } = req.body;
-    console.log(mealId);
     const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
 
     if (!validateMealId) {
@@ -51,7 +38,6 @@ const addToCart = async (req, res) => {
     }
 
     const isMealExist = await mealModel.findOne({ _id: mealId });
-    console.log(isMealExist.price);
 
     let price = (isMealExist.price * quantity).toFixed(2);
 

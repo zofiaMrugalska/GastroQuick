@@ -10,16 +10,17 @@ const DynamicRouteForMeal = () => {
   const [oneMeal, setOneMeal] = useState<menuInterface>();
   const params = useParams();
 
+  const getData = async (MealId: string) => {
+    try {
+      const response: responseOneMealInterface = await MealServices.getOneMealData(MealId);
+      setOneMeal(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (params.id !== undefined) {
-      const getData = async (MealId: string) => {
-        try {
-          const response: responseOneMealInterface = await MealServices.getOneMealData(MealId);
-          setOneMeal(response.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
       getData(params.id);
     }
   }, [params.id]);

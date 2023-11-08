@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OrderInterface } from "../../interfaces/CartInterfaces";
+import { OrderInterface, ResponseOrderMeals } from "../../interfaces/CartInterfaces";
 import { CartServices } from "../../services/CartServices";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import Loading from "../../components/Loading";
@@ -13,14 +13,10 @@ const Cart = () => {
   const [order, setOrder] = useState<OrderInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const isAuthenticated = useAuthCheck();
-  console.log(isAuthenticated, "is AUth");
-  console.log(order, "zamowienia");
 
   const getMealsInOrder = async () => {
     try {
-      const response = await CartServices.getMealsFromCart();
-
-      console.log(response);
+      const response: ResponseOrderMeals = await CartServices.getMealsFromCart();
       setOrder(response.data);
       setLoading(false);
     } catch (error) {
@@ -37,7 +33,6 @@ const Cart = () => {
         if (response.success === true) {
           toast.success(response.message);
         }
-
         getMealsInOrder();
       } catch (error: any) {
         const errorMessage: string = error.toString();
@@ -62,8 +57,6 @@ const Cart = () => {
           {order.length > 0 ? (
             <div>
               {order.map((order: OrderInterface) => {
-                // console.log(order.meal?.name);
-                // console.log(order.meal?.jpg);
                 return (
                   <div key={order._id} className=" mt-9 grid grid-cols-5 place-items-center">
                     <img

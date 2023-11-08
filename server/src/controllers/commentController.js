@@ -63,7 +63,7 @@ const getCommentsForMeal = async (req, res) => {
 const deleteComment = async (req, res) => {
   try {
     const commentId = req.params.commentId;
-
+    const loginUserId = req.user.id;
     const validCommentId = mongoose.Types.ObjectId.isValid(commentId);
 
     if (!validCommentId) {
@@ -75,8 +75,6 @@ const deleteComment = async (req, res) => {
     if (!commentExist) {
       return res.status(404).json(createResponse(false, null, "no such comment exists"));
     }
-
-    const loginUserId = req.user.id;
 
     if (commentExist.author.toString() !== loginUserId) {
       return res

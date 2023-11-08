@@ -1,5 +1,10 @@
 import axios from "axios";
-import { SignInInterface, SignUpInterface } from "../interfaces/AuthInterfaces";
+import {
+  AuthorInterface,
+  LoginResponseInterface,
+  SignInInterface,
+  SignUpInterface,
+} from "../interfaces/AuthInterfaces";
 
 export const AuthServices = {
   register: async (userData: SignUpInterface) => {
@@ -11,7 +16,7 @@ export const AuthServices = {
     }
   },
 
-  login: async (userData: SignInInterface) => {
+  login: async (userData: SignInInterface): Promise<LoginResponseInterface> => {
     try {
       const response = await axios.post("http://localhost:5000/users/login", userData);
       return response.data;
@@ -20,45 +25,45 @@ export const AuthServices = {
     }
   },
 
-  saveTokenToLocalStorage: (token: string) => {
+  saveTokenToLocalStorage: (token: string): void => {
     localStorage.setItem("accessToken", JSON.stringify(token));
   },
 
-  saveUserInfoToLocalStorage: (userInfo: string) => {
+  saveUserInfoToLocalStorage: (userInfo: AuthorInterface): void => {
     localStorage.setItem("userInformation", JSON.stringify(userInfo));
   },
 
-  getTokenFromLocalStorage: () => {
-    const accessTokenJSON = localStorage.getItem("accessToken");
+  getTokenFromLocalStorage: (): string | null => {
+    const accessTokenJSON: string | null = localStorage.getItem("accessToken");
     if (accessTokenJSON) {
-      const accessTokenObj = JSON.parse(accessTokenJSON);
-
+      const accessTokenObj: string = JSON.parse(accessTokenJSON);
       return accessTokenObj;
     }
     return null;
   },
 
-  getUserInfoFromLocalStorage: () => {
-    const accessUserInfo = localStorage.getItem("userInformation");
+  getUserInfoFromLocalStorage: (): AuthorInterface | null => {
+    const accessUserInfo: string | null = localStorage.getItem("userInformation");
 
     if (accessUserInfo) {
-      const accessInfoObj = JSON.parse(accessUserInfo);
+      const accessInfoObj: AuthorInterface = JSON.parse(accessUserInfo);
+
       return accessInfoObj;
     }
     return null;
   },
 
-  removeTokenFromLocalStorage: () => {
+  removeTokenFromLocalStorage: (): void => {
     localStorage.removeItem("accessToken");
   },
 
-  removeUserInfoFromLocalStorage: () => {
+  removeUserInfoFromLocalStorage: (): void => {
     localStorage.removeItem("userInformation");
   },
 
   logout: async () => {
     try {
-      const accessTokenObj = AuthServices.getTokenFromLocalStorage();
+      const accessTokenObj: string | null = AuthServices.getTokenFromLocalStorage();
 
       if (!accessTokenObj) {
         throw new Error("No access to the authorization token");

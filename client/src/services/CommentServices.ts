@@ -1,10 +1,10 @@
 import axios from "axios";
-import { CommentRequestInterface } from "../interfaces/CommentInterfaces";
+import { CommentRequestInterface, ResponseCommentInterafce } from "../interfaces/CommentInterfaces";
 import { AuthServices } from "./AuthServices";
 
 export const CommentServices = {
   addComment: async (commentContent: CommentRequestInterface, mealId: string | undefined) => {
-    const token = AuthServices.getTokenFromLocalStorage();
+    const token: string | null = AuthServices.getTokenFromLocalStorage();
 
     try {
       const response = await axios.post(
@@ -26,10 +26,10 @@ export const CommentServices = {
     }
   },
 
-  getComments: async (id: string) => {
+  getComments: async (id: string): Promise<ResponseCommentInterafce> => {
     try {
       const response = await axios.get(`http://localhost:5000/comments/${id}`);
-
+      console.log(response.data, "COMENGT");
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

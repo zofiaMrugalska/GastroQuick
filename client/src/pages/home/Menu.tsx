@@ -6,15 +6,16 @@ import { menuInterface, responseMealInterface } from "../../interfaces/MenuInter
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
 
+  const getData = async () => {
+    try {
+      const response: responseMealInterface = await MealServices.getMealsData();
+      setMainMenu(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response: responseMealInterface = await MealServices.getMealsData();
-        setMainMenu(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getData();
   }, []);
 

@@ -4,6 +4,7 @@ import { FiUser } from "react-icons/fi";
 import { BiLogInCircle, BiFoodMenu, BiLogOutCircle, BiCart } from "react-icons/bi";
 import { AuthServices } from "../services/AuthServices";
 import { toast } from "react-hot-toast";
+import { AuthorInterface } from "../interfaces/AuthInterfaces";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -22,8 +23,8 @@ const Navbar = () => {
     }
   };
 
-  const accessToken = AuthServices.getTokenFromLocalStorage();
-  const userInfo = AuthServices.getUserInfoFromLocalStorage();
+  const accessToken: string | null = AuthServices.getTokenFromLocalStorage();
+  const userInfo: AuthorInterface | null = AuthServices.getUserInfoFromLocalStorage();
 
   const btnStyle = `flex flex-col items-center`;
 
@@ -49,7 +50,7 @@ const Navbar = () => {
           <li>
             <Link to={"/account"} className={`${btnStyle}`}>
               <FiUser size={25} />
-              {!accessToken && !userInfo ? <p>user</p> : <p>{userInfo.name}</p>}
+              {!accessToken && !userInfo ? <p>user</p> : <p>{userInfo?.name}</p>}
             </Link>
           </li>
 

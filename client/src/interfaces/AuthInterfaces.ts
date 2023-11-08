@@ -3,9 +3,22 @@ export interface SignInInterface {
   password: string;
 }
 
-export interface SignUpInterface {
+export interface SignUpInterface extends SignInInterface {
+  email: string;
+  confirmPassword: string;
+}
+
+export interface AuthorInterface {
   name: string;
   email: string;
-  password: string;
-  confirmPassword: string;
+  id: string;
+}
+
+export interface LoginResponseInterface {
+  data: {
+    accessToken: string;
+    user: AuthorInterface;
+  };
+  message: string;
+  success: boolean;
 }
