@@ -10,7 +10,9 @@ const mealModel = require("../models/mealModel");
 const getMealsFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const orders = await cartModel.find({ author: userId });
+    const orders = await cartModel.find({ author: userId }).populate("meal");
+
+    console.log(orders);
 
     const activeOrders = orders.filter((item) => item.isOrderActiv === true);
     res.status(200).json(createResponse(true, activeOrders, "success"));
@@ -29,7 +31,6 @@ const addToCart = async (req, res) => {
     const author = req.user.id;
     const mealId = req.params.mealId;
     const { quantity, isOrderActiv } = req.body;
-    console.log(mealId);
     const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
 
     if (!validateMealId) {
@@ -37,7 +38,6 @@ const addToCart = async (req, res) => {
     }
 
     const isMealExist = await mealModel.findOne({ _id: mealId });
-    console.log(isMealExist.price);
 
     let price = (isMealExist.price * quantity).toFixed(2);
 
@@ -60,4 +60,60 @@ const addToCart = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, getMealsFromCart };
+//@desc delete
+//@route DELETE /cart/:mealOrderId
+//@access for logged in users
+
+const deleteOneMealFromOrder = async (req, res) => {
+  try {
+    const mealOrderId = req.params.mealOrderId;
+    const loginUserId = req.user.id;
+    const isValidOrderId = mongoose.Types.ObjectId.isValid(mealOrderId);
+
+    if (!isValidOrderId) {
+      return res.status(400).json(createResponse(false, null, "order meal Id is not valid"));
+    }
+
+    const isMealOrderExist = await cartModel.findById(mealOrderId);
+
+    if (!isMealOrderExist) {
+      return res
+        .status(404)
+        .json(createResponse(false, null, "there is no such meal in the order"));
+    }
+
+    if (isMealOrderExist.author.toString() !== loginUserId) {
+      return res
+        .status(401)
+        .json(createResponse(false, null, "you cannot delete a meal that doesn't belong to you"));
+    }
+
+    const deletedComment = await cartModel.findByIdAndDelete(mealOrderId);
+    if (!deletedComment) {
+      return res
+        .status(404)
+        .json(createResponse(false, null, "Failed to delete the meal from order"));
+    }
+
+    res.status(200).json(createResponse(true, null, "the meal was removed from the order"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wong"));
+  }
+};
+
+//@desc delete
+//@route DELETE /cart/deleteAllOrders
+//@access for all only for testing on postman
+
+const deleteAllOrders = async (req, res) => {
+  try {
+    const result = await cartModel.deleteMany();
+    res.status(201).json(createResponse(true, result, "usunioete wszytskie sa"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+module.exports = { addToCart, getMealsFromCart, deleteOneMealFromOrder, deleteAllOrders };

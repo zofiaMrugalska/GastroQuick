@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MealServices } from "../../services/MealServices";
 import { menuInterface, responseMealInterface } from "../../interfaces/MenuInterfaces";
-import { BsCartPlus } from "react-icons/bs";
 
 const Menu = () => {
   const [mainMenu, setMainMenu] = useState<menuInterface[]>([]);
 
+  const getData = async () => {
+    try {
+      const response: responseMealInterface = await MealServices.getMealsData();
+      setMainMenu(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response: responseMealInterface = await MealServices.getMealsData();
-        setMainMenu(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getData();
   }, []);
 

@@ -2,7 +2,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SignInInterface } from "../../../interfaces/AuthInterfaces";
+import {
+  AuthorInterface,
+  LoginResponseInterface,
+  SignInInterface,
+} from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
 import toast from "react-hot-toast";
 import useAuthCheck from "../../../hooks/useAuthCheck";
@@ -21,7 +25,7 @@ const SignIn: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const navigateToMainPage = () => {
+  const navigateToMainPage = (): void => {
     navigate("/");
   };
 
@@ -30,16 +34,14 @@ const SignIn: React.FC = () => {
       toast.error("you need to log out to log in to another account");
     } else {
       try {
-        const response = await AuthServices.login(data);
-
+        const response: LoginResponseInterface = await AuthServices.login(data);
         if (response.success === true) {
           toast.success(response.message);
           navigateToMainPage();
         }
 
-        const token = response.data.accessToken;
-
-        const userInfo = response.data.user;
+        const token: string = response.data.accessToken;
+        const userInfo: AuthorInterface = response.data.user;
 
         AuthServices.saveTokenToLocalStorage(token);
         AuthServices.saveUserInfoToLocalStorage(userInfo);

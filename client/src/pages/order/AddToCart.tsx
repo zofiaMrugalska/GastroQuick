@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { menuInterface } from "../../interfaces/MenuInterfaces";
-import { AuthServices } from "../../services/AuthServices";
 import { CartServices } from "../../services/CartServices";
-import { OrderInterface } from "../../interfaces/CartInterfaces";
+import { OrderInterface, ResponseOrderMeals } from "../../interfaces/CartInterfaces";
 import { toast } from "react-hot-toast";
 import useAuthCheck from "../../hooks/useAuthCheck";
 
@@ -12,11 +11,12 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   const isAuthenticated = useAuthCheck();
   const { id } = useParams<{ id: string | undefined }>();
 
-  const increaseQuantity = () => {
+  //wytestowac te funkcje
+  const increaseQuantity = (): void => {
     setQuantity(quantity + 1);
   };
 
-  const reduceQuantity = () => {
+  const reduceQuantity = (): void => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
@@ -24,7 +24,7 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
 
   const postMealToCart = async (mealId: string | undefined, quantity: number) => {
     let dataFromUser: OrderInterface = {
-      id: mealId,
+      _id: mealId,
       quantity: quantity,
       isOrderActiv: true,
     };
@@ -33,7 +33,7 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
       toast.error("You must be logged in to add meals to your cart");
     }
     try {
-      const response = await CartServices.addToCart(dataFromUser);
+      const response: ResponseOrderMeals = await CartServices.addToCart(dataFromUser);
       if (response.success === true) {
         toast.success(response.message);
       }

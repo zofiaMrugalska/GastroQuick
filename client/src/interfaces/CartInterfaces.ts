@@ -1,6 +1,18 @@
+import { menuInterface } from "./MenuInterfaces";
+
 export interface OrderInterface {
-  id: string | undefined;
+  _id: string | undefined;
   quantity: number;
-  price?: number;
   isOrderActiv: boolean;
+  author?: string;
+  meal?: menuInterface;
+  price?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ResponseOrderMeals {
+  data: OrderInterface[];
+  message: string;
+  success: boolean;
 }

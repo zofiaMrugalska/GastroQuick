@@ -36,28 +36,29 @@ const GetComments = () => {
     }
   }, []);
 
-  const openCloseSort = (): void => {
+  //mozesz sie dowiedziec do czego usecalbak uzyc moze tutaj byly spoko?
+  const toggleSortOption = (): void => {
     setOpenSort(!openSort);
   };
 
-  const fromTheLatestComments = () => {
+  const fromTheLatestComments = (): void => {
     const sortingFromLatest: CommentRequestInterface[] = comments
       .slice()
       .sort((comment1, comment2) => {
-        const date1: any = new Date(comment1.createdAt);
-        const date2 = new Date(comment2.createdAt);
+        const date1: Date = new Date(comment1.createdAt);
+        const date2: Date = new Date(comment2.createdAt);
         return date2.getTime() - date1.getTime();
       });
 
     setComments(sortingFromLatest);
   };
 
-  const fromTheOldestComments = () => {
+  const fromTheOldestComments = (): void => {
     const sortingFromOldest: CommentRequestInterface[] = comments
       .slice()
       .sort((comment1, comment2) => {
-        const date1: any = new Date(comment1.createdAt);
-        const date2 = new Date(comment2.createdAt);
+        const date1: Date = new Date(comment1.createdAt);
+        const date2: Date = new Date(comment2.createdAt);
         return date1.getTime() - date2.getTime();
       });
 
@@ -69,7 +70,7 @@ const GetComments = () => {
       <AddComments getCommentsData={getCommentsData} />
       <div className=" mx-auto mt-7 max-w-[1400px] max-h-[500px] overflow-y-auto ">
         <div>
-          <button onClick={openCloseSort}>sort</button>
+          <button onClick={toggleSortOption}>sort</button>
           {openSort && (
             <div>
               <button onClick={fromTheOldestComments}>oldest</button>
