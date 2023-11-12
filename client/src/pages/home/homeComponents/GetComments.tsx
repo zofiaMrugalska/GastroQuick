@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAuthCheck from "../../../hooks/useAuthCheck";
 import {
   CommentRequestInterface,
   ResponseCommentInterafce,
 } from "../../../interfaces/CommentInterfaces";
 import { CommentServices } from "../../../services/CommentServices";
 import AddComments from "./AddComments";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import toast from "react-hot-toast";
+import { AuthServices } from "../../../services/AuthServices";
+import { AuthorInterface } from "../../../interfaces/AuthInterfaces";
 
 const GetComments = () => {
-  const [comments, setComments] = useState<CommentRequestInterface[]>([]);
   const params = useParams();
-
+  const isAuthenticated = useAuthCheck();
+  const [comments, setComments] = useState<CommentRequestInterface[]>([]);
   const [openSort, setOpenSort] = useState<boolean>(false);
+
+  const userInfo: AuthorInterface | null = AuthServices.getUserInfoFromLocalStorage();
 
   const formatDate = (date: Date) => {
     const year = date.getFullYear();
@@ -23,10 +30,28 @@ const GetComments = () => {
   const getCommentsData = async (MealId: string) => {
     try {
       const response: ResponseCommentInterafce = await CommentServices.getComments(MealId);
-
       setComments(response.data);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const deleteComment = async (id: string) => {
+    if (!isAuthenticated) {
+      toast.error("You cannot remove a meal that does not belong to you");
+    } else {
+      try {
+        const response = await CommentServices.deleteComment(id);
+        if (response.success === true) {
+          toast.success(response.message);
+        }
+        if (params.id !== undefined) {
+          getCommentsData(params.id);
+        }
+      } catch (error: any) {
+        const errorMessage: string = error.toString();
+        toast.error(errorMessage);
+      }
     }
   };
 
@@ -81,11 +106,27 @@ const GetComments = () => {
         </div>
 
         {comments.map((comment: CommentRequestInterface) => {
+          const isCurrentUser = comment?.author?._id === userInfo?.id;
           return (
-            <div key={comment?._id} className=" border-b-2">
-              <p>{comment?.author?.name}</p>
-              <p>{comment?.comment}</p>
-              <p>{formatDate(new Date(comment.createdAt))}</p>
+            <div key={comment?._id} className="flex border-b-2">
+              <div>
+                <p>{comment?.author?.name}</p>
+                <p>{comment?.comment}</p>
+                <p>{formatDate(new Date(comment.createdAt))}</p>
+              </div>
+              <div className="flex gap-2">
+                {isCurrentUser && (
+                  <div>
+                    <button>
+                      <AiOutlineEdit />
+                    </button>
+
+                    <button onClick={() => deleteComment(comment._id)}>
+                      <AiOutlineDelete />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           );
         })}

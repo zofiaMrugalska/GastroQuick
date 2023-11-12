@@ -29,7 +29,21 @@ export const CommentServices = {
   getComments: async (id: string): Promise<ResponseCommentInterafce> => {
     try {
       const response = await axios.get(`http://localhost:5000/comments/${id}`);
-      console.log(response.data, "COMENGT");
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
+  deleteComment: async (id: string) => {
+    const token: string | null = AuthServices.getTokenFromLocalStorage();
+
+    try {
+      const response = await axios.delete(`http://localhost:5000/comments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

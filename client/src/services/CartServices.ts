@@ -18,7 +18,6 @@ export const CartServices = {
           },
         }
       );
-      console.log(response.data, "ADDD TO ACRT");
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
