@@ -49,7 +49,50 @@ const getCommentsForMeal = async (req, res) => {
         .json(createResponse(false, null, "there are no comments for this meal"));
     }
 
-    res.status(201).json(createResponse(true, comments, "comments for this meal"));
+    res.status(200).json(createResponse(true, comments, "comments for this meal"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc put
+//@route PUT /comments/edit/:commentId
+//@access only for author of this commen
+
+const editComment = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+    const loginUserId = req.user.id;
+    const validCommentId = mongoose.Types.ObjectId.isValid(commentId);
+
+    if (!req.body.comment) {
+      return res.status(400).json(createResponse(false, null, "comment is a required field"));
+    }
+
+    const { comment, meal } = req.body;
+
+    if (!validCommentId) {
+      return res.status(400).json(createResponse(false, null, "comment Id is not valid"));
+    }
+
+    const commentExist = await commentModel.findById(commentId);
+
+    if (!commentExist) {
+      return res.status(404).json(createResponse(false, null, "no such comment exists"));
+    }
+
+    if (commentExist.author.toString() !== loginUserId) {
+      return res
+        .status(401)
+        .json(createResponse(false, null, "you cannot edit a comment that doesn't belong to you"));
+    }
+
+    commentExist.comment = comment;
+
+    const updatedComment = await commentExist.save();
+
+    res.status(201).json(createResponse(true, updatedComment, "comment updated successfully"));
   } catch (error) {
     console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
@@ -96,4 +139,4 @@ const deleteComment = async (req, res) => {
   }
 };
 
-module.exports = { addComment, getCommentsForMeal, deleteComment };
+module.exports = { addComment, getCommentsForMeal, editComment, deleteComment };
