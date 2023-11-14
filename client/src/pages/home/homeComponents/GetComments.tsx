@@ -11,12 +11,14 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { AuthServices } from "../../../services/AuthServices";
 import { AuthorInterface } from "../../../interfaces/AuthInterfaces";
+import EditModal from "../../../components/EditModal";
 
 const GetComments = () => {
   const params = useParams();
   const isAuthenticated = useAuthCheck();
   const [comments, setComments] = useState<CommentRequestInterface[]>([]);
   const [openSort, setOpenSort] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const userInfo: AuthorInterface | null = AuthServices.getUserInfoFromLocalStorage();
 
@@ -36,9 +38,28 @@ const GetComments = () => {
     }
   };
 
+  const editComment = async (id: string, editedComment: string) => {
+    if (!isAuthenticated) {
+      toast.error("You cannot edit a comment that does not belong to you");
+    } else {
+      try {
+        const response = await CommentServices.putComments(id, editedComment);
+        if (response.success === true) {
+          toast.success(response.message);
+        }
+        if (params.id !== undefined) {
+          getCommentsData(params.id);
+        }
+      } catch (error: any) {
+        const errorMessage: string = error.toString();
+        toast.error(errorMessage);
+      }
+    }
+  };
+
   const deleteComment = async (id: string) => {
     if (!isAuthenticated) {
-      toast.error("You cannot remove a meal that does not belong to you");
+      toast.error("You cannot remove a comment that does not belong to you");
     } else {
       try {
         const response = await CommentServices.deleteComment(id);
@@ -117,7 +138,7 @@ const GetComments = () => {
               <div className="flex gap-2">
                 {isCurrentUser && (
                   <div>
-                    <button>
+                    <button onClick={() => setShowModal(true)}>
                       <AiOutlineEdit />
                     </button>
 
@@ -127,6 +148,8 @@ const GetComments = () => {
                   </div>
                 )}
               </div>
+
+              {showModal && <EditModal setShowModal={setShowModal} />}
             </div>
           );
         })}

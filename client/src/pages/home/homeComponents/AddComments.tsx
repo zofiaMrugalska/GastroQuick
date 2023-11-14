@@ -1,6 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AddCommentsProps, CommentRequestInterface } from "../../../interfaces/CommentInterfaces";
-import { AuthServices } from "../../../services/AuthServices";
 import { CommentServices } from "../../../services/CommentServices";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";

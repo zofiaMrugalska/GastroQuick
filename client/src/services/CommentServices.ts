@@ -35,6 +35,24 @@ export const CommentServices = {
     }
   },
 
+  putComments: async (id: string, editedComment: string) => {
+    const token: string | null = AuthServices.getTokenFromLocalStorage();
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/comments/edit/${id}`,
+        { editedComment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
   deleteComment: async (id: string) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
 
