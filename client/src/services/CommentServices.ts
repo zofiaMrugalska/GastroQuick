@@ -26,20 +26,20 @@ export const CommentServices = {
     }
   },
 
-  getComments: async (id: string): Promise<ResponseCommentInterafce> => {
+  getComments: async (mealId: string): Promise<ResponseCommentInterafce> => {
     try {
-      const response = await axios.get(`http://localhost:5000/comments/${id}`);
+      const response = await axios.get(`http://localhost:5000/comments/${mealId}`);
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
     }
   },
 
-  putComments: async (id: string, editedComment: string) => {
+  putComments: async (commentId: string, editedComment: string) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
     try {
       const response = await axios.put(
-        `http://localhost:5000/comments/edit/${id}`,
+        `http://localhost:5000/comments/edit/${commentId}`,
         { editedComment },
         {
           headers: {
@@ -53,11 +53,11 @@ export const CommentServices = {
     }
   },
 
-  deleteComment: async (id: string) => {
+  deleteComment: async (commentId: string) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
 
     try {
-      const response = await axios.delete(`http://localhost:5000/comments/${id}`, {
+      const response = await axios.delete(`http://localhost:5000/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

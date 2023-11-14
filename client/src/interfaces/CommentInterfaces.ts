@@ -10,13 +10,6 @@ export interface CommentRequestInterface {
   createdAt: string;
 }
 
-export interface EditedCommentRequestInterface {
-  _id: string;
-  author: Author;
-  editedComment: string;
-  createdAt: string;
-}
-
 export interface ResponseCommentInterafce {
   data: CommentRequestInterface[];
   message: string;

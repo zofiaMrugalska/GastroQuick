@@ -18,7 +18,7 @@ const GetComments = () => {
   const isAuthenticated = useAuthCheck();
   const [comments, setComments] = useState<CommentRequestInterface[]>([]);
   const [openSort, setOpenSort] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<null | string>(null);
 
   const userInfo: AuthorInterface | null = AuthServices.getUserInfoFromLocalStorage();
 
@@ -38,17 +38,17 @@ const GetComments = () => {
     }
   };
 
-  const editComment = async (id: string, editedComment: string) => {
+  const editComment = async (commentId: string, editedComment: string) => {
     if (!isAuthenticated) {
       toast.error("You cannot edit a comment that does not belong to you");
     } else {
       try {
-        const response = await CommentServices.putComments(id, editedComment);
+        const response = await CommentServices.putComments(commentId, editedComment);
         if (response.success === true) {
           toast.success(response.message);
         }
         if (params.id !== undefined) {
-          getCommentsData(params.id);
+          getCommentsData(params.id); // meal id chyba
         }
       } catch (error: any) {
         const errorMessage: string = error.toString();
@@ -138,7 +138,8 @@ const GetComments = () => {
               <div className="flex gap-2">
                 {isCurrentUser && (
                   <div>
-                    <button onClick={() => setShowModal(true)}>
+                    {/* do show mdoal dalejmy aktualne id ktore klikamy  */}
+                    <button onClick={() => setShowModal(comment._id)}>
                       <AiOutlineEdit />
                     </button>
 
@@ -149,7 +150,16 @@ const GetComments = () => {
                 )}
               </div>
 
-              {showModal && <EditModal setShowModal={setShowModal} />}
+              {showModal === comment._id && (
+                <EditModal
+                  setShowModal={setShowModal}
+                  commentId={comment?._id}
+                  authorName={comment?.author?.name}
+                  commentText={comment?.comment}
+                  commentDate={formatDate(new Date(comment.createdAt))}
+                  editComment={editComment}
+                />
+              )}
             </div>
           );
         })}
