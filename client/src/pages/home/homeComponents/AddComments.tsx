@@ -1,6 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AddCommentsProps, CommentRequestInterface } from "../../../interfaces/CommentInterfaces";
-import { AuthServices } from "../../../services/AuthServices";
 import { CommentServices } from "../../../services/CommentServices";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -22,11 +21,11 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
       toast.error("you must be logged in to add a comment");
     } else {
       try {
-        const response = await CommentServices.addComment(data, params.id);
+        const response = await CommentServices.addComment(data, params.mealId);
         if (response.success === true) {
           toast.success(response.message);
-          if (params.id) {
-            getCommentsData(params.id);
+          if (params.mealId) {
+            getCommentsData(params.mealId);
           }
         }
       } catch (error: any) {
