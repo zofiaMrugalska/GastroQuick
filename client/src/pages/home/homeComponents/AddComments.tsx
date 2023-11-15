@@ -21,11 +21,11 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
       toast.error("you must be logged in to add a comment");
     } else {
       try {
-        const response = await CommentServices.addComment(data, params.id);
+        const response = await CommentServices.addComment(data, params.mealId);
         if (response.success === true) {
           toast.success(response.message);
-          if (params.id) {
-            getCommentsData(params.id);
+          if (params.mealId) {
+            getCommentsData(params.mealId);
           }
         }
       } catch (error: any) {

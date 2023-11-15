@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import useAuthCheck from "../../../hooks/useAuthCheck";
 import {
   CommentRequestInterface,
   ResponseCommentInterafce,
 } from "../../../interfaces/CommentInterfaces";
-import { CommentServices } from "../../../services/CommentServices";
-import AddComments from "./AddComments";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import toast from "react-hot-toast";
-import { AuthServices } from "../../../services/AuthServices";
 import { AuthorInterface } from "../../../interfaces/AuthInterfaces";
+import { CommentServices } from "../../../services/CommentServices";
+import { AuthServices } from "../../../services/AuthServices";
+import AddComments from "./AddComments";
 import EditModal from "../../../components/EditModal";
 
 const GetComments = () => {
@@ -47,9 +47,10 @@ const GetComments = () => {
         if (response.success === true) {
           toast.success(response.message);
         }
-        if (params.id !== undefined) {
-          getCommentsData(params.id); // meal id chyba
+        if (params.mealId !== undefined) {
+          getCommentsData(params.mealId);
         }
+        setShowModal(null);
       } catch (error: any) {
         const errorMessage: string = error.toString();
         toast.error(errorMessage);
@@ -66,8 +67,8 @@ const GetComments = () => {
         if (response.success === true) {
           toast.success(response.message);
         }
-        if (params.id !== undefined) {
-          getCommentsData(params.id);
+        if (params.mealId !== undefined) {
+          getCommentsData(params.mealId);
         }
       } catch (error: any) {
         const errorMessage: string = error.toString();
@@ -77,12 +78,11 @@ const GetComments = () => {
   };
 
   useEffect(() => {
-    if (params.id !== undefined) {
-      getCommentsData(params.id);
+    if (params.mealId !== undefined) {
+      getCommentsData(params.mealId);
     }
   }, []);
 
-  //mozesz sie dowiedziec do czego usecalbak uzyc moze tutaj byly spoko?
   const toggleSortOption = (): void => {
     setOpenSort(!openSort);
   };
@@ -138,7 +138,6 @@ const GetComments = () => {
               <div className="flex gap-2">
                 {isCurrentUser && (
                   <div>
-                    {/* do show mdoal dalejmy aktualne id ktore klikamy  */}
                     <button onClick={() => setShowModal(comment._id)}>
                       <AiOutlineEdit />
                     </button>

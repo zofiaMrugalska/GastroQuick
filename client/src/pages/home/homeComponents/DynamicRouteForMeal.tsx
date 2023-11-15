@@ -20,10 +20,10 @@ const DynamicRouteForMeal = () => {
   };
 
   useEffect(() => {
-    if (params.id !== undefined) {
-      getData(params.id);
+    if (params.mealId !== undefined) {
+      getData(params.mealId);
     }
-  }, [params.id]);
+  }, [params.mealId]);
 
   return (
     <div>

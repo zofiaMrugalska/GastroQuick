@@ -9,7 +9,7 @@ import useAuthCheck from "../../hooks/useAuthCheck";
 const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const isAuthenticated = useAuthCheck();
-  const { id } = useParams<{ id: string | undefined }>();
+  const { mealId } = useParams<{ mealId: string | undefined }>();
 
   //wytestowac te funkcje
   const increaseQuantity = (): void => {
@@ -64,7 +64,7 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
       </div>
 
       <button
-        onClick={() => postMealToCart(id, quantity)}
+        onClick={() => postMealToCart(mealId, quantity)}
         className="min-w-[250px] mt-2 p-2 bg-[#77767677] text-center rounded-lg"
       >
         Add to cart

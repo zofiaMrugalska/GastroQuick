@@ -1,16 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { EditModalPropsInterface } from "../interfaces/ModalInterface";
 
-interface EditModalProps {
-  setShowModal: React.Dispatch<React.SetStateAction<null | string>>;
-  commentId: string;
-  authorName: string;
-  commentText: string;
-  commentDate: string;
-  editComment: (id: string, editedComment: string) => Promise<void>;
-}
-
-const EditModal: React.FC<EditModalProps> = ({
+const EditModal: React.FC<EditModalPropsInterface> = ({
   setShowModal,
   commentId,
   authorName,
@@ -25,7 +17,6 @@ const EditModal: React.FC<EditModalProps> = ({
   } = useForm<{ editedComment: string }>();
 
   const onSubmit: SubmitHandler<{ editedComment: string }> = async (data) => {
-    console.log(data);
     editComment(commentId, data.editedComment);
   };
 
