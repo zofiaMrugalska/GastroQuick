@@ -1,8 +1,7 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import App from "../App";
 
-test("renders App component", () => {
-  const { container } = render(<App />);
+test("renders App component", async () => {
+  const { container } = await render(<App />);
   expect(container).toBeInTheDocument();
 });
