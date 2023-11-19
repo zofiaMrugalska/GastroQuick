@@ -11,7 +11,6 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   const isAuthenticated = useAuthCheck();
   const { mealId } = useParams<{ mealId: string | undefined }>();
 
-  //wytestowac te funkcje
   const increaseQuantity = (): void => {
     setQuantity(quantity + 1);
   };

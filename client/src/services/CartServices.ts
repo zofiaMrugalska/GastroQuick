@@ -43,7 +43,7 @@ export const CartServices = {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
 
     try {
-      const response = await axios.delete(`http://localhost:5000/cart/${id}`, {
+      const response = await axios.delete(`http://localhost:5000/cart/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
