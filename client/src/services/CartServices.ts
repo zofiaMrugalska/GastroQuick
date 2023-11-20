@@ -39,11 +39,11 @@ export const CartServices = {
     }
   },
 
-  deleteOneMealFromOrder: async (id: string | undefined) => {
+  deleteOneMealFromOrder: async (orderId: string | undefined) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
 
     try {
-      const response = await axios.delete(`http://localhost:5000/cart/delete/${id}`, {
+      const response = await axios.delete(`http://localhost:5000/cart/delete/${orderId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -24,12 +24,12 @@ const Cart = () => {
     }
   };
 
-  const deleteMealFromOrder = async (id: string | undefined) => {
+  const deleteMealFromOrder = async (orderId: string | undefined) => {
     if (!isAuthenticated) {
       toast.error("You cannot remove a meal that does not belong to you");
     } else {
       try {
-        const response = await CartServices.deleteOneMealFromOrder(id);
+        const response = await CartServices.deleteOneMealFromOrder(orderId);
         if (response.success === true) {
           toast.success(response.message);
         }
@@ -47,6 +47,22 @@ const Cart = () => {
       getMealsInOrder();
     }
   }, []);
+
+  const increaseEditQuantity = (orderId: string | undefined) => {
+    const orderIndex = order.findIndex((order) => order._id === orderId);
+    const updatedOrders = [...order];
+    updatedOrders[orderIndex].quantity += 1;
+    setOrder(updatedOrders);
+  };
+
+  const reduceEditQuantity = (orderId: string | undefined) => {
+    const orderIndex = order.findIndex((order) => order._id === orderId);
+    const updatedOrders = [...order];
+    if (updatedOrders[orderIndex].quantity > 1) {
+      updatedOrders[orderIndex].quantity -= 1;
+    }
+    setOrder(updatedOrders);
+  };
 
   return (
     <div>
@@ -66,7 +82,13 @@ const Cart = () => {
                     />
 
                     <p>{order.meal?.name}</p>
-                    <p>{order.quantity}</p>
+
+                    <div className="flex gap-4">
+                      <button onClick={() => increaseEditQuantity(order._id)}>+</button>
+                      <p>{order.quantity}</p>
+                      <button onClick={() => reduceEditQuantity(order._id)}>-</button>
+                    </div>
+
                     <p>{order.price}</p>
 
                     <button onClick={() => deleteMealFromOrder(order._id)}>
@@ -85,3 +107,5 @@ const Cart = () => {
   );
 };
 export default Cart;
+
+// robimy funkcje w ktorej na przycisk zwiekszam, zmniejszamy ilosc o 1, nie moze byc mniejsza niz 1 //zwieksza sie tez cena trzeba pamietac// po przyciskaniu ilosc musi sie updatowac na stronie w tym samym czasie
