@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OrderInterface, ResponseOrderMeals } from "../../interfaces/CartInterfaces";
+import { ExtendOrderInterface, ResponseOrderMeals } from "../../interfaces/CartInterfaces";
 import { CartServices } from "../../services/CartServices";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import Loading from "../../components/Loading";
@@ -10,7 +10,7 @@ const Cart = () => {
   /// jesli jesstes zalogowany a nie masz niczego w koszyku, ma sie pokazac ze twoj koszyk jest pusty
   ///jesli jestes zalogowany ma aja sie pokazac twoje posilki w zamolwieniu po czym mozesz przejsc dalej i to kupic, dac adres, wybrac forme platnosci i zaplacic, po czym zamowienie przejdzie do historii zamowien
 
-  const [order, setOrder] = useState<OrderInterface[]>([]);
+  const [order, setOrder] = useState<ExtendOrderInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const isAuthenticated = useAuthCheck();
 
@@ -48,11 +48,24 @@ const Cart = () => {
     }
   }, []);
 
+  //to bedzie spoko do usecalback bo sie powtartza?????? (uzywa sie np na buttanch ktore sie powtarzja zeby sie nie rendeowany )
+
   const increaseEditQuantity = (orderId: string | undefined) => {
-    const orderIndex = order.findIndex((order) => order._id === orderId);
-    const updatedOrders = [...order];
-    updatedOrders[orderIndex].quantity += 1;
-    setOrder(updatedOrders);
+    if (orderId !== undefined) {
+      const orderIndex = order.findIndex((order) => order._id === orderId);
+
+      const updatedOrders: ExtendOrderInterface[] = [...order];
+
+      updatedOrders[orderIndex].quantity += 1;
+
+      const sum = (updatedOrders[orderIndex].price + updatedOrders[orderIndex].meal?.price).toFixed(
+        2
+      );
+
+      updatedOrders[orderIndex].price = parseFloat(sum);
+
+      setOrder(updatedOrders);
+    }
   };
 
   const reduceEditQuantity = (orderId: string | undefined) => {
@@ -72,7 +85,7 @@ const Cart = () => {
         <div>
           {order.length > 0 ? (
             <div>
-              {order.map((order: OrderInterface) => {
+              {order.map((order: ExtendOrderInterface) => {
                 return (
                   <div key={order._id} className=" mt-9 grid grid-cols-5 place-items-center">
                     <img
@@ -107,5 +120,3 @@ const Cart = () => {
   );
 };
 export default Cart;
-
-// robimy funkcje w ktorej na przycisk zwiekszam, zmniejszamy ilosc o 1, nie moze byc mniejsza niz 1 //zwieksza sie tez cena trzeba pamietac// po przyciskaniu ilosc musi sie updatowac na stronie w tym samym czasie
