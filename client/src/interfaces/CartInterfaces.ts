@@ -19,3 +19,8 @@ export interface ResponseOrderMeals {
   message: string;
   success: boolean;
 }
+
+export interface SummaryOrderInterface {
+  totalQuantity: () => number;
+  totalPrice: () => number;
+}

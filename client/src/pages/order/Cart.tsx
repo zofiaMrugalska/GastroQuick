@@ -5,6 +5,7 @@ import useAuthCheck from "../../hooks/useAuthCheck";
 import Loading from "../../components/Loading";
 import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-hot-toast";
+import SummaryOrder from "./SummaryOrder";
 
 const Cart = () => {
   /// jesli jesstes zalogowany a nie masz niczego w koszyku, ma sie pokazac ze twoj koszyk jest pusty
@@ -50,9 +51,9 @@ const Cart = () => {
 
   //to bedzie spoko do usecalback bo sie powtartza?????? (uzywa sie np na buttanch ktore sie powtarzja zeby sie nie rendeowany )
 
-  const increaseEditQuantity = (orderId: string | undefined) => {
+  const increaseEditQuantity = (orderId: string | undefined): void => {
     if (orderId !== undefined) {
-      const orderIndex = order.findIndex((order) => order._id === orderId);
+      const orderIndex: number = order.findIndex((order) => order._id === orderId);
 
       const updatedOrders: ExtendOrderInterface[] = [...order];
 
@@ -68,13 +69,32 @@ const Cart = () => {
     }
   };
 
-  const reduceEditQuantity = (orderId: string | undefined) => {
-    const orderIndex = order.findIndex((order) => order._id === orderId);
-    const updatedOrders = [...order];
+  const reduceEditQuantity = (orderId: string | undefined): void => {
+    const orderIndex: number = order.findIndex((order) => order._id === orderId);
+    const updatedOrders: ExtendOrderInterface[] = [...order];
     if (updatedOrders[orderIndex].quantity > 1) {
       updatedOrders[orderIndex].quantity -= 1;
     }
+
+    if (updatedOrders[orderIndex].price > updatedOrders[orderIndex].meal?.price) {
+      const sum = (updatedOrders[orderIndex].price - updatedOrders[orderIndex].meal?.price).toFixed(
+        2
+      );
+
+      updatedOrders[orderIndex].price = parseFloat(sum);
+    }
+
     setOrder(updatedOrders);
+  };
+
+  const totalQuantity = (): number => {
+    let calcualteQuantity = order.reduce((total, meal) => total + meal.quantity, 0);
+    return calcualteQuantity;
+  };
+
+  const totalPrice = (): number => {
+    let calculatePrice = order.reduce((total, meal) => total + meal.price, 0);
+    return parseFloat(calculatePrice.toFixed(2));
   };
 
   return (
@@ -102,7 +122,7 @@ const Cart = () => {
                       <button onClick={() => reduceEditQuantity(order._id)}>-</button>
                     </div>
 
-                    <p>{order.price}</p>
+                    <p>{order.price}$</p>
 
                     <button onClick={() => deleteMealFromOrder(order._id)}>
                       <AiOutlineDelete size={20} />
@@ -110,6 +130,7 @@ const Cart = () => {
                   </div>
                 );
               })}
+              <SummaryOrder totalQuantity={totalQuantity} totalPrice={totalPrice} />
             </div>
           ) : (
             <p>Your shopping cart is empty</p>
