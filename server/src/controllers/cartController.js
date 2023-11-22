@@ -11,9 +11,6 @@ const getMealsFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const orders = await cartModel.find({ author: userId }).populate("meal");
-
-    console.log(orders);
-
     const activeOrders = orders.filter((item) => item.isOrderActiv === true);
     res.status(200).json(createResponse(true, activeOrders, "success"));
   } catch (error) {
@@ -31,29 +28,40 @@ const addToCart = async (req, res) => {
     const author = req.user.id;
     const mealId = req.params.mealId;
     const { quantity, isOrderActiv } = req.body;
-    const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
 
+    const validateMealId = mongoose.Types.ObjectId.isValid(mealId);
     if (!validateMealId) {
       return res.status(400).json(createResponse(false, null, "meal Id is not valid"));
     }
 
     const isMealExist = await mealModel.findOne({ _id: mealId });
-
-    let price = (isMealExist.price * quantity).toFixed(2);
-
     if (!isMealExist) {
       return res.status(404).json(createResponse(false, null, "meal not found"));
     }
 
-    const mealInCart = await cartModel.create({
-      author,
-      meal: mealId,
-      quantity,
-      isOrderActiv,
-      price,
-    });
+    let price = (isMealExist.price * quantity).toFixed(2);
 
-    res.status(201).json(createResponse(true, mealInCart, "the meal has been added"));
+    const isMealOrderExist = await cartModel.findOne({ meal: mealId, author, isOrderActiv: true });
+
+    if (isMealOrderExist) {
+      isMealOrderExist.quantity += quantity;
+
+      isMealOrderExist.price = isMealOrderExist.quantity * isMealExist.price;
+
+      await isMealOrderExist.save();
+
+      res.status(201).json(createResponse(true, isMealOrderExist, "the meal has been added"));
+    } else {
+      const mealInCart = await cartModel.create({
+        author,
+        meal: mealId,
+        quantity,
+        isOrderActiv,
+        price,
+      });
+
+      res.status(201).json(createResponse(true, mealInCart, "the meal has been added"));
+    }
   } catch (error) {
     console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
@@ -61,7 +69,7 @@ const addToCart = async (req, res) => {
 };
 
 //@desc delete
-//@route DELETE /cart/:mealOrderId
+//@route DELETE /cart/delete/:mealOrderId
 //@access for logged in users
 
 const deleteOneMealFromOrder = async (req, res) => {

@@ -15,7 +15,7 @@ cartRouter.get("/getMealsFromCart", validateToken, getMealsFromCart);
 
 cartRouter.post("/addToCart/:mealId", validateToken, addToCart);
 
-cartRouter.delete("/:mealOrderId", validateToken, deleteOneMealFromOrder);
+cartRouter.delete("/delete/:mealOrderId", validateToken, deleteOneMealFromOrder);
 
 cartRouter.delete("/deleteAllOrders", deleteAllOrders); //to remove all ordered meals, helpful when testing
 
