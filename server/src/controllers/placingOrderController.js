@@ -31,13 +31,14 @@ const sendOrder = async (req, res) => {
 
     const cartOrder = await cartModel.find({ author, isOrderActiv: true });
 
-    console.log(cartOrder);
-
-    if (!cartOrder) {
-      return res.status(404).json(createResponse(false, null, "Cart with order not found"));
+    if (!cartOrder || cartOrder.length === 0) {
+      return res
+        .status(404)
+        .json(createResponse(false, null, "Cart with order not found or cart is empty"));
     }
 
     const order = await orderModel.create({
+      author,
       name,
       surname,
       phoneNumber,

@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const orderSchema = mongoose.Schema(
   {
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     name: {
       type: String,
       required: [true, "please add the name"],
