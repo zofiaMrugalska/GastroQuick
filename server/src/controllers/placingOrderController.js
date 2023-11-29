@@ -12,20 +12,11 @@ const sendOrder = async (req, res) => {
 
     console.log(author);
 
-    const { name, surname, phoneNumber, street, houseNumber, city, isCardPayment, isCashPayment } =
-      req.body;
+    const { name, surname, phoneNumber, street, houseNumber, city, paymentMethod } = req.body;
 
     console.log(req.body);
 
-    if (
-      !name ||
-      !surname ||
-      !phoneNumber ||
-      !street ||
-      !houseNumber ||
-      !city ||
-      (!isCardPayment && !isCashPayment)
-    ) {
+    if (!name || !surname || !phoneNumber || !street || !houseNumber || !city || !paymentMethod) {
       return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
     }
 
@@ -45,8 +36,7 @@ const sendOrder = async (req, res) => {
       street,
       houseNumber,
       city,
-      isCardPayment,
-      isCashPayment,
+      paymentMethod,
       order: cartOrder,
     });
 

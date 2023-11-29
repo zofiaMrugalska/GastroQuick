@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { SummaryOrderInterface } from "../../interfaces/CartInterfaces";
+import PlacingOrderModal from "./PlacingOrderModal";
 
 const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   return (
     <div>
       <h1>Summary:</h1>
@@ -15,7 +19,9 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
         <p>{totalPrice()}$</p>
       </div>
 
-      <button>Next</button>
+      <button onClick={() => setShowModal(!showModal)}>Next</button>
+
+      {showModal && <PlacingOrderModal showModal={showModal} setShowModal={setShowModal} />}
     </div>
   );
 };

@@ -24,3 +24,14 @@ export interface SummaryOrderInterface {
   totalQuantity: () => number;
   totalPrice: () => number;
 }
+
+export interface PlaceOrderInterface {
+  name: string;
+  surname: string;
+  phoneNumber: string;
+  street: string;
+  houseNumber: string;
+  city: string;
+  paymentMethod: "card" | "cash";
+  order: OrderInterface;
+}

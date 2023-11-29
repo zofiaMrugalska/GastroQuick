@@ -30,14 +30,10 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: [true, "please add the city"],
     },
-    isCardPayment: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
-    isCashPayment: {
-      type: Boolean,
-      default: false,
+    paymentMethod: {
+      type: String,
+      enum: ["card", "cash"],
+      default: "card",
       required: true,
     },
     order: [
