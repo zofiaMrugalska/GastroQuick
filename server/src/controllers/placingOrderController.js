@@ -38,13 +38,10 @@ const sendOrder = async (req, res) => {
       order: cartOrder,
     });
 
-    console.log(order.order[0].isOrderActiv, "ORDER Activ");
-
     await cartModel.updateMany(
       { _id: { $in: cartOrder.map((item) => item._id) } },
       { $set: { isOrderActiv: false } }
     );
-    console.log(order.order[0].isOrderActiv, "ORDER Activ");
 
     res.status(201).json(createResponse(true, order, "the order has been sended"));
   } catch (error) {

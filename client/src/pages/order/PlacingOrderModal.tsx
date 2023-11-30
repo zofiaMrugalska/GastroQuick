@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import { PlaceOrderInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
 
@@ -20,13 +21,16 @@ const PlacingOrderModal = ({
     formState: { errors },
   } = useForm<PlaceOrderInterface>();
 
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<PlaceOrderInterface> = async (orderData) => {
     try {
       const response = await PlacingOrderServices.sendOrder(orderData);
       if (response.success === true) {
         toast.success(response.message);
+        setShowModal(!showModal);
+        navigate("/account");
       }
-      setShowModal(!showModal);
     } catch (error: any) {
       const errorMessage: string = error.toString();
       toast.error(errorMessage);
