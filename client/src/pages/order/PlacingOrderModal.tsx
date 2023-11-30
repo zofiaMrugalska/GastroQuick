@@ -24,6 +24,7 @@ const PlacingOrderModal = ({
       if (response.success === true) {
         toast.success(response.message);
       }
+      setShowModal(!showModal);
     } catch (error: any) {
       const errorMessage: string = error.toString();
       toast.error(errorMessage);

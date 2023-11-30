@@ -12,7 +12,7 @@ export const PlacingOrderServices = {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data, "response dtatataraftsa");
+
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

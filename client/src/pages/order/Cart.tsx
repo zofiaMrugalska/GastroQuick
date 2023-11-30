@@ -97,6 +97,7 @@ const Cart = () => {
     return parseFloat(calculatePrice.toFixed(2));
   };
 
+  console.log(order, "order w cart");
   return (
     <div>
       {loading ? (
