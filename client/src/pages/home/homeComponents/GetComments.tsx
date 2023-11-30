@@ -38,8 +38,6 @@ const GetComments = () => {
     }
   };
 
-  //to codereview
-
   const editComment = async (commentId: string, editedComment: string) => {
     if (!isAuthenticated) {
       toast.error("You cannot edit a comment that does not belong to you");
@@ -59,8 +57,6 @@ const GetComments = () => {
       }
     }
   };
-
-  //to codereview
 
   const deleteComment = async (id: string) => {
     if (!isAuthenticated) {
@@ -133,7 +129,6 @@ const GetComments = () => {
         {comments.map((comment: CommentRequestInterface) => {
           const isCurrentUser = comment?.author?._id === userInfo?.id;
           return (
-            //to codereview
             <div key={comment?._id} className="flex border-b-2">
               <div>
                 <p>{comment?.author?.name}</p>

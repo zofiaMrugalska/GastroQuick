@@ -20,7 +20,7 @@ export interface ResponseOrderMeals {
   success: boolean;
 }
 
-//to codereview
+//reviewed
 
 export interface SummaryOrderInterface {
   totalQuantity: () => number;
@@ -37,3 +37,4 @@ export interface PlaceOrderInterface {
   paymentMethod: "card" | "cash";
   order: OrderInterface;
 }
+//naprawe typ

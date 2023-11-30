@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-//to codereview
-
 const orderSchema = mongoose.Schema(
   {
     author: {

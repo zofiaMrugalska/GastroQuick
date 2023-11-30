@@ -2,9 +2,10 @@ import { useState } from "react";
 import { SummaryOrderInterface } from "../../interfaces/CartInterfaces";
 import PlacingOrderModal from "./PlacingOrderModal";
 
-//to codereview
+//reviewed
 
 const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
+  // typ zeby byl jak w inncyh sposob
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (

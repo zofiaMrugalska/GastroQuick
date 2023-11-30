@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { PlaceOrderInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
 
-//to codereview
-
+//reviewed
+//zrob interfdace tak jak wszedzie inidziej zobacz czy wszeidze tak masz  czy masz mieszkane  chinska
 const PlacingOrderModal = ({
   showModal,
   setShowModal,
@@ -22,7 +22,7 @@ const PlacingOrderModal = ({
   } = useForm<PlaceOrderInterface>();
 
   const navigate = useNavigate();
-
+  //napraw typ tutaj formularza nie masz order
   const onSubmit: SubmitHandler<PlaceOrderInterface> = async (orderData) => {
     try {
       const response = await PlacingOrderServices.sendOrder(orderData);

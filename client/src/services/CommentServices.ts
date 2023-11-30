@@ -35,8 +35,6 @@ export const CommentServices = {
     }
   },
 
-  //to codereview
-
   putComments: async (commentId: string, editedComment: string) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
     try {
@@ -54,8 +52,6 @@ export const CommentServices = {
       throw new Error(error.response.data.message);
     }
   },
-
-  //to codereview
 
   deleteComment: async (commentId: string) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
