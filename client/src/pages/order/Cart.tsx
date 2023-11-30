@@ -25,6 +25,7 @@ const Cart = () => {
     }
   };
 
+  //to codereview
   const deleteMealFromOrder = async (orderId: string | undefined) => {
     if (!isAuthenticated) {
       toast.error("You cannot remove a meal that does not belong to you");
@@ -50,6 +51,8 @@ const Cart = () => {
   }, []);
 
   //to bedzie spoko do usecalback bo sie powtartza?????? (uzywa sie np na buttanch ktore sie powtarzja zeby sie nie rendeowany )
+
+  //to codereview
 
   const increaseEditQuantity = (orderId: string | undefined): void => {
     if (orderId !== undefined) {
@@ -97,7 +100,6 @@ const Cart = () => {
     return parseFloat(calculatePrice.toFixed(2));
   };
 
-  console.log(order, "order w cart");
   return (
     <div>
       {loading ? (

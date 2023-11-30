@@ -4,6 +4,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { PlaceOrderInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
 
+//to codereview
+
 const PlacingOrderModal = ({
   showModal,
   setShowModal,

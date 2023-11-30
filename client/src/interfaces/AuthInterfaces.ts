@@ -8,6 +8,8 @@ export interface SignUpInterface extends SignInInterface {
   confirmPassword: string;
 }
 
+//to codereview
+
 export interface AuthorInterface {
   name: string;
   email: string;
