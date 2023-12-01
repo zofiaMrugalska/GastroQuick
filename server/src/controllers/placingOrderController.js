@@ -3,6 +3,23 @@ const cartModel = require("../models/cartModel");
 const orderModel = require("../models/placingOrderModel");
 
 //@desc sending order
+//@route GET /order/viewOrders
+//@access for logged in users
+
+//to codereview
+const viewOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const sendedOrders = await orderModel.find({ author: userId }).populate("order");
+    res.status(200).json(createResponse(true, sendedOrders, "success"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc sending order
 //@route POST /order/sendOrder
 //@access for logged in users
 
@@ -48,4 +65,4 @@ const sendOrder = async (req, res) => {
   }
 };
 
-module.exports = { sendOrder };
+module.exports = { sendOrder, viewOrders };
