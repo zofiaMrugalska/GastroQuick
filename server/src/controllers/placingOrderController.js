@@ -65,4 +65,18 @@ const sendOrder = async (req, res) => {
   }
 };
 
-module.exports = { sendOrder, viewOrders };
+//@desc delete
+//@route DELETE /order/deleteAll
+//@access for all only for testing on postman
+
+//to coderevbiew
+const deleteAll = async (req, res) => {
+  try {
+    const result = await orderModel.deleteMany();
+    res.status(201).json(createResponse(true, result, "usunioete wszytskie sa"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+module.exports = { sendOrder, viewOrders, deleteAll };
