@@ -20,14 +20,12 @@ export interface ResponseOrderMeals {
   success: boolean;
 }
 
-//reviewed
-
 export interface SummaryOrderInterface {
   totalQuantity: () => number;
   totalPrice: () => number;
 }
 
-export interface PlaceOrderInterface {
+export interface OrderDetailsInterface {
   name: string;
   surname: string;
   phoneNumber: string;
@@ -35,6 +33,17 @@ export interface PlaceOrderInterface {
   houseNumber: string;
   city: string;
   paymentMethod: "card" | "cash";
-  order: OrderInterface;
 }
-//naprawe typ
+
+export interface ResponseOrderDataInterface extends OrderDetailsInterface {
+  author: string;
+  order: ExtendOrderInterface;
+  _id: string;
+  createdAt: string;
+}
+
+export interface ResponseSendedOrderInterface {
+  data: ResponseOrderDataInterface[];
+  message: string;
+  success: boolean;
+}

@@ -2,7 +2,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { PlaceOrderInterface } from "../../interfaces/CartInterfaces";
+import { OrderDetailsInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
 
 //reviewed
@@ -19,11 +19,11 @@ const PlacingOrderModal = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<PlaceOrderInterface>();
+  } = useForm<OrderDetailsInterface>();
 
   const navigate = useNavigate();
   //napraw typ tutaj formularza nie masz order
-  const onSubmit: SubmitHandler<PlaceOrderInterface> = async (orderData) => {
+  const onSubmit: SubmitHandler<OrderDetailsInterface> = async (orderData) => {
     try {
       const response = await PlacingOrderServices.sendOrder(orderData);
       if (response.success === true) {
