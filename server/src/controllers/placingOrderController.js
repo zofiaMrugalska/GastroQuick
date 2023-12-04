@@ -10,8 +10,13 @@ const orderModel = require("../models/placingOrderModel");
 const viewOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    const sendedOrders = await orderModel.find({ author: userId }).populate("order");
+    const sendedOrders = await orderModel.find({ author: userId }).populate({
+      path: "order",
+      populate: {
+        path: "meal",
+        model: "Meal",
+      },
+    });
     res.status(200).json(createResponse(true, sendedOrders, "success"));
   } catch (error) {
     console.log("error", error);

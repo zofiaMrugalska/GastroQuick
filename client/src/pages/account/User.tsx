@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import {
+  ExtendOrderInterface,
   ResponseOrderDataInterface,
   ResponseSendedOrderInterface,
 } from "../../interfaces/CartInterfaces";
@@ -31,17 +32,35 @@ const User = () => {
 
   return (
     <div>
-      {sendedOrders?.map((order: ResponseOrderDataInterface) => {
+      {sendedOrders?.map((orderDetails: ResponseOrderDataInterface) => {
         return (
-          <div key={order._id}>
-            <p>{formatDate(new Date(order.createdAt))}</p>
-            <p>{order.name}</p>
-            <p>{order.surname}</p>
-            <p>{order.city}</p>
-            <p>{order.street}</p>
-            <p>{order.houseNumber}</p>
-            <p>{order.phoneNumber}</p>
-            <p>{order.paymentMethod}</p>
+          <div key={orderDetails._id}>
+            <p>{formatDate(new Date(orderDetails.createdAt))}</p>
+            <p>{orderDetails.name}</p>
+            <p>{orderDetails.surname}</p>
+            <p>{orderDetails.city}</p>
+            <p>{orderDetails.street}</p>
+            <p>{orderDetails.houseNumber}</p>
+            <p>{orderDetails.phoneNumber}</p>
+            <p>{orderDetails.paymentMethod}</p>
+
+            <div>
+              {orderDetails.order?.map((order: ExtendOrderInterface) => {
+                console.log(order, "order");
+                console.log(order.quantity, "order quantity");
+                console.log(order.meal.name, "order meal");
+                console.log(order.meal.description);
+                return (
+                  <div key={order._id}>
+                    <div className="flex gap-5">
+                      <p>{order.meal?.name}</p>
+                      <p>{order.quantity}</p>
+                      <p>{order.price}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
 
             <br />
             <br />
