@@ -1,3 +1,4 @@
+import { sensitiveHeaders } from "http2";
 import { useState, useEffect } from "react";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import {
@@ -17,7 +18,7 @@ const User = () => {
   const getOrders = async () => {
     try {
       const response: ResponseSendedOrderInterface = await PlacingOrderServices.viewOrders();
-      console.log(response.data);
+
       setSendedOrder(response.data);
     } catch (error) {
       console.log(error);
@@ -33,37 +34,54 @@ const User = () => {
   return (
     <div>
       {sendedOrders?.map((orderDetails: ResponseOrderDataInterface) => {
+        let order = orderDetails.order;
+        const summaryOrder = order.reduce((summary: number, orderItem: ExtendOrderInterface) => {
+          let total = summary + (orderItem.price || 0);
+          return parseFloat(total.toFixed(2));
+        }, 0);
+
         return (
-          <div key={orderDetails._id}>
+          <div key={orderDetails._id} className="mt-10 ">
             <p>{formatDate(new Date(orderDetails.createdAt))}</p>
-            <p>{orderDetails.name}</p>
-            <p>{orderDetails.surname}</p>
-            <p>{orderDetails.city}</p>
-            <p>{orderDetails.street}</p>
-            <p>{orderDetails.houseNumber}</p>
-            <p>{orderDetails.phoneNumber}</p>
-            <p>{orderDetails.paymentMethod}</p>
 
-            <div>
-              {orderDetails.order?.map((order: ExtendOrderInterface) => {
-                console.log(order, "order");
-                console.log(order.quantity, "order quantity");
-                console.log(order.meal.name, "order meal");
-                console.log(order.meal.description);
-                return (
-                  <div key={order._id}>
-                    <div className="flex gap-5">
-                      <p>{order.meal?.name}</p>
-                      <p>{order.quantity}</p>
-                      <p>{order.price}</p>
+            <div
+              className="grid grid-cols-1
+          xl:grid-cols-3"
+            >
+              <div>
+                <p>name: {orderDetails.name}</p>
+                <p>surname: {orderDetails.surname}</p>
+                <p>phone number: {orderDetails.phoneNumber}</p>
+              </div>
+
+              <div>
+                <p>city: {orderDetails.city}</p>
+                <p>street: {orderDetails.street}</p>
+                <p>house number: {orderDetails.houseNumber}</p>
+                <p>payment method: {orderDetails.paymentMethod}</p>
+              </div>
+
+              <div>
+                {orderDetails.order?.map((order: ExtendOrderInterface) => {
+                  return (
+                    <div key={order._id}>
+                      <div className="flex gap-5">
+                        <p>{order.meal?.name}</p>
+
+                        <div className="flex">
+                          <p>{order.quantity}</p>
+                          <p>x</p>
+                          <p>{order.meal?.price}</p>
+                        </div>
+
+                        <p>{order.price}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+                <p>Total Price: {summaryOrder}</p>
+              </div>
             </div>
-
-            <br />
-            <br />
           </div>
         );
       })}
