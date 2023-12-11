@@ -16,6 +16,7 @@ const User = () => {
   const [sendedOrders, setSendedOrder] = useState<ResponseOrderDataInterface[]>();
   const [openOrder, setOpenOrder] = useState<boolean>(true);
   const [selectedOrder, setSelectedOrder] = useState();
+  const [openSort, setOpenSort] = useState<boolean>(false);
   const isAuthenticated = useAuthCheck();
 
   const getOrders = async () => {
@@ -39,8 +40,57 @@ const User = () => {
     setSelectedOrder(sendedOrderId);
   };
 
+  const toggleSortBtn = (): void => {
+    setOpenSort(!openSort);
+  };
+
+  const fromTheLatestOrder = (): void => {
+    if (sendedOrders != undefined) {
+      const sortingFromLatest: ResponseOrderDataInterface[] = sendedOrders
+        .slice()
+        .sort((sendedOrder1, sendedOrder2) => {
+          const date1: Date = new Date(sendedOrder1.createdAt);
+          const date2: Date = new Date(sendedOrder2.createdAt);
+          return date2.getTime() - date1.getTime();
+        });
+
+      setSendedOrder(sortingFromLatest);
+    }
+  };
+
+  const fromTheOldestOrder = (): void => {
+    if (sendedOrders != undefined) {
+      const sortingFromOldest = sendedOrders.slice().sort((sendedOrder1, sendedOrder2) => {
+        const date1: Date = new Date(sendedOrder1.createdAt);
+        const date2: Date = new Date(sendedOrder2.createdAt);
+        return date1.getTime() - date2.getTime();
+      });
+
+      setSendedOrder(sortingFromOldest);
+    }
+  };
+
   return (
     <div className=" ml-10 mt-20">
+      <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset">
+        <button onClick={toggleSortBtn}>
+          <div className="flex items-center hover:font-bold">
+            sort
+            <div> {openSort ? <IoMdArrowDropup /> : <IoMdArrowDropdown />} </div>
+          </div>
+        </button>
+        {openSort && (
+          <div>
+            <button onClick={fromTheOldestOrder} className="border-t w-[70px] hover:font-bold">
+              oldest
+            </button>
+            <br />
+            <button onClick={fromTheLatestOrder} className="border-t w-[70px] hover:font-bold">
+              newest
+            </button>
+          </div>
+        )}
+      </div>
       {sendedOrders?.map((orderDetails: ResponseOrderDataInterface) => {
         console.log(sendedOrders);
         let order = orderDetails.order;
