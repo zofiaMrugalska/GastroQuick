@@ -37,7 +37,7 @@ export interface OrderDetailsInterface {
 
 export interface ResponseOrderDataInterface extends OrderDetailsInterface {
   author: string;
-  order: ExtendOrderInterface;
+  order: ExtendOrderInterface[];
   _id: string;
   createdAt: string;
 }
