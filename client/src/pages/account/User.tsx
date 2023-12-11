@@ -1,4 +1,3 @@
-import { sensitiveHeaders } from "http2";
 import { useState, useEffect } from "react";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import {

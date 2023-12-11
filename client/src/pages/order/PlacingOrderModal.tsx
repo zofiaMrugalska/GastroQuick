@@ -43,7 +43,7 @@ const PlacingOrderModal = ({
       className=" fixed inset-0 flex justify-center items-center"
     >
       <div className="flex flex-col justify-center items-center mt-20 min-h-[700px] min-w-[400px] bg-[#ffffff] p-8  rounded-xl ">
-        <button onClick={() => setShowModal(!showModal)} className=" relative left-36 bottom-8">
+        <button onClick={() => setShowModal(!showModal)} className=" relative left-36 bottom-5">
           <IoIosCloseCircleOutline size={30} color="gray" />
         </button>
 
@@ -52,6 +52,10 @@ const PlacingOrderModal = ({
             <input
               {...register("name", {
                 required: "name is required",
+                pattern: {
+                  value: /^[A-Za-z]+$/,
+                  message: "Please enter a valid name with only letters",
+                },
               })}
               type="text"
               placeholder="name"
@@ -64,6 +68,10 @@ const PlacingOrderModal = ({
             <input
               {...register("surname", {
                 required: "surname is required",
+                pattern: {
+                  value: /^[A-Za-z]+$/,
+                  message: "Please enter a valid surname with only letters",
+                },
               })}
               type="text"
               placeholder="surname"
@@ -76,6 +84,11 @@ const PlacingOrderModal = ({
             <input
               {...register("phoneNumber", {
                 required: "phone number is required",
+                pattern: {
+                  value: /^(\d{9}|\d{3}\s\d{3}\s\d{3})$/,
+                  message:
+                    "Please enter a valid 9-digit phone number or format it as 'xxx xxx xxx'",
+                },
               })}
               type="text"
               placeholder="phone number"
@@ -88,6 +101,10 @@ const PlacingOrderModal = ({
             <input
               {...register("street", {
                 required: "street is required",
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "Please enter a valid street with only letters and spaces",
+                },
               })}
               type="text"
               placeholder="street"
@@ -100,6 +117,11 @@ const PlacingOrderModal = ({
             <input
               {...register("houseNumber", {
                 required: "house number is required",
+                pattern: {
+                  value: /^[A-Za-z0-9\s/]+$/,
+                  message:
+                    "Please enter a valid house number with letters, digits, spaces, or slashes",
+                },
               })}
               type="text"
               placeholder="house number"
@@ -112,6 +134,10 @@ const PlacingOrderModal = ({
             <input
               {...register("city", {
                 required: "city is required",
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "Only letters and spaces are allowed",
+                },
               })}
               type="text"
               placeholder="city"
