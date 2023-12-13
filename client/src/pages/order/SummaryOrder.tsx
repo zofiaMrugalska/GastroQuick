@@ -9,20 +9,25 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className=" mt-8">
       <h1>Summary:</h1>
 
-      <div>
+      <div className="flex gap-2">
         <h1>Total quantity:</h1>
         <p>{totalQuantity()}</p>
       </div>
 
-      <div>
+      <div className="flex gap-2">
         <h1>Total price:</h1>
         <p>{totalPrice()}$</p>
       </div>
 
-      <button onClick={() => setShowModal(!showModal)}>Next</button>
+      <button
+        onClick={() => setShowModal(!showModal)}
+        className="  py-1 px-5 rounded-lg shadow-shadowInset"
+      >
+        Next
+      </button>
 
       {showModal && <PlacingOrderModal showModal={showModal} setShowModal={setShowModal} />}
     </div>

@@ -73,11 +73,11 @@ const User = () => {
   };
 
   return (
-    <div>
+    <div className=" max-w-4xl mx-auto">
       {loading ? (
         <Loading />
       ) : (
-        <div className=" ml-10 mt-20">
+        <div className="mt-20">
           <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset">
             <button onClick={toggleSortBtn}>
               <div className="flex items-center hover:font-bold">
