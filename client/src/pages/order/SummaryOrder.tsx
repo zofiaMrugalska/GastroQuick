@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { SummaryOrderInterface } from "../../interfaces/CartInterfaces";
 import PlacingOrderModal from "./PlacingOrderModal";
+import OrderModal from "../../components/OrderModal";
 
 //reviewed
 
 const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
   // typ zeby byl jak w inncyh sposob
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
 
   return (
     <div className=" mt-8">
@@ -29,7 +31,15 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
         Next
       </button>
 
-      {showModal && <PlacingOrderModal showModal={showModal} setShowModal={setShowModal} />}
+      {showModal && (
+        <PlacingOrderModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          showOrderModal={showOrderModal}
+          setShowOrderModal={setShowOrderModal}
+        />
+      )}
+      {showOrderModal && <OrderModal />}
     </div>
   );
 };

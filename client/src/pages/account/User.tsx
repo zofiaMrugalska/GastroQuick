@@ -98,7 +98,6 @@ const User = () => {
             )}
           </div>
           {sendedOrders?.map((orderDetails: ResponseOrderDataInterface) => {
-            console.log(sendedOrders);
             let order = orderDetails.order;
             const summaryOrder = order.reduce(
               (summary: number, orderItem: ExtendOrderInterface) => {
