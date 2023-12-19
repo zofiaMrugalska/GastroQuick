@@ -39,7 +39,9 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
           setShowOrderModal={setShowOrderModal}
         />
       )}
-      {showOrderModal && <OrderModal />}
+      {showOrderModal && (
+        <OrderModal showOrderModal={showOrderModal} setShowOrderModal={setShowOrderModal} />
+      )}
     </div>
   );
 };

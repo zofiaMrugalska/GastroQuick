@@ -37,10 +37,12 @@ const PlacingOrderModal = ({
         setShowModal(!showModal);
         setShowOrderModal(!showOrderModal);
 
+        //to codereview
+
         setTimeout(() => {
           setShowOrderModal(false);
           navigate("/account");
-        }, 10000);
+        }, 5000);
       }
     } catch (error: any) {
       const errorMessage: string = error.toString();
@@ -97,7 +99,7 @@ const PlacingOrderModal = ({
                 {...register("phoneNumber", {
                   required: "phone number is required",
                   pattern: {
-                    value: /^(\d{9}|\d{3}\s\d{3}\s\d{3})$/,
+                    value: /^(\d{9}|\d{3}\s\d{3}\s\d{3})\s*$/,
                     message:
                       "Please enter a valid 9-digit phone number or format it as 'xxx xxx xxx'",
                   },
