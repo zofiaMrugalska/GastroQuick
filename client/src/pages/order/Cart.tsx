@@ -98,7 +98,7 @@ const Cart = () => {
   };
 
   return (
-    <div>
+    <div className=" max-w-6xl mx-auto">
       {loading ? (
         <Loading />
       ) : (
