@@ -78,7 +78,7 @@ const sendOrder = async (req, res) => {
 const deleteAll = async (req, res) => {
   try {
     const result = await orderModel.deleteMany();
-    res.status(201).json(createResponse(true, result, "usunioete wszytskie sa"));
+    res.status(201).json(createResponse(true, result, "deleted all"));
   } catch (error) {
     console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
