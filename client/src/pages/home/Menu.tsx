@@ -38,7 +38,7 @@ const Menu = () => {
               <div key={meal._id} className="p-7 flex justify-center ">
                 <Link to={`/meal/${meal.name}/${meal._id}`} className="">
                   <li className=" max-w-[240px] max-h-[270px] pt-6 flex flex-col place-items-center border-[1px] rounded-2xl shadow-inner md:shadow md:inset  hover:scale-95 hover:shadow-2xl">
-                    <p data-testid="name" className="text-lg ">
+                    <p data-testid="name" className="text-lg text-center ">
                       {meal.name}
                     </p>
                     {/* <p data-testid="testOne">test1</p> */}

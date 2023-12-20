@@ -28,18 +28,18 @@ const DynamicRouteForMeal = () => {
   return (
     <div>
       {oneMeal ? (
-        <div>
-          <div className="grid grid-cols-3">
-            <div className="flex flex-col justify-center items-center col-span-2">
-              <h1 className=" text-xl">{oneMeal.name}</h1>
-              <img
-                src={oneMeal.jpg}
-                alt="photo of the meal"
-                className=" min-h-[250px] min-w-[250px] max-h-[250px] max-w-[250px] object-cover"
-              />
-              <p className=" mt-8 text-lg">{oneMeal.description}</p>
+        <div className="mt-14 max-w-6xl mx-auto ">
+          <div className="flex flex-col items-center md:flex-row md:justify-center md:gap-[50px] lg:gap-[200px]">
+            <img
+              src={oneMeal.jpg}
+              alt="photo of the meal"
+              className=" mb-10 md:mb-0 min-h-[350px] min-w-[350px] max-h-[350px] max-w-[350px] object-cover rounded-lg"
+            />
+            <div className="flex flex-col justify-center  max-w-[350px]">
+              <h1 className=" text-3xl font-semibold">{oneMeal.name}</h1>
+              <p className=" mt-8 mb-10 text-xl">{oneMeal.description}</p>
+              <AddToCart oneMeal={oneMeal} />
             </div>
-            <AddToCart oneMeal={oneMeal} />
           </div>
           <GetComments />
         </div>
