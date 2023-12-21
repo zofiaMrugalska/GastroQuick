@@ -46,7 +46,7 @@ const Menu = () => {
                     <p className=" text-lg font-semibold mt-1">${meal.price}</p>
 
                     <img
-                      src={meal.jpg}
+                      src={`http://localhost:5000/images/${meal.jpg}`}
                       alt="photo of the meal"
                       className="mt-4 object-cover min-h-[150px] min-w-[240px] rounded-b-lg"
                     />
