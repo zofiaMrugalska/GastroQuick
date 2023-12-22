@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const userRouter = require("./routes/userRoutes");
@@ -10,15 +11,15 @@ const placingOrderRouter = require("./routes/placingOrderRoutes");
 
 const app = express();
 
-app.use(express.json()); //parsuje do jsona
-app.use(cors()); //laczenie z recatem
+app.use(express.json());
+app.use(cors());
 
-//routy
 app.use("/users", userRouter);
 app.use("/meals", mealRouter);
 app.use("/comments", commentRouter);
 app.use("/cart", cartRouter);
 app.use("/order", placingOrderRouter);
+app.use("/images", express.static(path.join(__dirname, "./images")));
 
 mongoose
   .connect(process.env.MONGO_CONNECT)

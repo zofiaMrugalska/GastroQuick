@@ -8,7 +8,8 @@ const createResponse = require("../services/responseDTO");
 
 const addNewMeal = async (req, res) => {
   try {
-    const { name, price, description, jpg } = req.body;
+    const { name, price, description } = req.body;
+    const jpg = req.file.filename;
 
     if (!name || !price || !description || !jpg) {
       return res.status(400).json(createResponse(false, null, "all informations are mandatory"));
@@ -73,4 +74,32 @@ const getOneMeal = async (req, res) => {
   }
 };
 
-module.exports = { addNewMeal, getMealsData, getOneMeal };
+//@desc delete one meal
+//@route GET /meals/deleteOne/:mealId
+//@access private for Admin
+
+//to codereview
+
+const deleteOneMeal = async (req, res) => {
+  try {
+    const mealId = req.params.mealId;
+    console.log(mealId);
+
+    const mealExist = await mealModel.findById(mealId);
+
+    if (!mealExist) {
+      return res.status(404).json(createResponse(false, null, "no such meal exists"));
+    }
+    const deletedMeal = await mealModel.findByIdAndDelete(mealId);
+    if (!deletedMeal) {
+      return res.status(404).json(createResponse(false, null, "Failed to delete the meal"));
+    }
+
+    res.status(200).json(createResponse(true, null, "the meal has been deleted"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+module.exports = { addNewMeal, getMealsData, getOneMeal, deleteOneMeal };

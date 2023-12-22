@@ -44,31 +44,33 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
 
   return (
     <div className="flex flex-col justify-center items-center ">
-      <h1 className=" text-2xl font-semibold ">{(oneMeal.price * quantity).toFixed(2)}$</h1>
+      <h1 className="mb-3 text-3xl font-semibold ">{(oneMeal.price * quantity).toFixed(2)}$</h1>
 
-      <div className=" min-w-[250px] min-h-[40px] flex items-center justify-between border rounded-lg">
+      <div className=" min-w-[350px] min-h-[40px] flex items-center justify-between border rounded-lg">
         <button
           data-testid="reduceButton"
-          className=" min-h-[40px] bg-[#77767677] border px-4 rounded-lg"
+          className=" min-h-[40px] bg-[#77767677] border px-4 rounded-lg hover:scale-105"
           onClick={reduceQuantity}
         >
-          -
+          <p className="text-xl">-</p>
         </button>
-        <p data-testid="quantityDisplay" className=" font-semibold">
+
+        <p data-testid="quantityDisplay" className=" text-lg font-semibold">
           {quantity}
         </p>
+
         <button
           data-testid="increaseButton"
-          className="  min-h-[40px] bg-[#ff8f34] border px-4 rounded-lg"
+          className="min-h-[40px] bg-[#ff8f34] border px-4 rounded-lg hover:scale-105 "
           onClick={increaseQuantity}
         >
-          +
+          <p className="text-xl">+</p>
         </button>
       </div>
 
       <button
         onClick={() => postMealToCart(mealId, quantity)}
-        className="min-w-[250px] mt-2 p-2 bg-[#77767677] text-center rounded-lg"
+        className="min-w-[350px] mt-4 p-2 bg-[#77767677] text-center rounded-lg hover:shadow-shadowInset hover:translate-y-[1px] hover:font-semibold"
       >
         Add to cart
       </button>

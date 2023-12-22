@@ -29,10 +29,12 @@ const Navbar = () => {
   const btnStyle = `flex flex-col items-center`;
 
   return (
-    <div>
-      <nav className="flex justify-between">
-        <h1 className="text-2xl sm:text-3xl font-medium">GastroQuick</h1>
-        <ul className="flex items-center gap-7 scale-75 sm:scale-100">
+    <div className=" max-w-7xl mx-auto ">
+      <nav className="flex justify-between ">
+        <h1 className="text-2xl sm:text-3xl font-medium  my-12 mx-6 sm:mx-12 md:mx-16 lg:mx-24 ">
+          GastroQuick
+        </h1>
+        <ul className="flex items-center gap-7   my-12 mx-6 sm:mx-12 md:mx-16 lg:mx-24 scale-75 sm:scale-100">
           <li>
             <Link to={"/"} className={`${btnStyle}`}>
               <BiFoodMenu size={25} />
