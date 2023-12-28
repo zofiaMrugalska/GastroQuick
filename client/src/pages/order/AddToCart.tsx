@@ -49,13 +49,13 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
       <div className=" min-w-[350px] min-h-[40px] flex items-center justify-between border rounded-lg">
         <button
           data-testid="reduceButton"
-          className=" min-h-[40px] bg-[#77767677] border px-4 rounded-lg hover:scale-105"
+          className=" min-h-[40px] bg-[#ff8f34]  border px-4 rounded-lg hover:scale-105"
           onClick={reduceQuantity}
         >
           <p className="text-xl">-</p>
         </button>
 
-        <p data-testid="quantityDisplay" className=" text-lg font-semibold">
+        <p data-testid="quantityDisplay" className=" text-lg font-semibold ">
           {quantity}
         </p>
 
@@ -70,7 +70,7 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
 
       <button
         onClick={() => postMealToCart(mealId, quantity)}
-        className="min-w-[350px] mt-4 p-2 bg-[#77767677] text-center rounded-lg hover:shadow-shadowInset hover:translate-y-[1px] hover:font-semibold"
+        className="min-w-[350px] mt-4 p-2 bg-[#ff8f34]  text-center rounded-lg hover:shadow-shadowInset hover:translate-y-[1px] hover:font-semibold"
       >
         Add to cart
       </button>

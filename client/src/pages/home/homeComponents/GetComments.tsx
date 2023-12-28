@@ -107,72 +107,92 @@ const GetComments = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <AddComments getCommentsData={getCommentsData} />
-      <div className=" mx-auto mt-7 max-w-[800px] max-h-[500px] overflow-y-auto ">
-        <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset">
-          <button onClick={toggleSortOption}>
-            <div className="flex items-center hover:font-bold">
-              sort
-              <div> {openSort ? <IoMdArrowDropup /> : <IoMdArrowDropdown />} </div>
-            </div>
-          </button>
-          {openSort && (
-            <div>
-              <button onClick={fromTheOldestComments} className="border-t w-[70px] hover:font-bold">
-                oldest
-              </button>
-              <br />
-              <button onClick={fromTheLatestComments} className="border-t w-[70px] hover:font-bold">
-                newest
-              </button>
-            </div>
-          )}
-        </div>
-
-        {comments.map((comment: CommentRequestInterface, index) => {
-          const isCurrentUser = comment?.author?._id === userInfo?.id;
-          return (
-            <div
-              key={comment?._id}
-              className={`w-1/2 p-4 ${index % 2 === 0 ? "mr-auto" : "ml-auto"}`}
-            >
-              <div className="flex flex-row mt-4 justify-between items-center p-3 max-w-sm rounded-lg  bg-[#ff8f34]">
-                <div>
-                  <p>{comment?.author?.name}</p>
-                  <p className=" break-words max-w-[150px] md:max-w-xs">{comment?.comment}</p>
-                  <p>{formatDate(new Date(comment.createdAt))}</p>
+    <div>
+      {comments.length > 0 ? (
+        <div className="max-w-6xl mx-auto">
+          <AddComments getCommentsData={getCommentsData} />
+          <div className=" mx-auto mt-7 max-w-[800px] max-h-[500px] overflow-y-auto ">
+            <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset bg-white ">
+              <button onClick={toggleSortOption}>
+                <div className="flex items-center hover:font-bold">
+                  sort
+                  <div> {openSort ? <IoMdArrowDropup /> : <IoMdArrowDropdown />} </div>
                 </div>
-
+              </button>
+              {openSort && (
                 <div>
-                  {isCurrentUser && (
-                    <div>
-                      <button onClick={() => setShowModal(comment._id)}>
-                        <AiOutlineEdit size={18} />
-                      </button>
-
-                      <button onClick={() => deleteComment(comment._id)}>
-                        <AiOutlineDelete size={18} />
-                      </button>
-                    </div>
-                  )}
+                  <button
+                    onClick={fromTheOldestComments}
+                    className="border-t w-[70px] hover:font-bold"
+                  >
+                    oldest
+                  </button>
+                  <br />
+                  <button
+                    onClick={fromTheLatestComments}
+                    className="border-t w-[70px] hover:font-bold"
+                  >
+                    newest
+                  </button>
                 </div>
-              </div>
-
-              {showModal === comment._id && (
-                <EditModal
-                  setShowModal={setShowModal}
-                  commentId={comment?._id}
-                  authorName={comment?.author?.name}
-                  commentText={comment?.comment}
-                  commentDate={formatDate(new Date(comment.createdAt))}
-                  editComment={editComment}
-                />
               )}
             </div>
-          );
-        })}
-      </div>
+
+            {comments.map((comment: CommentRequestInterface, index) => {
+              const isCurrentUser = comment?.author?._id === userInfo?.id;
+              return (
+                <div
+                  key={comment?._id}
+                  className={`w-1/2 p-1 ${index % 2 === 0 ? "mr-auto" : "ml-auto"}`}
+                >
+                  <div className=" justify-between w-full p-3 rounded-lg bg-[#C0BFBF]">
+                    <div>
+                      <div className=" flex justify-between font-bold border-b-[1px] border-black border-w">
+                        <p>{comment?.author?.name}</p>
+                        <p>{formatDate(new Date(comment.createdAt))}</p>
+                      </div>
+                      <div className="mt-3">
+                        <p className=" break-words text-lg  max-w-[150px] md:max-w-xs">
+                          {comment?.comment}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      {isCurrentUser && (
+                        <div>
+                          <button onClick={() => setShowModal(comment._id)}>
+                            <AiOutlineEdit size={18} />
+                          </button>
+
+                          <button onClick={() => deleteComment(comment._id)}>
+                            <AiOutlineDelete size={18} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {showModal === comment._id && (
+                    <EditModal
+                      setShowModal={setShowModal}
+                      commentId={comment?._id}
+                      authorName={comment?.author?.name}
+                      commentText={comment?.comment}
+                      commentDate={formatDate(new Date(comment.createdAt))}
+                      editComment={editComment}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p>This meal has no comments yet, be the first one to comment!</p>
+        </div>
+      )}
     </div>
   );
 };
