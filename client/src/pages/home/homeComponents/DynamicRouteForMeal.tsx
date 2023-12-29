@@ -32,7 +32,7 @@ const DynamicRouteForMeal = () => {
           <div className="flex flex-col items-center md:flex-row md:justify-center md:gap-[50px] lg:gap-[200px]">
             <img
               src={`http://localhost:5000/images/${oneMeal.jpg}`}
-              alt="photo of the meal"
+              alt="Delicious meal"
               className=" mb-10 md:mb-0 min-h-[350px] min-w-[350px] max-h-[350px] max-w-[350px] object-cover rounded-lg"
             />
             <div className="flex flex-col justify-center  max-w-[350px]">
