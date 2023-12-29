@@ -9,6 +9,10 @@ import { PlacingOrderServices } from "../../services/PlacingOrderServices";
 import formatDate from "../../utils/dateUtils";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import Loading from "../../components/Loading";
+import { AuthServices } from "../../services/AuthServices";
+
+import { AuthorInterface } from "../../interfaces/AuthInterfaces";
+
 
 //to codereview
 
@@ -19,6 +23,10 @@ const User = () => {
   const [openSort, setOpenSort] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const isAuthenticated = useAuthCheck();
+
+  
+const userInfo: AuthorInterface | null = AuthServices.getUserInfoFromLocalStorage();
+
 
   const getOrders = async () => {
     try {
@@ -47,7 +55,7 @@ const User = () => {
   };
 
   const fromTheLatestOrder = (): void => {
-    if (sendedOrders != undefined) {
+    if (sendedOrders !== undefined) {
       const sortingFromLatest: ResponseOrderDataInterface[] = sendedOrders
         .slice()
         .sort((sendedOrder1, sendedOrder2) => {
@@ -61,7 +69,7 @@ const User = () => {
   };
 
   const fromTheOldestOrder = (): void => {
-    if (sendedOrders != undefined) {
+    if (sendedOrders !== undefined) {
       const sortingFromOldest = sendedOrders.slice().sort((sendedOrder1, sendedOrder2) => {
         const date1: Date = new Date(sendedOrder1.createdAt);
         const date2: Date = new Date(sendedOrder2.createdAt);
@@ -73,12 +81,20 @@ const User = () => {
   };
 
   return (
-    <div className=" max-w-4xl mx-auto">
+    <div className=" max-w-6xl mx-auto">
       {loading ? (
         <Loading />
       ) : (
-        <div className="mt-20">
-          <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset">
+        <div className="grid grid-cols-2">
+          <div className="border bg-slate-100 max-w-[800px] max-h-[300px]"> 
+<h1>User:</h1>
+<p>  {isAuthenticated && userInfo &&<p>{userInfo?.name}</p>}</p>
+<p>{isAuthenticated && userInfo &&<p>{userInfo?.email}</p>}</p>
+          </div>
+
+
+        <div >
+          <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset bg-white">
             <button onClick={toggleSortBtn}>
               <div className="flex items-center hover:font-bold">
                 sort
@@ -97,6 +113,8 @@ const User = () => {
               </div>
             )}
           </div>
+          
+          <div className="max-w-[800px] max-h-[500px] overflow-y-auto ">
           {sendedOrders?.map((orderDetails: ResponseOrderDataInterface) => {
             let order = orderDetails.order;
             const summaryOrder = order.reduce(
@@ -108,7 +126,8 @@ const User = () => {
             );
 
             return (
-              <div key={orderDetails._id} className="mt-5 p-5 rounded-lg shadow-shadowInset ">
+              
+              <div key={orderDetails._id} className="mt-5 p-5 rounded-lg shadow-shadowInset bg-white">
                 <div className="flex items-center gap-2">
                   <p className=" text-xl font-semibold">
                     {formatDate(new Date(orderDetails.createdAt))}
@@ -181,8 +200,11 @@ const User = () => {
                   <p className="mt-1 text-lg font-semibold">Total Price: {summaryOrder}$</p>
                 )}
               </div>
+            
             );
-          })}
+          })}  
+          </div>
+        </div>
         </div>
       )}
     </div>
