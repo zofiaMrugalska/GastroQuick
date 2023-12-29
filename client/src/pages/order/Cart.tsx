@@ -8,8 +8,6 @@ import { toast } from "react-hot-toast";
 import SummaryOrder from "./SummaryOrder";
 
 const Cart = () => {
-  /// jesli jesstes zalogowany a nie masz niczego w koszyku, ma sie pokazac ze twoj koszyk jest pusty
-  ///jesli jestes zalogowany ma aja sie pokazac twoje posilki w zamolwieniu po czym mozesz przejsc dalej i to kupic, dac adres, wybrac forme platnosci i zaplacic, po czym zamowienie przejdzie do historii zamowien
 
   const [order, setOrder] = useState<ExtendOrderInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,7 +47,7 @@ const Cart = () => {
     }
   }, []);
 
-  //to bedzie spoko do usecalback bo sie powtartza?????? (uzywa sie np na buttanch ktore sie powtarzja zeby sie nie rendeowany )
+  
 
   const increaseEditQuantity = (orderId: string | undefined): void => {
     if (orderId !== undefined) {
@@ -104,27 +102,28 @@ const Cart = () => {
       ) : (
         <div>
           {order.length > 0 ? (
-            <div>
+            <div >
+         
               {order.map((order: ExtendOrderInterface) => {
                 return (
-                  <div key={order._id} className=" mt-9 grid grid-cols-5 place-items-center">
+                  <div key={order._id} className="  grid grid-cols-5 place-items-center border-b-[1px] border-[#C0BFBF]">
                     <img
                       src={order.meal?.jpg}
-                      alt="photo of the meal"
-                      className=" mt-2  min-h-[70px] min-w-[70px] max-h-[70px] max-w-[70px] md:min-h-[100px] md:min-w-[100px] md:max-h-[100px] md:max-w-[100px] object-cover"
+                      alt="Delicious meal"
+                      className=" m-2 min-h-[70px] min-w-[70px] max-h-[70px] max-w-[70px] md:min-h-[100px] md:min-w-[100px] md:max-h-[100px] md:max-w-[100px] object-cover justify-self-start"
                     />
 
-                    <p>{order.meal?.name}</p>
+                    <p className=" md:text-lg lg:text-xl">{order.meal?.name}</p>
 
-                    <div className="flex gap-4">
-                      <button onClick={() => increaseEditQuantity(order._id)}>+</button>
-                      <p>{order.quantity}</p>
-                      <button onClick={() => reduceEditQuantity(order._id)}>-</button>
+                    <div className="flex gap-6 flex-row-reverse">
+                      <button onClick={() => increaseEditQuantity(order._id)} className="text-xl hover:font-bold">+</button>
+                      <p className="text-lg">{order.quantity}</p>
+                      <button onClick={() => reduceEditQuantity(order._id)}  className="text-xl hover:font-bold">-</button>
                     </div>
 
-                    <p>{order.price}$</p>
+                    <p className="text-lg">{order.price}$</p>
 
-                    <button onClick={() => deleteMealFromOrder(order._id)}>
+                    <button onClick={() => deleteMealFromOrder(order._id)} className="hover:scale-110">
                       <AiOutlineDelete size={20} />
                     </button>
                   </div>
@@ -133,7 +132,7 @@ const Cart = () => {
               <SummaryOrder totalQuantity={totalQuantity} totalPrice={totalPrice} />
             </div>
           ) : (
-            <p>Your shopping cart is empty</p>
+            < p className="text-center text-xl ">Your shopping cart is empty.</p>
           )}
         </div>
       )}

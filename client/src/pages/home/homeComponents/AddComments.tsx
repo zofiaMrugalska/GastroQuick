@@ -39,7 +39,6 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
 
   return (
     <div className=" m-[2px]">
-      {/* <h1 className=" text-xl font-semibold">Comments:</h1> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="">
           <input

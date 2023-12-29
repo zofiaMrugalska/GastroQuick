@@ -25,15 +25,15 @@ const EditModal: React.FC<EditModalPropsInterface> = ({
       style={{ backgroundColor: " rgba(0, 0, 0, 0.5)" }}
       className=" fixed inset-0 flex justify-center items-center"
     >
-      <div className="flex flex-col justify-center items-center mt-20 min-h-[500px] bg-[#161616] p-8  rounded-xl ">
+      <div className="flex flex-col justify-center items-center mt-20 min-h-[500px] bg-[#ffffff]  p-8  rounded-xl ">
         <button onClick={() => setShowModal(null)} className=" relative left-36 bottom-36">
-          <IoIosCloseCircleOutline size={30} color="white" />
+          <IoIosCloseCircleOutline size={30} color="gray" />
         </button>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div className="flex justify-between mb-4">
-              <p className="text-white ">{authorName}</p>
-              <p className=" text-white ">{commentDate}</p>
+              <p >{authorName}</p>
+              <p >{commentDate}</p>
             </div>
             <input
               {...register("editedComment", {

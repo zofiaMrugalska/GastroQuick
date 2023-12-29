@@ -1,11 +1,10 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { OrderDetailsInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
-import OrderModal from "../../components/OrderModal";
+
 
 //reviewed
 //zrob interfdace tak jak wszedzie inidziej zobacz czy wszeidze tak masz  czy masz mieszkane  chinska
