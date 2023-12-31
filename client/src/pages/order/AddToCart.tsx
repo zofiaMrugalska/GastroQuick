@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { menuInterface } from "../../interfaces/MenuInterfaces";
 import { CartServices } from "../../services/CartServices";
-import { OrderInterface, ResponseOrderMeals } from "../../interfaces/CartInterfaces";
+import {
+  OrderInterface,
+  ResponseOrderMeals,
+} from "../../interfaces/CartInterfaces";
 import { toast } from "react-hot-toast";
 import useAuthCheck from "../../hooks/useAuthCheck";
 
@@ -21,7 +24,10 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
     }
   };
 
-  const postMealToCart = async (mealId: string | undefined, quantity: number) => {
+  const postMealToCart = async (
+    mealId: string | undefined,
+    quantity: number
+  ) => {
     let dataFromUser: OrderInterface = {
       _id: mealId,
       quantity: quantity,
@@ -32,7 +38,9 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
       toast.error("You must be logged in to add meals to your cart");
     }
     try {
-      const response: ResponseOrderMeals = await CartServices.addToCart(dataFromUser);
+      const response: ResponseOrderMeals = await CartServices.addToCart(
+        dataFromUser
+      );
       if (response.success === true) {
         toast.success(response.message);
       }
@@ -43,8 +51,10 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <h1 className="mb-3 text-3xl font-semibold ">{(oneMeal.price * quantity).toFixed(2)}$</h1>
+    <div className="flex flex-col justify-center items-center mx-auto">
+      <h1 className="mb-3 text-3xl font-semibold ">
+        {(oneMeal.price * quantity).toFixed(2)}$
+      </h1>
 
       <div className=" min-w-[350px] min-h-[40px] flex items-center justify-between border rounded-lg">
         <button
