@@ -76,7 +76,7 @@ const GetComments = () => {
     if (params.mealId !== undefined) {
       getCommentsData(params.mealId);
     }
-  }, []);
+  }, [params.mealId]);
 
   const toggleSortOption = (): void => {
     setOpenSort(!openSort);
@@ -107,12 +107,12 @@ const GetComments = () => {
   };
 
   return (
-    <div>
+    <div className=" mx-auto max-w-[800px]">
+      <AddComments getCommentsData={getCommentsData} />
+      
       {comments.length > 0 ? (
-        <div className="max-w-6xl mx-auto">
-          <AddComments getCommentsData={getCommentsData} />
-          <div className=" mx-auto mt-7 max-w-[800px] max-h-[500px] overflow-y-auto ">
-            <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset bg-white ">
+        <div >
+           <div className="border w-[75px] rounded-lg flex-col text-center shadow-shadowInset bg-white ">
               <button onClick={toggleSortOption}>
                 <div className="flex items-center hover:font-bold">
                   sort
@@ -138,6 +138,8 @@ const GetComments = () => {
               )}
             </div>
 
+          <div className=" mx-auto mt-7 max-w-[800px] max-h-[500px] overflow-y-auto ">
+          
             {comments.map((comment: CommentRequestInterface, index) => {
               const isCurrentUser = comment?.author?._id === userInfo?.id;
               return (
@@ -189,8 +191,8 @@ const GetComments = () => {
           </div>
         </div>
       ) : (
-        <div>
-          <p>This meal has no comments yet, be the first one to comment!</p>
+        <div className="text-center">
+          <p className=" text-xl">This meal has no comments yet, be the first one to comment!</p>
         </div>
       )}
     </div>

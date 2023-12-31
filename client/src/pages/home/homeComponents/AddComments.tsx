@@ -38,10 +38,9 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20 ">
-      {/* <h1 className=" text-xl font-semibold">Comments:</h1> */}
+    <div className=" m-[2px]">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className="">
           <input
             {...register("comment", {
               required: "comment is required",
@@ -50,11 +49,11 @@ const AddComments = ({ getCommentsData }: AddCommentsProps) => {
             })}
             type="text"
             placeholder="write a comment..."
-            className="border rounded-lg p-2 min-w-[300px]"
+            className="mt-10 border rounded-tl-lg rounded-tr-lg p-2 py-5 max-w-[800px] w-full"
           />
           <p className="text-red-500 text-sm">{errors.comment?.message}</p>
         </div>
-        <button type="submit" className=" py-2 rounded-lg min-w-[300px] font-semibold ">
+        <button type="submit" className="max-w-[800px] w-full rounded-br-lg rounded-bl-lg mb-10 py-2 bg-[#ff8f34] hover:shadow-shadowInset hover:font-semibold">
           Add comment
         </button>
       </form>
