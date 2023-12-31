@@ -9,7 +9,10 @@ import {
 export const AuthServices = {
   register: async (userData: SignUpInterface) => {
     try {
-      const response = await axios.post("http://localhost:5000/users/register", userData);
+      const response = await axios.post(
+        "http://localhost:5000/users/register",
+        userData
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
@@ -18,7 +21,10 @@ export const AuthServices = {
 
   login: async (userData: SignInInterface): Promise<LoginResponseInterface> => {
     try {
-      const response = await axios.post("http://localhost:5000/users/login", userData);
+      const response = await axios.post(
+        "http://localhost:5000/users/login",
+        userData
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
@@ -43,7 +49,8 @@ export const AuthServices = {
   },
 
   getUserInfoFromLocalStorage: (): AuthorInterface | null => {
-    const accessUserInfo: string | null = localStorage.getItem("userInformation");
+    const accessUserInfo: string | null =
+      localStorage.getItem("userInformation");
 
     if (accessUserInfo) {
       const accessInfoObj: AuthorInterface = JSON.parse(accessUserInfo);
@@ -63,7 +70,8 @@ export const AuthServices = {
 
   logout: async () => {
     try {
-      const accessTokenObj: string | null = AuthServices.getTokenFromLocalStorage();
+      const accessTokenObj: string | null =
+        AuthServices.getTokenFromLocalStorage();
 
       if (!accessTokenObj) {
         throw new Error("No access to the authorization token");
