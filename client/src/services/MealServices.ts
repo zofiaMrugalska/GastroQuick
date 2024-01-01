@@ -15,7 +15,7 @@ export const MealServices = {
   getOneMealData: async (id: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/meals/getOneMeal/${id}`
+        `${process.env.REACT_APP_API_BASE_URL}/meals/getOneMeal/${id}`
       );
       return response.data;
     } catch (error: any) {

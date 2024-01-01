@@ -23,34 +23,3 @@ test("increaseQuantity should increase the quantity", () => {
 
   expect(getByTestId("quantityDisplay")).toHaveTextContent("3");
 });
-
-// test("reduceQuantity powinno zmniejszyć ilość", async () => {
-//   const poczatkowaIlosc = 3; // Ustaw początkową ilość na potrzeby testu
-
-//   const { getByTestId } = render(<AddToCart oneMeal={oneMeal} />);
-
-//   console.log(poczatkowaIlosc, "XD");
-//   // Sprawdź, czy ilość początkowa jest poprawnie wyświetlana
-//   let quantityDisplay = getByTestId("quantityDisplay");
-//   console.log(quantityDisplay.textContent);
-
-//   expect(quantityDisplay).toHaveTextContent("2");
-//   console.log(quantityDisplay.textContent);
-
-//   // Pobierz przycisk redukcji i kliknij go
-//   const reduceButton = getByTestId("reduceButton");
-//   fireEvent.click(reduceButton);
-
-//   // Sprawdź, czy ilość została zmniejszona
-//   expect(quantityDisplay).toHaveTextContent((poczatkowaIlosc - 1).toString());
-// });
-
-// // test("reduceQuantity should not decrease the quantity below 1", () => {
-// //   const { getByTestId } = render(<AddToCart oneMeal={oneMeal} />);
-// //   const reduceButton = getByTestId("reduceButton");
-
-// //   fireEvent.click(reduceButton);
-// //   fireEvent.click(reduceButton);
-
-// //   expect(getByTestId("quantityDisplay")).toHaveTextContent("1");
-// // });

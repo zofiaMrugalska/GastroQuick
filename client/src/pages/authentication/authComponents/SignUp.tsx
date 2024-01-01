@@ -15,9 +15,10 @@ const SignUp = () => {
     reset,
   } = useForm<SignUpInterface>();
 
-  const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -75,7 +76,7 @@ const SignUp = () => {
               minLength: { value: 4, message: "no less than 4 characters" },
               maxLength: { value: 20, message: "no more than 20 characters" },
             })}
-            type={showPassword ? "text" : "password"} //w zaleznosci od tego czy jest false czy true zmieniamy typ w inpuciee text albo password
+            type={showPassword ? "text" : "password"}
             placeholder="password"
             id="password"
             className="border rounded-lg p-2 min-w-[300px]"
@@ -87,8 +88,11 @@ const SignUp = () => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute top-[10px] left-[270px] cursor-pointer"
           >
-            {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
-            {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
+            {showPassword ? (
+              <AiOutlineEye size={22} />
+            ) : (
+              <AiOutlineEyeInvisible size={22} />
+            )}
           </div>
         </div>
 
@@ -96,24 +100,30 @@ const SignUp = () => {
           <input
             {...register("confirmPassword", {
               required: "confirm password is required",
-              validate: (value) => value === getValues("password") || "Passwords do not match",
+              validate: (value) =>
+                value === getValues("password") || "Passwords do not match",
               minLength: { value: 4, message: "no less than 4 characters" },
               maxLength: { value: 20, message: "no more than 20 characters" },
             })}
-            type={showConfirmPassword ? "text" : "password"} //w zaleznosci od tego czy jest false czy true zmieniamy typ w inpuciee text albo password
+            type={showConfirmPassword ? "text" : "password"}
             placeholder="confirm password"
             id="confirmPassword"
             className="border rounded-lg p-2 min-w-[300px]"
           />
 
-          <p className="text-red-500 text-sm">{errors.confirmPassword?.message}</p>
+          <p className="text-red-500 text-sm">
+            {errors.confirmPassword?.message}
+          </p>
 
           <div
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute top-[10px] left-[270px] cursor-pointer"
           >
-            {showConfirmPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
-            {/* tutaj ustawiamy swetera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
+            {showConfirmPassword ? (
+              <AiOutlineEye size={22} />
+            ) : (
+              <AiOutlineEyeInvisible size={22} />
+            )}
           </div>
         </div>
 

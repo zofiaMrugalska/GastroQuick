@@ -1,14 +1,20 @@
 import axios from "axios";
-import { CommentRequestInterface, ResponseCommentInterafce } from "../interfaces/CommentInterfaces";
+import {
+  CommentRequestInterface,
+  ResponseCommentInterafce,
+} from "../interfaces/CommentInterfaces";
 import { AuthServices } from "./AuthServices";
 
 export const CommentServices = {
-  addComment: async (commentContent: CommentRequestInterface, mealId: string | undefined) => {
+  addComment: async (
+    commentContent: CommentRequestInterface,
+    mealId: string | undefined
+  ) => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/comments/addComment",
+        `${process.env.REACT_APP_API_BASE_URL}/comments/addComment`,
         {
           comment: commentContent.comment,
           meal: mealId,
@@ -28,7 +34,9 @@ export const CommentServices = {
 
   getComments: async (mealId: string): Promise<ResponseCommentInterafce> => {
     try {
-      const response = await axios.get(`http://localhost:5000/comments/${mealId}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/comments/${mealId}`
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
@@ -39,7 +47,7 @@ export const CommentServices = {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
     try {
       const response = await axios.put(
-        `http://localhost:5000/comments/edit/${commentId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/comments/edit/${commentId}`,
         { editedComment },
         {
           headers: {
@@ -57,11 +65,14 @@ export const CommentServices = {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
 
     try {
-      const response = await axios.delete(`http://localhost:5000/comments/${commentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

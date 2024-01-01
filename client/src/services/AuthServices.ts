@@ -10,7 +10,7 @@ export const AuthServices = {
   register: async (userData: SignUpInterface) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/users/register",
+        `${process.env.REACT_APP_API_BASE_URL}/users/register`,
         userData
       );
       return response.data;
@@ -22,7 +22,7 @@ export const AuthServices = {
   login: async (userData: SignInInterface): Promise<LoginResponseInterface> => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/users/login",
+        `${process.env.REACT_APP_API_BASE_URL}/users/login`,
         userData
       );
       return response.data;
@@ -77,7 +77,7 @@ export const AuthServices = {
         throw new Error("No access to the authorization token");
       }
       const response = await axios.post(
-        "http://localhost:5000/users/logout",
+        `${process.env.REACT_APP_API_BASE_URL}/users/logout`,
         {},
         {
           headers: {

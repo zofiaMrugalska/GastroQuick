@@ -8,6 +8,6 @@ module.exports = {
     return blacklistedTokens.has(token);
   },
   getBlacklistStatus: () => {
-    return Array.from(blacklistedTokens); // testowe do sprawdzenia czy jest w czarnej liscie
+    return Array.from(blacklistedTokens); // for testing
   },
 };
