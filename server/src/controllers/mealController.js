@@ -4,7 +4,7 @@ const createResponse = require("../services/responseDTO");
 
 //@desc adding meal to database
 //@route POST /meals/newMeal
-//@access private for Admin
+//@access for testing
 
 const addNewMeal = async (req, res) => {
   try {
@@ -18,9 +18,7 @@ const addNewMeal = async (req, res) => {
     const mealAvailable = await mealModel.findOne({ name });
 
     if (mealAvailable) {
-      return res
-        .status(400)
-        .json(createResponse(false, null, "meal with this name already exists"));
+      return res.status(400).json(createResponse(false, null, "meal with this name already exists"));
     }
 
     const meal = await mealModel.create({
@@ -76,9 +74,7 @@ const getOneMeal = async (req, res) => {
 
 //@desc delete one meal
 //@route GET /meals/deleteOne/:mealId
-//@access private for Admin
-
-//to codereview
+//@access for testing
 
 const deleteOneMeal = async (req, res) => {
   try {

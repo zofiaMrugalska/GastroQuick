@@ -5,9 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { OrderDetailsInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
 
-
-//reviewed
-//zrob interfdace tak jak wszedzie inidziej zobacz czy wszeidze tak masz  czy masz mieszkane  chinska
 const PlacingOrderModal = ({
   showModal,
   setShowModal,
@@ -27,7 +24,7 @@ const PlacingOrderModal = ({
   } = useForm<OrderDetailsInterface>();
 
   const navigate = useNavigate();
-  //napraw typ tutaj formularza nie masz order
+
   const onSubmit: SubmitHandler<OrderDetailsInterface> = async (orderData) => {
     try {
       const response = await PlacingOrderServices.sendOrder(orderData);
@@ -35,8 +32,6 @@ const PlacingOrderModal = ({
         toast.success(response.message);
         setShowModal(!showModal);
         setShowOrderModal(!showOrderModal);
-
-        //to codereview
 
         setTimeout(() => {
           setShowOrderModal(false);
@@ -99,8 +94,7 @@ const PlacingOrderModal = ({
                   required: "phone number is required",
                   pattern: {
                     value: /^(\d{9}|\d{3}\s\d{3}\s\d{3})\s*$/,
-                    message:
-                      "Please enter a valid 9-digit phone number or format it as 'xxx xxx xxx'",
+                    message: "Please enter a valid 9-digit phone number or format it as 'xxx xxx xxx'",
                   },
                 })}
                 type="text"
@@ -132,8 +126,7 @@ const PlacingOrderModal = ({
                   required: "house number is required",
                   pattern: {
                     value: /^[A-Za-z0-9\s/]+$/,
-                    message:
-                      "Please enter a valid house number with letters, digits, spaces, or slashes",
+                    message: "Please enter a valid house number with letters, digits, spaces, or slashes",
                   },
                 })}
                 type="text"
