@@ -3,10 +3,7 @@ import { SummaryOrderInterface } from "../../interfaces/CartInterfaces";
 import PlacingOrderModal from "./PlacingOrderModal";
 import OrderModal from "../../components/OrderModal";
 
-//reviewed
-
 const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
-  // typ zeby byl jak w inncyh sposob
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
 
@@ -39,9 +36,7 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
           setShowOrderModal={setShowOrderModal}
         />
       )}
-      {showOrderModal && (
-        <OrderModal showOrderModal={showOrderModal} setShowOrderModal={setShowOrderModal} />
-      )}
+      {showOrderModal && <OrderModal showOrderModal={showOrderModal} setShowOrderModal={setShowOrderModal} />}
     </div>
   );
 };
