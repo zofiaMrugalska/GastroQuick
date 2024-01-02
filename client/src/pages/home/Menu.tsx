@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MealServices } from "../../services/MealServices";
-import { menuInterface, responseMealInterface } from "../../interfaces/MenuInterfaces";
+import {
+  menuInterface,
+  responseMealInterface,
+} from "../../interfaces/MenuInterfaces";
 import Loading from "../../components/Loading";
 
 const Menu = () => {
@@ -31,8 +34,6 @@ const Menu = () => {
           className="mt-14 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2
     lg:grid-cols-3 xl:grid-cols-4 "
         >
-          {/* <p data-testid="test">testowe </p> */}
-
           {mainMenu.map((meal: menuInterface) => {
             return (
               <div key={meal._id} className="p-7 flex justify-center ">
@@ -41,13 +42,12 @@ const Menu = () => {
                     <p data-testid="name" className="text-lg text-center ">
                       {meal.name}
                     </p>
-                    {/* <p data-testid="testOne">test1</p> */}
 
                     <p className=" text-lg font-semibold mt-1">${meal.price}</p>
 
                     <img
-                      src={`http://localhost:5000/images/${meal.jpg}`}
-                      alt="photo of the meal"
+                      src={`${process.env.REACT_APP_API_BASE_URL}/images/${meal.jpg}`}
+                      alt="Delicious meal"
                       className="mt-4 object-cover min-h-[150px] min-w-[240px] rounded-b-lg"
                     />
                   </li>

@@ -12,9 +12,9 @@ const validateToken = require("../middleware/validateTokenHandler");
 
 const userRouter = express.Router();
 
-userRouter.get("/get", getData); // testowe
+userRouter.get("/get", getData); //for testing
 
-userRouter.get("/blacklist", getBlacklist); //testowe
+userRouter.get("/blacklist", getBlacklist); //for testing
 
 userRouter.post("/register", validateUserData, registerUser);
 
@@ -22,6 +22,6 @@ userRouter.post("/login", loginUser);
 
 userRouter.post("/logout", validateToken, logoutUser);
 
-userRouter.get("/test", validateToken, test); //endpoint do sprawdzania podstawoej autoryzacji validatToken
+userRouter.get("/test", validateToken, test); //for testing
 
 module.exports = userRouter;

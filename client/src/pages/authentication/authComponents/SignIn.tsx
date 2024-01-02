@@ -19,7 +19,7 @@ const SignIn: React.FC = () => {
     reset,
   } = useForm<SignInInterface>();
 
-  const [showPassword, setShowPassword] = useState<boolean>(false); //ustawiamy setera ktory bedzie przechowywal informacje na temat tego czy chemy zbey bylo widac haslo czy nie, domyslnie jest ustawiony ze nie hcemy go widziec
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const isAuthenticated = useAuthCheck();
 
@@ -51,7 +51,7 @@ const SignIn: React.FC = () => {
       }
     }
 
-    reset(); // po zasubmitowaniu danych z inputa resetujemy je na puste
+    reset();
   };
 
   return (
@@ -71,7 +71,7 @@ const SignIn: React.FC = () => {
         <div className=" relative">
           <input
             {...register("password", { required: "password is required" })}
-            type={showPassword ? "text" : "password"} //w zaleznosci od tego czy jest false czy true zmieniamy typ w inpuciee text albo password
+            type={showPassword ? "text" : "password"}
             placeholder="password"
             className="border rounded-lg p-2 min-w-[300px]"
           />
@@ -82,8 +82,11 @@ const SignIn: React.FC = () => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute top-[10px] left-[270px]"
           >
-            {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
-            {/* tutaj ustawiamy setera na przeciwny do domyslenego po kliknieciu, w zaleznosci od stanu setera ikonka jest przekreslina lub nie */}
+            {showPassword ? (
+              <AiOutlineEye size={22} />
+            ) : (
+              <AiOutlineEyeInvisible size={22} />
+            )}
           </div>
         </div>
 

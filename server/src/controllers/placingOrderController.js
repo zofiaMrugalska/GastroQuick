@@ -6,7 +6,6 @@ const orderModel = require("../models/placingOrderModel");
 //@route GET /order/viewOrders
 //@access for logged in users
 
-//to codereview
 const viewOrders = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -41,9 +40,7 @@ const sendOrder = async (req, res) => {
     const cartOrder = await cartModel.find({ author, isOrderActiv: true });
 
     if (!cartOrder || cartOrder.length === 0) {
-      return res
-        .status(404)
-        .json(createResponse(false, null, "Cart with order not found or cart is empty"));
+      return res.status(404).json(createResponse(false, null, "Cart with order not found or cart is empty"));
     }
 
     const order = await orderModel.create({
@@ -58,10 +55,7 @@ const sendOrder = async (req, res) => {
       order: cartOrder,
     });
 
-    await cartModel.updateMany(
-      { _id: { $in: cartOrder.map((item) => item._id) } },
-      { $set: { isOrderActiv: false } }
-    );
+    await cartModel.updateMany({ _id: { $in: cartOrder.map((item) => item._id) } }, { $set: { isOrderActiv: false } });
 
     res.status(201).json(createResponse(true, order, "the order has been sended"));
   } catch (error) {
@@ -74,7 +68,6 @@ const sendOrder = async (req, res) => {
 //@route DELETE /order/deleteAll
 //@access for all only for testing on postman
 
-//to coderevbiew
 const deleteAll = async (req, res) => {
   try {
     const result = await orderModel.deleteMany();

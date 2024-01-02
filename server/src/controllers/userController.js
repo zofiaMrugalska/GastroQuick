@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -42,13 +43,19 @@ const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
+      return res
+        .status(400)
+        .json(createResponse(false, null, "all fields are mandatory"));
     }
 
-    const userAvailable = await userModel.findOne({ $or: [{ email }, { name }] });
+    const userAvailable = await userModel.findOne({
+      $or: [{ email }, { name }],
+    });
 
     if (userAvailable) {
-      return res.status(409).json(createResponse(false, null, "user already registered"));
+      return res
+        .status(409)
+        .json(createResponse(false, null, "user already registered"));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -62,9 +69,13 @@ const registerUser = async (req, res) => {
     if (user) {
       return res
         .status(201)
-        .json(createResponse(true, user, "registration completed successfully"));
+        .json(
+          createResponse(true, user, "registration completed successfully")
+        );
     } else {
-      return res.status(400).json(createResponse(false, null, "user data is not valid"));
+      return res
+        .status(400)
+        .json(createResponse(false, null, "user data is not valid"));
     }
   } catch (error) {
     console.log("error", error);
@@ -81,13 +92,17 @@ const loginUser = async (req, res) => {
     const { name, password } = req.body;
 
     if (!name || !password) {
-      return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
+      return res
+        .status(400)
+        .json(createResponse(false, null, "all fields are mandatory"));
     }
 
     const user = await userModel.findOne({ name });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(404).json(createResponse(false, null, "wrong password or name"));
+      return res
+        .status(404)
+        .json(createResponse(false, null, "wrong password or name"));
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -100,7 +115,7 @@ const loginUser = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "30m" }
+        { expiresIn: process.env.JWT_EXPIRES_IN }
       );
 
       const responseUser = {
@@ -111,7 +126,13 @@ const loginUser = async (req, res) => {
 
       res
         .status(200)
-        .json(createResponse(true, { accessToken, user: responseUser }, "login successful"));
+        .json(
+          createResponse(
+            true,
+            { accessToken, user: responseUser },
+            "login successful"
+          )
+        );
     }
   } catch (error) {
     console.log("error", error);
@@ -128,7 +149,9 @@ const logoutUser = async (req, res) => {
     const token = req.token;
 
     if (!token) {
-      return res.status(400).json(createResponse(false, null, "token is missing"));
+      return res
+        .status(400)
+        .json(createResponse(false, null, "token is missing"));
     }
     blacklist.addToBlacklist(token);
 
@@ -145,11 +168,20 @@ const logoutUser = async (req, res) => {
 
 const test = async (req, res) => {
   try {
-    res.status(200).json(createResponse(true, null, "authorization was successfully"));
+    res
+      .status(200)
+      .json(createResponse(true, null, "authorization was successfully"));
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 };
 
-module.exports = { registerUser, getData, loginUser, logoutUser, getBlacklist, test };
+module.exports = {
+  registerUser,
+  getData,
+  loginUser,
+  logoutUser,
+  getBlacklist,
+  test,
+};

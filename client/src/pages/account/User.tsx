@@ -13,24 +13,19 @@ import { AuthServices } from "../../services/AuthServices";
 
 import { AuthorInterface } from "../../interfaces/AuthInterfaces";
 
-//to codereview
-
 const User = () => {
-  const [sendedOrders, setSendedOrder] =
-    useState<ResponseOrderDataInterface[]>();
+  const [sendedOrders, setSendedOrder] = useState<ResponseOrderDataInterface[]>();
   const [openOrder, setOpenOrder] = useState<boolean>(true);
   const [selectedOrder, setSelectedOrder] = useState();
   const [openSort, setOpenSort] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const isAuthenticated = useAuthCheck();
 
-  const userInfo: AuthorInterface | null =
-    AuthServices.getUserInfoFromLocalStorage();
+  const userInfo: AuthorInterface | null = AuthServices.getUserInfoFromLocalStorage();
 
   const getOrders = async () => {
     try {
-      const response: ResponseSendedOrderInterface =
-        await PlacingOrderServices.viewOrders();
+      const response: ResponseSendedOrderInterface = await PlacingOrderServices.viewOrders();
 
       setSendedOrder(response.data);
       setLoading(false);
@@ -70,13 +65,11 @@ const User = () => {
 
   const fromTheOldestOrder = (): void => {
     if (sendedOrders !== undefined) {
-      const sortingFromOldest = sendedOrders
-        .slice()
-        .sort((sendedOrder1, sendedOrder2) => {
-          const date1: Date = new Date(sendedOrder1.createdAt);
-          const date2: Date = new Date(sendedOrder2.createdAt);
-          return date1.getTime() - date2.getTime();
-        });
+      const sortingFromOldest = sendedOrders.slice().sort((sendedOrder1, sendedOrder2) => {
+        const date1: Date = new Date(sendedOrder1.createdAt);
+        const date2: Date = new Date(sendedOrder2.createdAt);
+        return date1.getTime() - date2.getTime();
+      });
 
       setSendedOrder(sortingFromOldest);
     }
@@ -93,15 +86,11 @@ const User = () => {
             <div className="lg:mt-6">
               <p className=" flex gap-3 text-xl ">
                 name:
-                {isAuthenticated && userInfo && (
-                  <p className=" font-bold">{userInfo?.name}</p>
-                )}
+                {isAuthenticated && userInfo && <p className=" font-bold">{userInfo?.name}</p>}
               </p>
               <p className=" flex gap-3 text-xl">
                 email:
-                {isAuthenticated && userInfo && (
-                  <p className=" font-bold">{userInfo?.email}</p>
-                )}
+                {isAuthenticated && userInfo && <p className=" font-bold">{userInfo?.email}</p>}
               </p>
             </div>
           </div>
@@ -111,24 +100,16 @@ const User = () => {
               <button onClick={toggleSortBtn}>
                 <div className="flex items-center hover:font-bold">
                   sort
-                  <div>
-                    {openSort ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
-                  </div>
+                  <div>{openSort ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}</div>
                 </div>
               </button>
               {openSort && (
                 <div>
-                  <button
-                    onClick={fromTheOldestOrder}
-                    className="border-t w-[70px] hover:font-bold"
-                  >
+                  <button onClick={fromTheOldestOrder} className="border-t w-[70px] hover:font-bold">
                     oldest
                   </button>
                   <br />
-                  <button
-                    onClick={fromTheLatestOrder}
-                    className="border-t w-[70px] hover:font-bold"
-                  >
+                  <button onClick={fromTheLatestOrder} className="border-t w-[70px] hover:font-bold">
                     newest
                   </button>
                 </div>
@@ -138,23 +119,15 @@ const User = () => {
             <div className="max-w-[800px] max-h-[500px] mx-auto overflow-y-auto ">
               {sendedOrders?.map((orderDetails: ResponseOrderDataInterface) => {
                 let order = orderDetails.order;
-                const summaryOrder = order.reduce(
-                  (summary: number, orderItem: ExtendOrderInterface) => {
-                    let total = summary + (orderItem.price || 0);
-                    return parseFloat(total.toFixed(2));
-                  },
-                  0
-                );
+                const summaryOrder = order.reduce((summary: number, orderItem: ExtendOrderInterface) => {
+                  let total = summary + (orderItem.price || 0);
+                  return parseFloat(total.toFixed(2));
+                }, 0);
 
                 return (
-                  <div
-                    key={orderDetails._id}
-                    className="mt-5 p-5 rounded-lg shadow-shadowInset bg-white"
-                  >
+                  <div key={orderDetails._id} className="mt-5 p-5 rounded-lg shadow-shadowInset bg-white">
                     <div className="flex items-center gap-2">
-                      <p className=" text-xl font-semibold">
-                        {formatDate(new Date(orderDetails.createdAt))}
-                      </p>
+                      <p className=" text-xl font-semibold">{formatDate(new Date(orderDetails.createdAt))}</p>
                       <button onClick={() => toggleOrderInfo(orderDetails._id)}>
                         {openOrder && orderDetails._id === selectedOrder ? (
                           <IoMdArrowDropup size={22} />
@@ -171,12 +144,10 @@ const User = () => {
                       >
                         <div className=" mb-3">
                           <p>
-                            <span className="font-bold">name:</span>{" "}
-                            {orderDetails.name}
+                            <span className="font-bold">name:</span> {orderDetails.name}
                           </p>
                           <p>
-                            <span className="font-bold">surname:</span>{" "}
-                            {orderDetails.surname}
+                            <span className="font-bold">surname:</span> {orderDetails.surname}
                           </p>
                           <p>
                             <span className="font-bold">phone number: </span>
@@ -186,54 +157,42 @@ const User = () => {
 
                         <div className=" mb-3">
                           <p>
-                            <span className="font-bold">city:</span>{" "}
-                            {orderDetails.city}
+                            <span className="font-bold">city:</span> {orderDetails.city}
                           </p>
                           <p>
-                            <span className="font-bold">street:</span>{" "}
-                            {orderDetails.street}
+                            <span className="font-bold">street:</span> {orderDetails.street}
                           </p>
                           <p>
-                            <span className="font-bold">house number:</span>{" "}
-                            {orderDetails.houseNumber}
+                            <span className="font-bold">house number:</span> {orderDetails.houseNumber}
                           </p>
                           <p>
-                            <span className="font-bold">payment method:</span>{" "}
-                            {orderDetails.paymentMethod}
+                            <span className="font-bold">payment method:</span> {orderDetails.paymentMethod}
                           </p>
                         </div>
 
                         <div>
-                          {orderDetails.order?.map(
-                            (order: ExtendOrderInterface) => {
-                              return (
-                                <div key={order._id}>
-                                  <div className="grid grid-cols-4 md:flex md:gap-5 lg:grid lg:grid-cols-4">
-                                    <p className="col-span-2">
-                                      {order.meal?.name}
-                                    </p>
+                          {orderDetails.order?.map((order: ExtendOrderInterface) => {
+                            return (
+                              <div key={order._id}>
+                                <div className="grid grid-cols-4 md:flex md:gap-5 lg:grid lg:grid-cols-4">
+                                  <p className="col-span-2">{order.meal?.name}</p>
 
-                                    <div className="flex">
-                                      <p>{order.quantity}</p>
-                                      <p>x</p>
-                                      <p>{order.meal?.price}</p>
-                                    </div>
-
-                                    <p>{order.price}</p>
+                                  <div className="flex">
+                                    <p>{order.quantity}</p>
+                                    <p>x</p>
+                                    <p>{order.meal?.price}</p>
                                   </div>
+
+                                  <p>{order.price}</p>
                                 </div>
-                              );
-                            }
-                          )}
-                          <p className="mt-1 text-lg font-semibold">
-                            Total Price: {summaryOrder}$
-                          </p>
+                              </div>
+                            );
+                          })}
+                          <p className="mt-1 text-lg font-semibold">Total Price: {summaryOrder}$</p>
                         </div>
                       </div>
                     ) : (
-                      <p className="mt-1 text-lg font-semibold">
-                        Total Price: {summaryOrder}$
-                      </p>
+                      <p className="mt-1 text-lg font-semibold">Total Price: {summaryOrder}$</p>
                     )}
                   </div>
                 );
