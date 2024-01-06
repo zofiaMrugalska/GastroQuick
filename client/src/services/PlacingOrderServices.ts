@@ -3,15 +3,21 @@ import { OrderDetailsInterface, ResponseSendedOrderInterface } from "../interfac
 import { AuthServices } from "./AuthServices";
 
 export const PlacingOrderServices = {
-  sendOrder: async (orderData: OrderDetailsInterface): Promise<ResponseSendedOrderInterface> => {
+  sendOrder: async (orderData: OrderDetailsInterface, price: number): Promise<ResponseSendedOrderInterface> => {
     const token: string | null = AuthServices.getTokenFromLocalStorage();
-
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order/sendOrder`, orderData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/order/sendOrder`,
+        {
+          ...orderData,
+          price: price,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (error: any) {

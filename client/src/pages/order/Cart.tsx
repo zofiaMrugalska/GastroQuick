@@ -8,9 +8,9 @@ import { toast } from "react-hot-toast";
 import SummaryOrder from "./SummaryOrder";
 
 const Cart = () => {
-
   const [order, setOrder] = useState<ExtendOrderInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [price, setPrice] = useState<number>(0);
   const isAuthenticated = useAuthCheck();
 
   const getMealsInOrder = async () => {
@@ -47,8 +47,6 @@ const Cart = () => {
     }
   }, []);
 
-  
-
   const increaseEditQuantity = (orderId: string | undefined): void => {
     if (orderId !== undefined) {
       const orderIndex: number = order.findIndex((order) => order._id === orderId);
@@ -57,9 +55,7 @@ const Cart = () => {
 
       updatedOrders[orderIndex].quantity += 1;
 
-      const sum = (updatedOrders[orderIndex].price + updatedOrders[orderIndex].meal?.price).toFixed(
-        2
-      );
+      const sum = (updatedOrders[orderIndex].price + updatedOrders[orderIndex].meal?.price).toFixed(2);
 
       updatedOrders[orderIndex].price = parseFloat(sum);
 
@@ -75,9 +71,7 @@ const Cart = () => {
     }
 
     if (updatedOrders[orderIndex].price > updatedOrders[orderIndex].meal?.price) {
-      const sum = (updatedOrders[orderIndex].price - updatedOrders[orderIndex].meal?.price).toFixed(
-        2
-      );
+      const sum = (updatedOrders[orderIndex].price - updatedOrders[orderIndex].meal?.price).toFixed(2);
 
       updatedOrders[orderIndex].price = parseFloat(sum);
     }
@@ -90,10 +84,14 @@ const Cart = () => {
     return calcualteQuantity;
   };
 
-  const totalPrice = (): number => {
-    let calculatePrice = order.reduce((total, meal) => total + meal.price, 0);
-    return parseFloat(calculatePrice.toFixed(2));
-  };
+  useEffect(() => {
+    const totalPrice = (): void => {
+      let calculatePrice: number = order.reduce((total, meal) => total + meal.price, 0);
+      let fixedPrice: number = parseFloat(calculatePrice.toFixed(2));
+      setPrice(fixedPrice);
+    };
+    totalPrice();
+  }, [order]);
 
   return (
     <div className=" max-w-6xl mx-auto">
@@ -102,11 +100,13 @@ const Cart = () => {
       ) : (
         <div>
           {order.length > 0 ? (
-            <div >
-         
+            <div>
               {order.map((order: ExtendOrderInterface) => {
                 return (
-                  <div key={order._id} className="  grid grid-cols-5 place-items-center border-b-[1px] border-[#C0BFBF]">
+                  <div
+                    key={order._id}
+                    className="  grid grid-cols-5 place-items-center border-b-[1px] border-[#C0BFBF]"
+                  >
                     <img
                       src={order.meal?.jpg}
                       alt="Delicious meal"
@@ -116,9 +116,13 @@ const Cart = () => {
                     <p className=" md:text-lg lg:text-xl">{order.meal?.name}</p>
 
                     <div className="flex gap-6 flex-row-reverse">
-                      <button onClick={() => increaseEditQuantity(order._id)} className="text-xl hover:font-bold">+</button>
+                      <button onClick={() => increaseEditQuantity(order._id)} className="text-xl hover:font-bold">
+                        +
+                      </button>
                       <p className="text-lg">{order.quantity}</p>
-                      <button onClick={() => reduceEditQuantity(order._id)}  className="text-xl hover:font-bold">-</button>
+                      <button onClick={() => reduceEditQuantity(order._id)} className="text-xl hover:font-bold">
+                        -
+                      </button>
                     </div>
 
                     <p className="text-lg">{order.price}$</p>
@@ -129,10 +133,10 @@ const Cart = () => {
                   </div>
                 );
               })}
-              <SummaryOrder totalQuantity={totalQuantity} totalPrice={totalPrice} />
+              <SummaryOrder totalQuantity={totalQuantity} price={price} />
             </div>
           ) : (
-            < p className="text-center text-xl ">Your shopping cart is empty.</p>
+            <p className="text-center text-xl ">Your shopping cart is empty.</p>
           )}
         </div>
       )}

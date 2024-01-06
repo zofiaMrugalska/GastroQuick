@@ -10,11 +10,13 @@ const PlacingOrderModal = ({
   setShowModal,
   showOrderModal,
   setShowOrderModal,
+  price,
 }: {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   showOrderModal: boolean;
   setShowOrderModal: React.Dispatch<React.SetStateAction<boolean>>;
+  price: number;
 }) => {
   const {
     register,
@@ -25,9 +27,10 @@ const PlacingOrderModal = ({
 
   const navigate = useNavigate();
 
+  //wysyalnie na backend zamowienia
   const onSubmit: SubmitHandler<OrderDetailsInterface> = async (orderData) => {
     try {
-      const response = await PlacingOrderServices.sendOrder(orderData);
+      const response = await PlacingOrderServices.sendOrder(orderData, price);
       if (response.success === true) {
         toast.success(response.message);
         setShowModal(!showModal);
