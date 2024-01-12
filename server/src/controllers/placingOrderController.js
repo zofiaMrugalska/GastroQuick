@@ -31,9 +31,9 @@ const sendOrder = async (req, res) => {
   try {
     const author = req.user.id;
 
-    const { name, surname, phoneNumber, street, houseNumber, city, paymentMethod } = req.body;
+    const { name, surname, phoneNumber, street, houseNumber, city, paymentMethod, price } = req.body;
 
-    if (!name || !surname || !phoneNumber || !street || !houseNumber || !city || !paymentMethod) {
+    if (!name || !surname || !phoneNumber || !street || !houseNumber || !city || !paymentMethod || !price) {
       return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
     }
 
@@ -53,6 +53,7 @@ const sendOrder = async (req, res) => {
       city,
       paymentMethod,
       order: cartOrder,
+      price,
     });
 
     await cartModel.updateMany({ _id: { $in: cartOrder.map((item) => item._id) } }, { $set: { isOrderActiv: false } });

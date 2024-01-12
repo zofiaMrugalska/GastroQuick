@@ -22,7 +22,7 @@ export interface ResponseOrderMeals {
 
 export interface SummaryOrderInterface {
   totalQuantity: () => number;
-  totalPrice: () => number;
+  price: number;
 }
 
 export interface OrderDetailsInterface {
@@ -40,6 +40,7 @@ export interface ResponseOrderDataInterface extends OrderDetailsInterface {
   order: ExtendOrderInterface[];
   _id: string;
   createdAt: string;
+  price: number;
 }
 
 export interface ResponseSendedOrderInterface {

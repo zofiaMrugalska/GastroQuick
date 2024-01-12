@@ -3,7 +3,7 @@ import { SummaryOrderInterface } from "../../interfaces/CartInterfaces";
 import PlacingOrderModal from "./PlacingOrderModal";
 import OrderModal from "../../components/OrderModal";
 
-const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
+const SummaryOrder = ({ totalQuantity, price }: SummaryOrderInterface) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
 
@@ -18,7 +18,7 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
 
       <div className="flex justify-center gap-2 text-lg">
         <h1>Total price:</h1>
-        <p className=" font-semibold">{totalPrice()}$</p>
+        <p className=" font-semibold">{price}$</p>
       </div>
 
       <button
@@ -34,6 +34,7 @@ const SummaryOrder = ({ totalQuantity, totalPrice }: SummaryOrderInterface) => {
           setShowModal={setShowModal}
           showOrderModal={showOrderModal}
           setShowOrderModal={setShowOrderModal}
+          price={price}
         />
       )}
       {showOrderModal && <OrderModal showOrderModal={showOrderModal} setShowOrderModal={setShowOrderModal} />}
