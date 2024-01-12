@@ -1,13 +1,16 @@
 import ProjectRoutes from "./config/ProjectRoutes";
 import { Toaster } from "react-hot-toast";
 import "./index.css";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
-    <div className=" appBackground font-JosefinSans">
-      <ProjectRoutes />
-      <Toaster position="top-center" reverseOrder={false} />
-    </div>
+    <CartProvider>
+      <div className=" appBackground font-JosefinSans">
+        <ProjectRoutes />
+        <Toaster position="top-center" reverseOrder={false} />
+      </div>
+    </CartProvider>
   );
 }
 
