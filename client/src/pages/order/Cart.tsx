@@ -128,7 +128,7 @@ const Cart = () => {
                       </button>
                     </div>
 
-                    <p className="text-lg">{order.price}$</p>
+                    <p className="text-lg">{order.price.toFixed(2)}$</p>
 
                     <button onClick={() => deleteMealFromOrder(order._id)} className="hover:scale-110">
                       <AiOutlineDelete size={20} />
