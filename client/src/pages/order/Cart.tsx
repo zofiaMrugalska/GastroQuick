@@ -6,12 +6,14 @@ import Loading from "../../components/Loading";
 import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import SummaryOrder from "./SummaryOrder";
+import { useCartContext } from "../../hooks/useCartContext";
 
 const Cart = () => {
   const [order, setOrder] = useState<ExtendOrderInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [price, setPrice] = useState<number>(0);
   const isAuthenticated = useAuthCheck();
+  const { setCartUpdated } = useCartContext();
 
   const getMealsInOrder = async () => {
     try {
@@ -31,6 +33,7 @@ const Cart = () => {
         const response = await CartServices.deleteOneMealFromOrder(orderId);
         if (response.success === true) {
           toast.success(response.message);
+          setCartUpdated(true);
         }
         getMealsInOrder();
       } catch (error: any) {

@@ -27,7 +27,6 @@ const PlacingOrderModal = ({
 
   const navigate = useNavigate();
 
-  //wysyalnie na backend zamowienia
   const onSubmit: SubmitHandler<OrderDetailsInterface> = async (orderData) => {
     try {
       const response = await PlacingOrderServices.sendOrder(orderData, price);
