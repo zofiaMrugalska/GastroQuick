@@ -111,7 +111,7 @@ const Cart = () => {
                     className="  grid grid-cols-5 place-items-center border-b-[1px] border-[#C0BFBF]"
                   >
                     <img
-                      src={order.meal?.jpg}
+                      src={`${process.env.REACT_APP_API_BASE_URL}/images/${order.meal?.jpg}`}
                       alt="Delicious meal"
                       className=" m-2 min-h-[70px] min-w-[70px] max-h-[70px] max-w-[70px] md:min-h-[100px] md:min-w-[100px] md:max-h-[100px] md:max-w-[100px] object-cover justify-self-start"
                     />

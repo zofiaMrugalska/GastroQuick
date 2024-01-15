@@ -52,7 +52,7 @@ const Navbar = () => {
               <BiCart size={25} />
               <p>cart</p>
               <div className=" bg-[#ff8f34]  rounded-full px-[6px] absolute bottom-9 left-5">
-                {location.pathname !== "/cart" && cartQuantity > 0 && (
+                {location.pathname !== "/cart" && cartQuantity > 0 && accessToken && userInfo && (
                   <p className=" text-xs font-bold ">{cartQuantity}</p>
                 )}
               </div>

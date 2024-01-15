@@ -13,6 +13,10 @@ Key Features:
 - Order Placement: A simple and quick ordering process.
 - Order History: View your past orders.
 
+## Here you can see how it works ⬇️
+
+https://youtu.be/jzuAz_prCuQ
+
 ## Tech stack
 
 ### Backend
@@ -64,3 +68,6 @@ Start the Application:
 - Integration with AWS
 - Docker Integration
 - Cypress
+
+![Zrzut ekranu 2024-01-15 135009](https://github.com/zofiaMrugalska/GastroQuick/assets/127258178/c5b360a3-4bce-400a-a5be-7b987bf90d80)
+![Zrzut ekranu 2024-01-15 134911](https://github.com/zofiaMrugalska/GastroQuick/assets/127258178/0a7d4c9d-a13f-495a-b37b-9fcca9a18521)
