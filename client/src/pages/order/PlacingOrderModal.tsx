@@ -4,6 +4,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { OrderDetailsInterface } from "../../interfaces/CartInterfaces";
 import { PlacingOrderServices } from "../../services/PlacingOrderServices";
+import { useCartContext } from "../../hooks/useCartContext";
 
 const PlacingOrderModal = ({
   showModal,
@@ -26,6 +27,7 @@ const PlacingOrderModal = ({
   } = useForm<OrderDetailsInterface>();
 
   const navigate = useNavigate();
+  const { setCartUpdated } = useCartContext();
 
   const onSubmit: SubmitHandler<OrderDetailsInterface> = async (orderData) => {
     try {
@@ -34,6 +36,7 @@ const PlacingOrderModal = ({
         toast.success(response.message);
         setShowModal(!showModal);
         setShowOrderModal(!showOrderModal);
+        setCartUpdated(true);
 
         setTimeout(() => {
           setShowOrderModal(false);
