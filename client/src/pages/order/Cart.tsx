@@ -120,7 +120,8 @@ const Cart = () => {
 
                     <div className="flex gap-6 flex-row-reverse">
                       <button onClick={() => increaseEditQuantity(order._id)} className="text-xl hover:font-bold">
-                        +
+                        +tratatat
+                        {/* XXXXXXXXXXXXXXXXXXXXX */}
                       </button>
                       <p className="text-lg">{order.quantity}</p>
                       <button onClick={() => reduceEditQuantity(order._id)} className="text-xl hover:font-bold">

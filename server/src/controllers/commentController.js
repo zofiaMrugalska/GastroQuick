@@ -45,9 +45,7 @@ const getCommentsForMeal = async (req, res) => {
     const comments = await commentModel.find({ meal: mealId }).populate("author", "name");
 
     if (comments.length < 1) {
-      return res
-        .status(404)
-        .json(createResponse(false, null, "there are no comments for this meal"));
+      return res.status(404).json(createResponse(false, null, "there are no comments for this meal"));
     }
 
     res.status(200).json(createResponse(true, comments, "comments for this meal"));
@@ -66,6 +64,7 @@ const editComment = async (req, res) => {
     const commentId = req.params.commentId;
     const loginUserId = req.user.id;
     const { editedComment } = req.body;
+    console.log(loginUserId);
 
     const validCommentId = mongoose.Types.ObjectId.isValid(commentId);
 
@@ -78,15 +77,14 @@ const editComment = async (req, res) => {
     }
 
     const commentExist = await commentModel.findById(commentId);
+    console.log(commentExist, "comment");
 
     if (!commentExist) {
       return res.status(404).json(createResponse(false, null, "no such comment exists"));
     }
-    //nwm czy jakos moze miderwera czy cos bo czesto tego zuwysaz mozna by zrob ic xzcy ocs ale nwm sam w sumie zalezy
+
     if (commentExist.author.toString() !== loginUserId) {
-      return res
-        .status(401)
-        .json(createResponse(false, null, "you cannot edit a comment that doesn't belong to you"));
+      return res.status(401).json(createResponse(false, null, "you cannot edit a comment that doesn't belong to you"));
     }
 
     commentExist.comment = editedComment;
@@ -123,9 +121,7 @@ const deleteComment = async (req, res) => {
     if (commentExist.author.toString() !== loginUserId) {
       return res
         .status(401)
-        .json(
-          createResponse(false, null, "you cannot delete a comment that doesn't belong to you")
-        );
+        .json(createResponse(false, null, "you cannot delete a comment that doesn't belong to you"));
     }
 
     const deletedComment = await commentModel.findByIdAndDelete(commentId);

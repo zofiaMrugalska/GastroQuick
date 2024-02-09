@@ -22,7 +22,7 @@ app.use("/order", placingOrderRouter);
 app.use("/images", express.static(path.join(__dirname, "./images")));
 
 mongoose
-  .connect(process.env.MONGO_CONNECT)
+  .connect(process.env.MONGO_CONNECT2)
   .then(() => console.log("db connected"))
   .catch((er) => console.log(er));
 
