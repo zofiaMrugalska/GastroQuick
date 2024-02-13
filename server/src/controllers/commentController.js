@@ -64,7 +64,6 @@ const editComment = async (req, res) => {
     const commentId = req.params.commentId;
     const loginUserId = req.user.id;
     const { editedComment } = req.body;
-    console.log(loginUserId);
 
     const validCommentId = mongoose.Types.ObjectId.isValid(commentId);
 
@@ -77,7 +76,6 @@ const editComment = async (req, res) => {
     }
 
     const commentExist = await commentModel.findById(commentId);
-    console.log(commentExist, "comment");
 
     if (!commentExist) {
       return res.status(404).json(createResponse(false, null, "no such comment exists"));

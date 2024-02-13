@@ -36,7 +36,6 @@ const AddToCart: React.FC<{ oneMeal: menuInterface }> = ({ oneMeal }) => {
     try {
       const response: ResponseOrderMeals = await CartServices.addToCart(dataFromUser);
       if (response.success === true) {
-        console.log(response.data); //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         toast.success(response.message);
         setCartUpdated(true);
       }

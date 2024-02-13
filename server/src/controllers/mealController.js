@@ -79,7 +79,6 @@ const getOneMeal = async (req, res) => {
 const deleteOneMeal = async (req, res) => {
   try {
     const mealId = req.params.mealId;
-    console.log(mealId);
 
     const mealExist = await mealModel.findById(mealId);
 
