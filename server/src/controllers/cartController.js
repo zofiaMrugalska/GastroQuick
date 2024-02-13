@@ -93,17 +93,17 @@ const updateCart = async (req, res) => {
       return res.status(401).json(createResponse(false, null, "you cannot update a meal that doesn't belong to you"));
     }
 
+    // calculating the price for meals
     const meal = await mealModel.findOne(isMealOrderExist.meal);
     if (!meal) {
       return res.status(404).json(createResponse(false, null, "meal not found"));
     }
-
     isMealOrderExist.quantity = updatedCartQuantity;
-
     const newPrice = meal.price * updatedCartQuantity;
+    const roundedPrice = newPrice.toFixed(2);
 
-    isMealOrderExist.price = newPrice;
-
+    // updating the price
+    isMealOrderExist.price = roundedPrice;
     const updatedQuantity = await isMealOrderExist.save();
 
     res.status(201).json(createResponse(true, updatedQuantity, "quantity updated successfully"));

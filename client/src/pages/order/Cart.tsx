@@ -25,6 +25,24 @@ const Cart = () => {
     }
   };
 
+  const updateCart = async (editedQuantity: number, orderId: string | undefined) => {
+    if (!isAuthenticated) {
+      toast.error("You cannot update a meal that does not belong to you");
+    } else {
+      try {
+        const response = await CartServices.updateCart(editedQuantity, orderId);
+        if (response.success === true) {
+          toast.success(response.message);
+          setCartUpdated(true);
+        }
+        getMealsInOrder();
+      } catch (error: any) {
+        const errorMessage: string = error.toString();
+        toast.error(errorMessage);
+      }
+    }
+  };
+
   const deleteMealFromOrder = async (orderId: string | undefined) => {
     if (!isAuthenticated) {
       toast.error("You cannot remove a meal that does not belong to you");
@@ -51,35 +69,33 @@ const Cart = () => {
   }, []);
 
   const increaseEditQuantity = (orderId: string | undefined): void => {
-    if (orderId !== undefined) {
+    if (!loading && orderId !== undefined) {
       const orderIndex: number = order.findIndex((order) => order._id === orderId);
-
       const updatedOrders: ExtendOrderInterface[] = [...order];
-
       updatedOrders[orderIndex].quantity += 1;
 
-      const sum = (updatedOrders[orderIndex].price + updatedOrders[orderIndex].meal?.price).toFixed(2);
-
-      updatedOrders[orderIndex].price = parseFloat(sum);
-
-      setOrder(updatedOrders);
+      let currentOrderQuantity = order[orderIndex].quantity;
+      let currentOrderId = order[orderIndex]._id;
+      setLoading(true);
+      updateCart(currentOrderQuantity, currentOrderId);
     }
   };
 
   const reduceEditQuantity = (orderId: string | undefined): void => {
-    const orderIndex: number = order.findIndex((order) => order._id === orderId);
-    const updatedOrders: ExtendOrderInterface[] = [...order];
-    if (updatedOrders[orderIndex].quantity > 1) {
-      updatedOrders[orderIndex].quantity -= 1;
+    if (!loading && orderId !== undefined) {
+      const orderIndex: number = order.findIndex((order) => order._id === orderId);
+      const updatedOrders: ExtendOrderInterface[] = [...order];
+      if (updatedOrders[orderIndex].quantity > 1) {
+        updatedOrders[orderIndex].quantity -= 1;
+      }
+
+      if (updatedOrders[orderIndex].price > updatedOrders[orderIndex].meal?.price) {
+        let currentOrderQuantity = order[orderIndex].quantity;
+        let currentOrderId = order[orderIndex]._id;
+        setLoading(true);
+        updateCart(currentOrderQuantity, currentOrderId);
+      }
     }
-
-    if (updatedOrders[orderIndex].price > updatedOrders[orderIndex].meal?.price) {
-      const sum = (updatedOrders[orderIndex].price - updatedOrders[orderIndex].meal?.price).toFixed(2);
-
-      updatedOrders[orderIndex].price = parseFloat(sum);
-    }
-
-    setOrder(updatedOrders);
   };
 
   const totalQuantity = (): number => {
@@ -120,8 +136,7 @@ const Cart = () => {
 
                     <div className="flex gap-6 flex-row-reverse">
                       <button onClick={() => increaseEditQuantity(order._id)} className="text-xl hover:font-bold">
-                        +tratatat
-                        {/* XXXXXXXXXXXXXXXXXXXXX */}
+                        +
                       </button>
                       <p className="text-lg">{order.quantity}</p>
                       <button onClick={() => reduceEditQuantity(order._id)} className="text-xl hover:font-bold">
@@ -129,7 +144,7 @@ const Cart = () => {
                       </button>
                     </div>
 
-                    <p className="text-lg">{order.price.toFixed(2)}$</p>
+                    <p className="text-lg">{order.price}$</p>
 
                     <button onClick={() => deleteMealFromOrder(order._id)} className="hover:scale-110">
                       <AiOutlineDelete size={20} />
