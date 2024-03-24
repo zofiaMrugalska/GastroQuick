@@ -68,6 +68,51 @@ const addToCart = async (req, res) => {
   }
 };
 
+//@desc updating cart
+//@route PUT /cart/updateCart/mealOrderId
+//@access for logged in users
+
+const updateCart = async (req, res) => {
+  try {
+    const mealOrderId = req.params.mealOrderId;
+    const loginUserId = req.user.id;
+    const updatedCartQuantity = req.body.quantity;
+    const isValidOrderId = mongoose.Types.ObjectId.isValid(mealOrderId);
+
+    if (!isValidOrderId) {
+      return res.status(400).json(createResponse(false, null, "order meal Id is not valid"));
+    }
+
+    const isMealOrderExist = await cartModel.findById(mealOrderId);
+
+    if (!isMealOrderExist) {
+      return res.status(404).json(createResponse(false, null, "there is no such meal in the order"));
+    }
+
+    if (isMealOrderExist.author.toString() !== loginUserId) {
+      return res.status(401).json(createResponse(false, null, "you cannot update a meal that doesn't belong to you"));
+    }
+
+    // calculating the price for meals
+    const meal = await mealModel.findOne(isMealOrderExist.meal);
+    if (!meal) {
+      return res.status(404).json(createResponse(false, null, "meal not found"));
+    }
+    isMealOrderExist.quantity = updatedCartQuantity;
+    const newPrice = meal.price * updatedCartQuantity;
+    const roundedPrice = newPrice.toFixed(2);
+
+    // updating the price
+    isMealOrderExist.price = roundedPrice;
+    const updatedQuantity = await isMealOrderExist.save();
+
+    res.status(201).json(createResponse(true, updatedQuantity, "quantity updated successfully"));
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
 //@desc delete
 //@route DELETE /cart/delete/:mealOrderId
 //@access for logged in users
@@ -85,22 +130,16 @@ const deleteOneMealFromOrder = async (req, res) => {
     const isMealOrderExist = await cartModel.findById(mealOrderId);
 
     if (!isMealOrderExist) {
-      return res
-        .status(404)
-        .json(createResponse(false, null, "there is no such meal in the order"));
+      return res.status(404).json(createResponse(false, null, "there is no such meal in the order"));
     }
 
     if (isMealOrderExist.author.toString() !== loginUserId) {
-      return res
-        .status(401)
-        .json(createResponse(false, null, "you cannot delete a meal that doesn't belong to you"));
+      return res.status(401).json(createResponse(false, null, "you cannot delete a meal that doesn't belong to you"));
     }
 
     const deletedComment = await cartModel.findByIdAndDelete(mealOrderId);
     if (!deletedComment) {
-      return res
-        .status(404)
-        .json(createResponse(false, null, "Failed to delete the meal from order"));
+      return res.status(404).json(createResponse(false, null, "Failed to delete the meal from order"));
     }
 
     res.status(200).json(createResponse(true, null, "the meal was removed from the order"));
@@ -124,4 +163,4 @@ const deleteAllOrders = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, getMealsFromCart, deleteOneMealFromOrder, deleteAllOrders };
+module.exports = { addToCart, updateCart, getMealsFromCart, deleteOneMealFromOrder, deleteAllOrders };
