@@ -6,6 +6,8 @@ const {
   logoutUser,
   getBlacklist,
   test,
+  verifyAccount,
+  resendVerificationCode,
 } = require("../controllers/userController");
 const { validateUserData } = require("../middleware/validateData");
 const validateToken = require("../middleware/validateTokenHandler");
@@ -17,6 +19,10 @@ userRouter.get("/get", getData); //for testing
 userRouter.get("/blacklist", getBlacklist); //for testing
 
 userRouter.post("/register", validateUserData, registerUser);
+
+userRouter.post("/verify", verifyAccount);
+
+userRouter.post("/resend-verification", resendVerificationCode);
 
 userRouter.post("/login", loginUser);
 
