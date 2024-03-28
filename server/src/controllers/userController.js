@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 const createResponse = require("../services/responseDTO");
 const blacklist = require("../services/blacklist");
+const { confirmEmail, sendPasswordResetCode } = require("../utils/emailUtils");
+const { generateToken, verifyToken } = require("../utils/tokenUtils");
+const { generateVerificationCode } = require("../utils/generateCodeUtils");
 
 //@desc test is it work?
 //@route GET /users/get
@@ -15,7 +18,6 @@ const getData = async (req, res) => {
     const getResult = await userModel.find({});
     res.status(200).json(createResponse(true, getResult, "success"));
   } catch (error) {
-    console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
@@ -29,7 +31,6 @@ const getBlacklist = async (req, res) => {
     const blacklistStatus = blacklist.getBlacklistStatus();
     res.status(200).json(createResponse(true, blacklistStatus, "success"));
   } catch (error) {
-    console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
@@ -43,9 +44,7 @@ const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json(createResponse(false, null, "all fields are mandatory"));
+      return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
     }
 
     const userAvailable = await userModel.findOne({
@@ -53,32 +52,125 @@ const registerUser = async (req, res) => {
     });
 
     if (userAvailable) {
-      return res
-        .status(409)
-        .json(createResponse(false, null, "user already registered"));
+      return res.status(409).json(createResponse(false, null, "user already registered"));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    const verificationToken = generateToken(email);
+    const verificationCode = generateVerificationCode();
+    const verificationLink = `${process.env.FRONT_APP_URL}/verify?verificationToken=${verificationToken}`;
 
     const user = await userModel.create({
       name,
       email,
       password: hashedPassword,
+      verificationCode,
+      verificationToken,
     });
 
     if (user) {
+      confirmEmail(user.email, verificationCode, verificationLink);
+
+      const responseUser = {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      };
+
       return res
         .status(201)
         .json(
-          createResponse(true, user, "registration completed successfully")
+          createResponse(
+            true,
+            responseUser,
+            "A verification code for your registered account has been sent to your email."
+          )
         );
     } else {
-      return res
-        .status(400)
-        .json(createResponse(false, null, "user data is not valid"));
+      return res.status(400).json(createResponse(false, null, "user data is not valid"));
     }
   } catch (error) {
     console.log("error", error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc verify User
+//@route POST /users/verify
+//@access private
+const verifyAccount = async (req, res) => {
+  try {
+    const { verificationToken } = req.query;
+    const { verificationCode } = req.body;
+
+    const payload = verifyToken(verificationToken);
+    const user = await userModel.findOne({ email: payload.email });
+
+    if (!user) {
+      return res.status(400).json(createResponse(false, null, "User not found"));
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json(createResponse(false, null, "User already verified"));
+    }
+
+    if (user.verificationCode === verificationCode) {
+      user.isVerified = true;
+      await user.save();
+
+      const responseUser = {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        isVerified: user.isVerified,
+      };
+
+      return res.status(201).json(createResponse(true, responseUser, "Account verified successfully"));
+    } else {
+      return res.status(400).json(createResponse(false, null, "Invalid verification code"));
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json(createResponse(false, null, "Verification failed. Incorrect verification code or code expired."));
+  }
+};
+
+//@desc resend code to verify
+//@route POST /users/resend-verification
+//@access public
+
+const resendVerificationCode = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json(createResponse(false, null, "User not found"));
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json(createResponse(false, null, "User already verified"));
+    }
+
+    const verificationToken = generateToken(email);
+    const verificationCode = generateVerificationCode();
+    const verificationLink = `${process.env.FRONT_APP_URL}/verify?verificationToken=${verificationToken}`;
+
+    await userModel.updateOne(
+      { email },
+      {
+        $set: {
+          verificationToken,
+          verificationCode,
+        },
+      }
+    );
+
+    confirmEmail(user.email, verificationCode, verificationLink);
+    return res.status(201).json(createResponse(true, null, "The verification code has been resent to your email."));
+  } catch (error) {
     res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
@@ -92,17 +184,25 @@ const loginUser = async (req, res) => {
     const { name, password } = req.body;
 
     if (!name || !password) {
-      return res
-        .status(400)
-        .json(createResponse(false, null, "all fields are mandatory"));
+      return res.status(400).json(createResponse(false, null, "all fields are mandatory"));
     }
 
     const user = await userModel.findOne({ name });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(404).json(createResponse(false, null, "wrong password or name"));
+    }
+
+    if (!user.isVerified) {
       return res
-        .status(404)
-        .json(createResponse(false, null, "wrong password or name"));
+        .status(403)
+        .json(
+          createResponse(
+            false,
+            null,
+            " 'The account has not been verified. You will find the verification code in your email box.'"
+          )
+        );
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -124,18 +224,9 @@ const loginUser = async (req, res) => {
         id: user.id,
       };
 
-      res
-        .status(200)
-        .json(
-          createResponse(
-            true,
-            { accessToken, user: responseUser },
-            "login successful"
-          )
-        );
+      res.status(200).json(createResponse(true, { accessToken, user: responseUser }, "login successful"));
     }
   } catch (error) {
-    console.log("error", error);
     res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
@@ -149,15 +240,105 @@ const logoutUser = async (req, res) => {
     const token = req.token;
 
     if (!token) {
-      return res
-        .status(400)
-        .json(createResponse(false, null, "token is missing"));
+      return res.status(400).json(createResponse(false, null, "token is missing"));
     }
     blacklist.addToBlacklist(token);
 
     res.status(200).json(createResponse(true, null, "Logged out successfully"));
   } catch (error) {
-    console.log(error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc reset user password
+//@route POST /users/reset-password
+//@access public
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return true;
+    }
+    if (!user.isVerified) {
+      return res
+        .status(403)
+        .json(
+          createResponse(
+            false,
+            null,
+            "The account has not been verified. You will find the verification code in your email box."
+          )
+        );
+    }
+
+    const resetPasswordToken = generateToken(email);
+    const resetPasswordVerificationCode = generateVerificationCode();
+    const resetLink = `${process.env.FRONT_APP_URL}/set-new-password?resetPasswordToken=${resetPasswordToken}`;
+
+    await userModel.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          resetPasswordToken,
+          resetPasswordVerificationCode,
+        },
+      },
+      { new: true }
+    );
+
+    await sendPasswordResetCode(user.email, resetPasswordVerificationCode, resetLink);
+
+    return res
+      .status(200)
+      .json(
+        createResponse(
+          true,
+          null,
+          "If your email address is registered in our system, you will receive a password reset link shortly."
+        )
+      );
+  } catch (error) {
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc change user password
+//@route PUT /users/set-new-password
+//@access private
+
+const setNewPassword = async (req, res) => {
+  try {
+    const { resetPasswordToken } = req.query;
+    const { resetPasswordVerificationCode, newPassword } = req.body;
+    const payload = verifyToken(resetPasswordToken);
+    const user = await userModel.findOne({ email: payload.email });
+
+    if (!user) {
+      return res.status(400).json(createResponse(false, null, "User not found"));
+    }
+
+    if (user.resetPasswordVerificationCode !== resetPasswordVerificationCode) {
+      return res.status(400).json(createResponse(false, null, "Invalid verification code"));
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await userModel.updateOne(
+      { email: payload.email },
+      {
+        $set: {
+          password: hashedPassword,
+          resetPasswordToken: null,
+          resetPasswordVerificationCode: null,
+        },
+      }
+    );
+
+    return res.status(200).json(createResponse(true, null, "Password has been successfully updated"));
+  } catch (error) {
     res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
@@ -168,9 +349,7 @@ const logoutUser = async (req, res) => {
 
 const test = async (req, res) => {
   try {
-    res
-      .status(200)
-      .json(createResponse(true, null, "authorization was successfully"));
+    res.status(200).json(createResponse(true, null, "authorization was successfully"));
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -179,9 +358,13 @@ const test = async (req, res) => {
 
 module.exports = {
   registerUser,
+  verifyAccount,
+  resendVerificationCode,
   getData,
   loginUser,
   logoutUser,
+  resetPassword,
+  setNewPassword,
   getBlacklist,
   test,
 };
