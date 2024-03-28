@@ -20,7 +20,11 @@ const userSchema = mongoose.Schema(
     verificationToken: { type: String },
     verificationCode: { type: String },
     isVerified: { type: Boolean, default: false },
+
+    resetPasswordToken: { type: String },
+    resetPasswordVerificationCode: { type: String },
   },
+
   {
     timestamps: true,
   }

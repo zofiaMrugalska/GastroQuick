@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 const createResponse = require("../services/responseDTO");
 const blacklist = require("../services/blacklist");
-const { confirmEmail } = require("../utils/emailUtils");
+const { confirmEmail, sendPasswordResetCode } = require("../utils/emailUtils");
 const { generateToken, verifyToken } = require("../utils/tokenUtils");
 const { generateVerificationCode } = require("../utils/generateCodeUtils");
 
@@ -98,7 +98,7 @@ const registerUser = async (req, res) => {
 
 //@desc verify User
 //@route POST /users/verify
-//@access public
+//@access private
 const verifyAccount = async (req, res) => {
   try {
     const { verificationToken } = req.query;
@@ -193,6 +193,18 @@ const loginUser = async (req, res) => {
       return res.status(404).json(createResponse(false, null, "wrong password or name"));
     }
 
+    if (!user.isVerified) {
+      return res
+        .status(403)
+        .json(
+          createResponse(
+            false,
+            null,
+            " 'The account has not been verified. You will find the verification code in your email box.'"
+          )
+        );
+    }
+
     if (user && (await bcrypt.compare(password, user.password))) {
       const accessToken = jwt.sign(
         {
@@ -234,7 +246,99 @@ const logoutUser = async (req, res) => {
 
     res.status(200).json(createResponse(true, null, "Logged out successfully"));
   } catch (error) {
-    console.log(error);
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc reset user password
+//@route POST /users/reset-password
+//@access public
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return true;
+    }
+    if (!user.isVerified) {
+      return res
+        .status(403)
+        .json(
+          createResponse(
+            false,
+            null,
+            "The account has not been verified. You will find the verification code in your email box."
+          )
+        );
+    }
+
+    const resetPasswordToken = generateToken(email);
+    const resetPasswordVerificationCode = generateVerificationCode();
+    const resetLink = `${process.env.FRONT_APP_URL}/set-new-password?resetPasswordToken=${resetPasswordToken}`;
+
+    await userModel.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          resetPasswordToken,
+          resetPasswordVerificationCode,
+        },
+      },
+      { new: true }
+    );
+
+    await sendPasswordResetCode(user.email, resetPasswordVerificationCode, resetLink);
+
+    return res
+      .status(200)
+      .json(
+        createResponse(
+          true,
+          null,
+          "If your email address is registered in our system, you will receive a password reset link shortly."
+        )
+      );
+  } catch (error) {
+    res.status(500).json(createResponse(false, null, "something went wrong"));
+  }
+};
+
+//@desc change user password
+//@route PUT /users/set-new-password
+//@access private
+
+const setNewPassword = async (req, res) => {
+  try {
+    const { resetPasswordToken } = req.query;
+    const { resetPasswordVerificationCode, newPassword } = req.body;
+    const payload = verifyToken(resetPasswordToken);
+    const user = await userModel.findOne({ email: payload.email });
+
+    if (!user) {
+      return res.status(400).json(createResponse(false, null, "User not found"));
+    }
+
+    if (user.resetPasswordVerificationCode !== resetPasswordVerificationCode) {
+      return res.status(400).json(createResponse(false, null, "Invalid verification code"));
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await userModel.updateOne(
+      { email: payload.email },
+      {
+        $set: {
+          password: hashedPassword,
+          resetPasswordToken: null,
+          resetPasswordVerificationCode: null,
+        },
+      }
+    );
+
+    return res.status(200).json(createResponse(true, null, "Password has been successfully updated"));
+  } catch (error) {
     res.status(500).json(createResponse(false, null, "something went wrong"));
   }
 };
@@ -259,6 +363,8 @@ module.exports = {
   getData,
   loginUser,
   logoutUser,
+  resetPassword,
+  setNewPassword,
   getBlacklist,
   test,
 };
