@@ -38,6 +38,17 @@ const commentSchema = Joi.object({
   meal: Joi.string().required(),
 });
 
+const validateNewPasswordSchema = Joi.object({
+  resetPasswordVerificationCode: Joi.string().required(),
+  newPassword: Joi.string().min(4).max(20).required().messages({
+    "string.base": 'Field "password" should be a text type',
+    "string.empty": 'Field "password" cannot be empty',
+    "string.min": 'Field "password" must contain at least 4 characters',
+    "string.max": 'Field "password" can contain a maximum of 20 characters',
+    "any.required": 'Field "password" is required',
+  }),
+});
+
 function validateUserData(req, res, next) {
   const result = registerUserSchema.validate(req.body);
 
@@ -59,4 +70,15 @@ function validateComment(req, res, next) {
   next();
 }
 
-module.exports = { validateUserData, validateComment };
+function validateNewPassword(req, res, next) {
+  const result = validateNewPasswordSchema.validate(req.body);
+
+  if (result.error) {
+    console.log(result.error.details);
+    return res.status(400).json(createResponse(false, null, result.error.details[0].message));
+  }
+
+  next();
+}
+
+module.exports = { validateUserData, validateComment, validateNewPassword };
