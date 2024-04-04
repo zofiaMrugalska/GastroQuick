@@ -260,7 +260,15 @@ const resetPassword = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return true;
+      return res
+        .status(200)
+        .json(
+          createResponse(
+            true,
+            null,
+            "If your email address is registered in our system, you will receive a password reset link shortly."
+          )
+        );
     }
     if (!user.isVerified) {
       return res
