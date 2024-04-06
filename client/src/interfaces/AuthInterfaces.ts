@@ -8,10 +8,32 @@ export interface SignUpInterface extends SignInInterface {
   confirmPassword: string;
 }
 
+export interface VerifyInterface {
+  verificationCode: string;
+  verificationToken: string;
+}
+
 export interface AuthorInterface {
   name: string;
   email: string;
   id: string;
+}
+
+export interface RegisterResponseInterface {
+  data: {
+    user: AuthorInterface;
+  };
+  message: string;
+  success: boolean;
+}
+
+export interface VerifyResponseInterface {
+  data: {
+    user: AuthorInterface;
+    isVerified: boolean;
+  };
+  message: string;
+  success: boolean;
 }
 
 export interface LoginResponseInterface {

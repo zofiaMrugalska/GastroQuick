@@ -7,6 +7,7 @@ import SignUp from "../pages/authentication/authComponents/SignUp";
 import DynamicRouteForMeal from "../pages/home/homeComponents/DynamicRouteForMeal";
 import Menu from "../pages/home/Menu";
 import Cart from "../pages/order/Cart";
+import AccountVerification from "../pages/authentication/authComponents/AccountVerification";
 
 const ProjectRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const ProjectRoutes = () => {
           />
           <Route path="/signIn" element={<SignIn />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/verify" element={<AccountVerification />} />
 
           <Route
             path="/account"

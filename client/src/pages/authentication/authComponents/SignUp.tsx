@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SignUpInterface } from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
 import { toast } from "react-hot-toast";
@@ -17,14 +17,7 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
-
-  const navigate = useNavigate();
-
-  const navigateToSignIn = () => {
-    navigate("/signIn");
-  };
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<SignUpInterface> = async (data) => {
     try {
@@ -32,7 +25,6 @@ const SignUp = () => {
 
       if (response.success === true) {
         toast.success(response.message);
-        navigateToSignIn();
       }
     } catch (error: any) {
       const errorMessage: string = error.toString();
@@ -88,11 +80,7 @@ const SignUp = () => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute top-[10px] left-[270px] cursor-pointer"
           >
-            {showPassword ? (
-              <AiOutlineEye size={22} />
-            ) : (
-              <AiOutlineEyeInvisible size={22} />
-            )}
+            {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
           </div>
         </div>
 
@@ -100,8 +88,7 @@ const SignUp = () => {
           <input
             {...register("confirmPassword", {
               required: "confirm password is required",
-              validate: (value) =>
-                value === getValues("password") || "Passwords do not match",
+              validate: (value) => value === getValues("password") || "Passwords do not match",
               minLength: { value: 4, message: "no less than 4 characters" },
               maxLength: { value: 20, message: "no more than 20 characters" },
             })}
@@ -111,19 +98,13 @@ const SignUp = () => {
             className="border rounded-lg p-2 min-w-[300px]"
           />
 
-          <p className="text-red-500 text-sm">
-            {errors.confirmPassword?.message}
-          </p>
+          <p className="text-red-500 text-sm">{errors.confirmPassword?.message}</p>
 
           <div
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute top-[10px] left-[270px] cursor-pointer"
           >
-            {showConfirmPassword ? (
-              <AiOutlineEye size={22} />
-            ) : (
-              <AiOutlineEyeInvisible size={22} />
-            )}
+            {showConfirmPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
           </div>
         </div>
 
