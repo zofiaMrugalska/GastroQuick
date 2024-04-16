@@ -1,14 +1,16 @@
-import React from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthServices } from "../../../services/AuthServices";
 import { VerifyInterface } from "../../../interfaces/AuthInterfaces";
+import ResendVerificationModal from "../../../components/ResendVerificationModal";
 
 const AccountVerification = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const verificationToken = queryParams.get("verificationToken");
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const {
     register,
@@ -66,6 +68,14 @@ const AccountVerification = () => {
           Send Code
         </button>
       </form>
+
+      <button
+        onClick={() => setShowModal(true)}
+        className=" text-[13px] hover:underline hover:scale-95 hover:font-semibold"
+      >
+        Resend verification email.
+      </button>
+      {showModal && <ResendVerificationModal setShowModal={setShowModal} />}
     </div>
   );
 };

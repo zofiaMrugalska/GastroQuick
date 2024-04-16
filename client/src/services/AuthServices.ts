@@ -32,6 +32,15 @@ export const AuthServices = {
     }
   },
 
+  resendVerificationCode: async (email: string) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/resend-verification`, { email });
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
   login: async (userData: SignInInterface): Promise<LoginResponseInterface> => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/login`, userData);
