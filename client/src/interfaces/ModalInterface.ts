@@ -12,3 +12,7 @@ export interface EditModalPropsInterface {
 export interface ResendVerificationModalInterface {
   setShowModal: React.Dispatch<SetStateAction<boolean>>;
 }
+
+export interface ResetPasswordModalInterface {
+  setShowResetModal: React.Dispatch<SetStateAction<boolean>>;
+}

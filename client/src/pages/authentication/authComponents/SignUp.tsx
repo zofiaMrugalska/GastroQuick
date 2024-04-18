@@ -66,7 +66,6 @@ const SignUp = () => {
             {...register("password", {
               required: "password is required",
               minLength: { value: 4, message: "no less than 4 characters" },
-              maxLength: { value: 20, message: "no more than 20 characters" },
             })}
             type={showPassword ? "text" : "password"}
             placeholder="password"
@@ -90,7 +89,6 @@ const SignUp = () => {
               required: "confirm password is required",
               validate: (value) => value === getValues("password") || "Passwords do not match",
               minLength: { value: 4, message: "no less than 4 characters" },
-              maxLength: { value: 20, message: "no more than 20 characters" },
             })}
             type={showConfirmPassword ? "text" : "password"}
             placeholder="confirm password"

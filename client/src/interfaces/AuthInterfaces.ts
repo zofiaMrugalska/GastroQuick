@@ -44,3 +44,11 @@ export interface LoginResponseInterface {
   message: string;
   success: boolean;
 }
+
+export interface ResendCodeResponseInterface {
+  data: null;
+  message: string;
+  success: boolean;
+}
+
+export type ResetPasswordResponseInterface = ResendCodeResponseInterface;

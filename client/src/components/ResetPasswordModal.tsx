@@ -2,9 +2,9 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { AuthServices } from "../services/AuthServices";
-import { ResendVerificationModalInterface } from "../interfaces/ModalInterface";
+import { ResetPasswordModalInterface } from "../interfaces/ModalInterface";
 
-const ResendVerificationModal: React.FC<ResendVerificationModalInterface> = ({ setShowModal }) => {
+const ResetPasswordModal: React.FC<ResetPasswordModalInterface> = ({ setShowResetModal }) => {
   const {
     register,
     handleSubmit,
@@ -14,7 +14,7 @@ const ResendVerificationModal: React.FC<ResendVerificationModalInterface> = ({ s
 
   const onSubmit: SubmitHandler<{ email: string }> = async (data) => {
     try {
-      const response = await AuthServices.resendVerificationCode(data.email);
+      const response = await AuthServices.resetPassword(data.email);
       if (response.success === true) {
         toast.success(response.message);
       }
@@ -28,11 +28,11 @@ const ResendVerificationModal: React.FC<ResendVerificationModalInterface> = ({ s
   return (
     <div style={{ backgroundColor: " rgba(0, 0, 0, 0.5)" }} className=" fixed inset-0 flex justify-center items-center">
       <div className="flex flex-col justify-center items-center mb-6 min-h-[300px] max-w-[400px] bg-[#ffffff]  p-8  rounded-xl ">
-        <button onClick={() => setShowModal(false)} className=" relative left-36 bottom-26">
+        <button onClick={() => setShowResetModal(false)} className=" relative left-36 bottom-26">
           <IoIosCloseCircleOutline size={30} color="gray" />
         </button>
         <h2 className=" mt-3 text-center font-semibold">
-          Please enter your email address to resend the verification email.
+          Enter your email address and we'll send you a link to reset your password.
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -52,7 +52,7 @@ const ResendVerificationModal: React.FC<ResendVerificationModalInterface> = ({ s
             type="submit"
             className=" mt-4 bg-[#ff8f34] py-2 rounded-lg min-w-[300px] font-semibold hover:bg-[#fc9e52] hover:scale-95"
           >
-            Resend Email
+            Send Email
           </button>
         </form>
       </div>
@@ -60,4 +60,4 @@ const ResendVerificationModal: React.FC<ResendVerificationModalInterface> = ({ s
   );
 };
 
-export default ResendVerificationModal;
+export default ResetPasswordModal;

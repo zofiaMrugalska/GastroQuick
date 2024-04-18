@@ -3,6 +3,8 @@ import {
   AuthorInterface,
   LoginResponseInterface,
   RegisterResponseInterface,
+  ResendCodeResponseInterface,
+  ResetPasswordResponseInterface,
   SignInInterface,
   SignUpInterface,
   VerifyInterface,
@@ -32,7 +34,7 @@ export const AuthServices = {
     }
   },
 
-  resendVerificationCode: async (email: string) => {
+  resendVerificationCode: async (email: string): Promise<ResendCodeResponseInterface> => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/resend-verification`, { email });
       return response.data;
@@ -115,6 +117,15 @@ export const AuthServices = {
         throw new Error("Logged out successfully");
       }
 
+      throw new Error(error.response.data.message);
+    }
+  },
+
+  resetPassword: async (email: string): Promise<ResetPasswordResponseInterface> => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/reset-password`, { email });
+      return response.data;
+    } catch (error: any) {
       throw new Error(error.response.data.message);
     }
   },

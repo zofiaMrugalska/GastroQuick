@@ -7,6 +7,7 @@ import { AuthServices } from "../../../services/AuthServices";
 import toast from "react-hot-toast";
 import useAuthCheck from "../../../hooks/useAuthCheck";
 import ResendVerificationModal from "../../../components/ResendVerificationModal";
+import ResetPasswordModal from "../../../components/ResetPasswordModal";
 
 const SignIn: React.FC = () => {
   const {
@@ -18,6 +19,7 @@ const SignIn: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showResetModal, setShowResetModal] = useState<boolean>(false);
   const [showVerificationButton, setShowVerificationButton] = useState<boolean>(false);
 
   const isAuthenticated = useAuthCheck();
@@ -88,6 +90,13 @@ const SignIn: React.FC = () => {
         </div>
 
         <button
+          onClick={() => setShowResetModal(true)}
+          className="text-right text-[13px]  hover:underline hover:font-semibold"
+        >
+          Forgot Password?
+        </button>
+
+        <button
           type="submit"
           className=" bg-[#ff8f34] py-2 rounded-lg min-w-[300px] font-semibold hover:bg-[#fc9e52] hover:scale-95"
         >
@@ -112,6 +121,7 @@ const SignIn: React.FC = () => {
       )}
 
       {showModal && <ResendVerificationModal setShowModal={setShowModal} />}
+      {showResetModal && <ResetPasswordModal setShowResetModal={setShowResetModal} />}
     </div>
   );
 };

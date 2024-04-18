@@ -15,11 +15,10 @@ const registerUserSchema = Joi.object({
     "string.email": 'Field "email" must be a valid e-mail address',
     "any.required": 'Field "email" is required',
   }),
-  password: Joi.string().min(4).max(20).required().messages({
+  password: Joi.string().min(4).required().messages({
     "string.base": 'Field "password" should be a text type',
     "string.empty": 'Field "password" cannot be empty',
     "string.min": 'Field "password" must contain at least 4 characters',
-    "string.max": 'Field "password" can contain a maximum of 20 characters',
     "any.required": 'Field "password" is required',
   }),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
