@@ -15,11 +15,10 @@ const registerUserSchema = Joi.object({
     "string.email": 'Field "email" must be a valid e-mail address',
     "any.required": 'Field "email" is required',
   }),
-  password: Joi.string().min(4).max(20).required().messages({
+  password: Joi.string().min(8).required().messages({
     "string.base": 'Field "password" should be a text type',
     "string.empty": 'Field "password" cannot be empty',
-    "string.min": 'Field "password" must contain at least 4 characters',
-    "string.max": 'Field "password" can contain a maximum of 20 characters',
+    "string.min": 'Field "password" must contain at least 8 characters',
     "any.required": 'Field "password" is required',
   }),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
@@ -36,6 +35,17 @@ const commentSchema = Joi.object({
     "any.required": 'Field "comment" is required',
   }),
   meal: Joi.string().required(),
+});
+
+const validateNewPasswordSchema = Joi.object({
+  resetPasswordVerificationCode: Joi.string().required(),
+  newPassword: Joi.string().min(4).max(20).required().messages({
+    "string.base": 'Field "password" should be a text type',
+    "string.empty": 'Field "password" cannot be empty',
+    "string.min": 'Field "password" must contain at least 4 characters',
+    "string.max": 'Field "password" can contain a maximum of 20 characters',
+    "any.required": 'Field "password" is required',
+  }),
 });
 
 function validateUserData(req, res, next) {
@@ -59,4 +69,15 @@ function validateComment(req, res, next) {
   next();
 }
 
-module.exports = { validateUserData, validateComment };
+function validateNewPassword(req, res, next) {
+  const result = validateNewPasswordSchema.validate(req.body);
+
+  if (result.error) {
+    console.log(result.error.details);
+    return res.status(400).json(createResponse(false, null, result.error.details[0].message));
+  }
+
+  next();
+}
+
+module.exports = { validateUserData, validateComment, validateNewPassword };

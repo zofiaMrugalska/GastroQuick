@@ -2,14 +2,12 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  AuthorInterface,
-  LoginResponseInterface,
-  SignInInterface,
-} from "../../../interfaces/AuthInterfaces";
+import { AuthorInterface, LoginResponseInterface, SignInInterface } from "../../../interfaces/AuthInterfaces";
 import { AuthServices } from "../../../services/AuthServices";
 import toast from "react-hot-toast";
 import useAuthCheck from "../../../hooks/useAuthCheck";
+import ResendVerificationModal from "../../../components/ResendVerificationModal";
+import ResetPasswordModal from "../../../components/ResetPasswordModal";
 
 const SignIn: React.FC = () => {
   const {
@@ -20,6 +18,9 @@ const SignIn: React.FC = () => {
   } = useForm<SignInInterface>();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showResetModal, setShowResetModal] = useState<boolean>(false);
+  const [showVerificationButton, setShowVerificationButton] = useState<boolean>(false);
 
   const isAuthenticated = useAuthCheck();
 
@@ -31,7 +32,7 @@ const SignIn: React.FC = () => {
 
   const onSubmit: SubmitHandler<SignInInterface> = async (data) => {
     if (!isAuthenticated) {
-      toast.error("you need to log out to log in to another account");
+      toast.error("You need to log out to log in to another account");
     } else {
       try {
         const response: LoginResponseInterface = await AuthServices.login(data);
@@ -46,8 +47,13 @@ const SignIn: React.FC = () => {
         AuthServices.saveTokenToLocalStorage(token);
         AuthServices.saveUserInfoToLocalStorage(userInfo);
       } catch (error: any) {
-        const errorMessage: string = error.toString();
-        toast.error(errorMessage);
+        if (error.response && error.response.status === 403) {
+          setShowVerificationButton(true);
+          toast.error("Account is not verified. Please verify your account.");
+        } else {
+          const errorMessage: string = error.response?.data?.message || "Error during login";
+          toast.error(errorMessage);
+        }
       }
     }
 
@@ -78,17 +84,17 @@ const SignIn: React.FC = () => {
 
           <p className="text-red-500 text-sm">{errors.password?.message}</p>
 
-          <div
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute top-[10px] left-[270px]"
-          >
-            {showPassword ? (
-              <AiOutlineEye size={22} />
-            ) : (
-              <AiOutlineEyeInvisible size={22} />
-            )}
+          <div onClick={() => setShowPassword(!showPassword)} className="absolute top-[10px] left-[270px]">
+            {showPassword ? <AiOutlineEye size={22} /> : <AiOutlineEyeInvisible size={22} />}
           </div>
         </div>
+
+        <button
+          onClick={() => setShowResetModal(true)}
+          className="text-right text-[13px]  hover:underline hover:font-semibold"
+        >
+          Forgot Password?
+        </button>
 
         <button
           type="submit"
@@ -98,12 +104,24 @@ const SignIn: React.FC = () => {
         </button>
       </form>
 
-      <div className=" mt-6 flex flex-col items-center text-sm ">
-        <p>You don't have an account yet?</p>
-        <Link to={"/signUp"} className=" text-[#ff6e2a] font-bold">
-          Sign Up!
-        </Link>
-      </div>
+      {!showVerificationButton ? (
+        <div className=" mt-6 flex flex-col items-center text-sm ">
+          <p>You don't have an account yet?</p>
+          <Link to={"/signUp"} className=" text-[#ff6e2a] font-bold">
+            Sign Up!
+          </Link>
+        </div>
+      ) : (
+        <button
+          onClick={() => setShowModal(true)}
+          className=" text-[13px] hover:underline hover:scale-95 hover:font-semibold"
+        >
+          Resend verification email.
+        </button>
+      )}
+
+      {showModal && <ResendVerificationModal setShowModal={setShowModal} />}
+      {showResetModal && <ResetPasswordModal setShowResetModal={setShowResetModal} />}
     </div>
   );
 };
