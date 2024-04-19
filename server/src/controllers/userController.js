@@ -98,7 +98,7 @@ const registerUser = async (req, res) => {
 
 //@desc verify User
 //@route POST /users/verify
-//@access private
+//@access public
 const verifyAccount = async (req, res) => {
   try {
     const { verificationToken } = req.query;
@@ -315,7 +315,7 @@ const resetPassword = async (req, res) => {
 
 //@desc change user password
 //@route PUT /users/set-new-password
-//@access private
+//@access public
 
 const setNewPassword = async (req, res) => {
   try {

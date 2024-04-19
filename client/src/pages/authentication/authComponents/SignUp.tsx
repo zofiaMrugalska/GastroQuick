@@ -65,7 +65,7 @@ const SignUp = () => {
           <input
             {...register("password", {
               required: "password is required",
-              minLength: { value: 4, message: "no less than 4 characters" },
+              minLength: { value: 8, message: "no less than 8 characters" },
             })}
             type={showPassword ? "text" : "password"}
             placeholder="password"
@@ -88,7 +88,7 @@ const SignUp = () => {
             {...register("confirmPassword", {
               required: "confirm password is required",
               validate: (value) => value === getValues("password") || "Passwords do not match",
-              minLength: { value: 4, message: "no less than 4 characters" },
+              minLength: { value: 8, message: "no less than 8 characters" },
             })}
             type={showConfirmPassword ? "text" : "password"}
             placeholder="confirm password"

@@ -5,6 +5,8 @@ import {
   RegisterResponseInterface,
   ResendCodeResponseInterface,
   ResetPasswordResponseInterface,
+  SetNewPasswordInterface,
+  SetNewPasswordResponseInterface,
   SignInInterface,
   SignUpInterface,
   VerifyInterface,
@@ -23,6 +25,7 @@ export const AuthServices = {
 
   verifyAccount: async (verificationData: VerifyInterface): Promise<VerifyResponseInterface> => {
     const { verificationToken, verificationCode } = verificationData;
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/users/verify?verificationToken=${verificationToken}`,
@@ -124,6 +127,23 @@ export const AuthServices = {
   resetPassword: async (email: string): Promise<ResetPasswordResponseInterface> => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/reset-password`, { email });
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
+  setNewPassword: async (newPasswordData: SetNewPasswordInterface): Promise<SetNewPasswordResponseInterface> => {
+    const { resetPasswordToken, resetPasswordVerificationCode, newPassword } = newPasswordData;
+
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_URL}/users/set-new-password?resetPasswordToken=${resetPasswordToken}`,
+        {
+          resetPasswordVerificationCode,
+          newPassword,
+        }
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error.response.data.message);

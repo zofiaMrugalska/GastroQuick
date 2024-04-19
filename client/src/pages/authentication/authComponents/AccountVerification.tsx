@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthServices } from "../../../services/AuthServices";
-import { VerifyInterface } from "../../../interfaces/AuthInterfaces";
+import { VerifyFormInterface, VerifyInterface } from "../../../interfaces/AuthInterfaces";
 import ResendVerificationModal from "../../../components/ResendVerificationModal";
 
 const AccountVerification = () => {
@@ -17,7 +17,7 @@ const AccountVerification = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<VerifyInterface>();
+  } = useForm<VerifyFormInterface>();
 
   const navigate = useNavigate();
 
@@ -25,8 +25,8 @@ const AccountVerification = () => {
     navigate("/signIn");
   };
 
-  const onSubmit: SubmitHandler<VerifyInterface> = async (data) => {
-    const verificationData = {
+  const onSubmit: SubmitHandler<VerifyFormInterface> = async (data) => {
+    const verificationData: VerifyInterface = {
       verificationCode: data.verificationCode,
       verificationToken: verificationToken || " ",
     };

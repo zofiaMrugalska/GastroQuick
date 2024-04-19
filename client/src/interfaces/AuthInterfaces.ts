@@ -8,6 +8,10 @@ export interface SignUpInterface extends SignInInterface {
   confirmPassword: string;
 }
 
+export interface VerifyFormInterface {
+  verificationCode: string;
+}
+
 export interface VerifyInterface {
   verificationCode: string;
   verificationToken: string;
@@ -52,3 +56,16 @@ export interface ResendCodeResponseInterface {
 }
 
 export type ResetPasswordResponseInterface = ResendCodeResponseInterface;
+
+export type SetNewPasswordResponseInterface = ResendCodeResponseInterface;
+
+export interface SetNewPasswordFormInterface {
+  resetPasswordVerificationCode: string;
+  newPassword: string;
+}
+
+export interface SetNewPasswordInterface {
+  resetPasswordToken: string;
+  resetPasswordVerificationCode: string;
+  newPassword: string;
+}
