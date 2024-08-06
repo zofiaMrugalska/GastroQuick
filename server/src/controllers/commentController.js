@@ -1,5 +1,5 @@
 const commentModel = require("../models/commentModel");
-const createResponse = require("../services/responseDTO");
+const createResponse = require("../utils/responseDTO");
 const { default: mongoose } = require("mongoose");
 
 //@desc adding comment  under the meal
