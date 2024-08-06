@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const blacklist = require("../services/blacklist");
+const blacklist = require("./blacklist");
 
 const validateToken = async (req, res, next) => {
   let token;
@@ -23,9 +23,7 @@ const validateToken = async (req, res, next) => {
         next();
       });
     } else {
-      res
-        .status(401)
-        .json({ message: "user is not authorized or token is missing" });
+      res.status(401).json({ message: "user is not authorized or token is missing" });
     }
   } catch (error) {
     return res.sendStatus(401);

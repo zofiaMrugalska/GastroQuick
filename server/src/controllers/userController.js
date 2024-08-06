@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const userModel = require("../models/userModel");
-const createResponse = require("../services/responseDTO");
-const blacklist = require("../services/blacklist");
+const createResponse = require("../utils/responseDTO");
+const blacklist = require("../middleware/blacklist");
 const { confirmEmail, sendPasswordResetCode } = require("../utils/emailUtils");
 const { generateToken, verifyToken } = require("../utils/tokenUtils");
 const { generateVerificationCode } = require("../utils/generateCodeUtils");

@@ -1,7 +1,7 @@
 const express = require("express");
 const { addNewMeal, getMealsData, getOneMeal, deleteOneMeal } = require("../controllers/mealController");
 
-const upload = require("../services/multer");
+const upload = require("../middleware/multer");
 
 const mealRouter = express.Router();
 

@@ -1,5 +1,5 @@
 const cartModel = require("../models/cartModel");
-const createResponse = require("../services/responseDTO");
+const createResponse = require("../utils/responseDTO");
 const { default: mongoose } = require("mongoose");
 const mealModel = require("../models/mealModel");
 

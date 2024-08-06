@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const mealModel = require("../models/mealModel");
-const createResponse = require("../services/responseDTO");
+const createResponse = require("../utils/responseDTO");
 
 //@desc adding meal to database
 //@route POST /meals/newMeal
